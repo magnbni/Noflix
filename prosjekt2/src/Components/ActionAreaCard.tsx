@@ -25,8 +25,9 @@ export default function ActionAreaCard() {
             species, ranging across all continents except Antarctica
           </Typography>
         </CardContent>
-      </CardActionArea>
       {Rate(2)}
+
+      </CardActionArea>
     </Card>
   );
 }

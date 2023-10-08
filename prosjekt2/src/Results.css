@@ -1,0 +1,23 @@
+.comp {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    border-radius: 10px;
+    width: 96%;
+    overflow-y: auto;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1; 
+}
