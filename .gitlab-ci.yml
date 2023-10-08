@@ -32,8 +32,12 @@ lint-test-job:   # This job also runs in the test stage.
   stage: test    # It can run at the same time as unit-test-job (in parallel).
   script:
     - echo "Linting code... This will take about 10 seconds."
-    - npm i eslint
-    - npm i @typescript-eslint/eslint-plugin@latest --save-dev
+    - |
+      npm i eslint \
+      @typescript-eslint/eslint-plugin \
+      eslint-plugin-react-hooks \
+      eslint-plugin-react-refresh \
+      @typescript-eslint/parser
     - node_modules/eslint/bin/eslint.js .
     - echo "No lint issues found."
 
