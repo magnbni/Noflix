@@ -1,13 +1,13 @@
 import { ReactElement } from "react";
-import ActionAreaCard from "./Components/ActionAreaCard";
 import "./Results.css";
+import NestedModal from "./Components/NestedModal";
 
 export default function Results() {
   const movies: ReactElement<string, string>[] = [];
   for (let i = 0; i < 4; i++) {
     movies.push(
       <div className="card" key={`movie-${i}`}>
-        <ActionAreaCard />
+        <NestedModal />
       </div>
     );
   }
