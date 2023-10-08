@@ -1,8 +1,10 @@
 image: node
 
+stages:
+  - build
 
 eslint:
- stage: lint
+ stage: build
 
  script:
    # install eslint
