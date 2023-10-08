@@ -33,6 +33,7 @@ lint-test-job:   # This job also runs in the test stage.
   script:
     - echo "Linting code... This will take about 10 seconds."
     - npm i eslint
+    - npm i @typescript-eslint/eslint-plugin@latest --save-dev
     - node_modules/eslint/bin/eslint.js .
     - echo "No lint issues found."
 
