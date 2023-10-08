@@ -2,21 +2,26 @@ import { ReactElement } from "react";
 import "./Results.css";
 import NestedModal from "./Components/NestedModal";
 
-export default function Results() {
+interface FilmOptionType {
+  title: string;
+  year: number;
+}
+
+export default function Results(movieTypes: FilmOptionType[]) {
   const movies: ReactElement<string, string>[] = [];
-  for (let i = 0; i < 4; i++) {
+  movieTypes.forEach((film) => {
     movies.push(
-      <div className="card" key={`movie-${i}`}>
+      <div className="card" key={`movie-${film.title}`}>
         <NestedModal />
       </div>
     );
-  }
+  });
 
   // Define the number of cards per row
   const cardsPerRow = 3; // Adjust this based on your design
 
   // Calculate the number of rows needed
-  const numRows = Math.ceil(movies.length / cardsPerRow);
+  const numRows = Math.ceil(movieTypes.length / cardsPerRow);
 
   // Create an array to store the rows
   const rows: ReactElement<string, string>[] = [];
