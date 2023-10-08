@@ -1,15 +1,13 @@
 image: node
 
-stage:
- - lint
 
 eslint:
  stage: lint
 
-script:
+ script:
    # install eslint
    - npm i eslint
    # Run eslint
    - node_modules/eslint/bin/eslint.js .
-rules:
+ rules:
    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
