@@ -1,15 +1,30 @@
 import { ReactElement } from "react";
 import "./Results.css";
-import NestedModal from "./Components/NestedModal";
+import NestedModal from "../Components/NestedModal";
+import { FilmOptionType, top100Films } from "../types";
+import { useParams } from "react-router-dom";
 
-interface FilmOptionType {
-  title: string;
-  year: number;
+function search(searchWord: string) {
+  const movies: FilmOptionType[] = [];
+  top100Films.forEach((film) => {
+    if (film.title.toLowerCase().includes(searchWord.toLowerCase())) {
+      movies.push(film);
+      console.log("film: ", film);
+    }
+  });
+  return movies;
 }
 
-export default function Results(movieTypes: FilmOptionType[]) {
+export default function Results() {
+  const { id } = useParams<string>();
+  let movieHits: FilmOptionType[] = [];
+
+  if (id) {
+    movieHits = search(id);
+  }
+
   const movies: ReactElement<string, string>[] = [];
-  movieTypes.forEach((film) => {
+  movieHits.forEach((film) => {
     movies.push(
       <div className="card" key={`movie-${film.title}`}>
         <NestedModal />
@@ -21,7 +36,7 @@ export default function Results(movieTypes: FilmOptionType[]) {
   const cardsPerRow = 3; // Adjust this based on your design
 
   // Calculate the number of rows needed
-  const numRows = Math.ceil(movieTypes.length / cardsPerRow);
+  const numRows = Math.ceil(movieHits.length / cardsPerRow);
 
   // Create an array to store the rows
   const rows: ReactElement<string, string>[] = [];

@@ -1,13 +1,23 @@
 import "./App.css";
 import { Routes, Route, useNavigate } from "react-router-dom";
-import ComboBox from "./Components/ComboBox";
+import Root from "./Root";
+import Results from "./Routes/Results";
 
 function App() {
+  const navigate = useNavigate();
+  navigate("/prosjekt2");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    navigate(`/prosjekt2/lord`);
+  };
 
   return (
     <div>
-      <h1> Search for a movie</h1>
-      <ComboBox />
+      <Routes>
+        <Route path="/prosjekt2" element={<Root />} />
+        <Route path="/prosjekt2/:id" element={<Results />} />
+      </Routes>
     </div>
   );
 }
