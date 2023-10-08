@@ -6,10 +6,10 @@ stage:
 eslint:
  stage: lint
 
- script:
-    # install eslint
-    - npm i eslint
-    # Run eslint
-    - node_modules/eslint/bin/eslint.js .
- rules:
-    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+script:
+   # install eslint
+   - npm i eslint
+   # Run eslint
+   - node_modules/eslint/bin/eslint.js .
+rules:
+   - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
