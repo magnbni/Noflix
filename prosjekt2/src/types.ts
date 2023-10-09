@@ -1,7 +1,11 @@
 export interface FilmOptionType {
     title: string;
     year: number;
-  }
+}
+
+export interface ComboBoxProps {
+  onMovieSelect: (selectedOption: string | null) => void;
+}
 
   
 // Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top

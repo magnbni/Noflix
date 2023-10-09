@@ -1,11 +1,7 @@
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import { FilmOptionType, top100Films } from "../types";
+import { ComboBoxProps, FilmOptionType, top100Films } from "../types";
 import React from "react";
-
-interface ComboBoxProps {
-  onMovieSelect: (selectedOption: string | null) => void;
-}
 
 export default function ComboBox({ onMovieSelect }: ComboBoxProps) {
   const [value, setValue] = React.useState<FilmOptionType | null>(null);
