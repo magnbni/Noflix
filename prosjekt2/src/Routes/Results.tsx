@@ -9,7 +9,6 @@ function search(searchWord: string) {
   top100Films.forEach((film) => {
     if (film.title.toLowerCase().includes(searchWord.toLowerCase())) {
       movies.push(film);
-      console.log("film: ", film);
     }
   });
   return movies;
@@ -27,26 +26,21 @@ export default function Results() {
   movieHits.forEach((film) => {
     movies.push(
       <div className="card" key={`movie-${film.title}`}>
-        <NestedModal />
+        {NestedModal(film)}
       </div>
     );
   });
 
-  // Define the number of cards per row
-  const cardsPerRow = 3; // Adjust this based on your design
+  const cardsPerRow = 3;
 
-  // Calculate the number of rows needed
   const numRows = Math.ceil(movieHits.length / cardsPerRow);
 
-  // Create an array to store the rows
   const rows: ReactElement<string, string>[] = [];
 
-  // Generate rows and insert ActionAreaCard components into them
   for (let i = 0; i < numRows; i++) {
     const startIndex = i * cardsPerRow;
     const endIndex = startIndex + cardsPerRow;
     const rowCards = movies.slice(startIndex, endIndex);
-    // Add empty cards if needed to fill the row
     while (rowCards.length < cardsPerRow) {
       rowCards.push(
         <div className="card" key={`empty-${rowCards.length}`}></div>

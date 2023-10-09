@@ -5,8 +5,9 @@ import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
 import { Rate } from "./BasicRating";
 import iguana from "../assets/iguana.png";
+import { FilmOptionType } from "../types";
 
-export default function ActionAreaCard() {
+export default function ActionAreaCard(movie: FilmOptionType) {
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardActionArea>
@@ -18,11 +19,10 @@ export default function ActionAreaCard() {
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            Movie Title
+            {movie.title}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica
+            {movie.year}
           </Typography>
         </CardContent>
       {Rate(2)}

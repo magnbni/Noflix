@@ -6,7 +6,7 @@ import { grey } from "@mui/material/colors";
 import { CardMedia } from "@mui/material";
 import iguana from "../assets/iguana.png";
 import { Rate, ReadOnlyRating } from "./BasicRating";
-
+import { FilmOptionType } from "../types";
 
 const style = {
   position: "absolute" as const,
@@ -52,7 +52,7 @@ const style = {
 //   );
 // }
 
-export default function NestedModal() {
+export default function NestedModal(movie: FilmOptionType) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     setOpen(true);
@@ -63,9 +63,7 @@ export default function NestedModal() {
 
   return (
     <div>
-      <div onClick={handleOpen}>
-        <ActionAreaCard />
-      </div>
+      <div onClick={handleOpen}>{ActionAreaCard(movie)}</div>
       <Modal
         open={open}
         onClose={handleClose}
@@ -80,7 +78,10 @@ export default function NestedModal() {
               image={iguana}
               alt="green iguana"
             />
-            <h2>Movie Title</h2>
+            <h2>{movie.title}</h2>
+            <p>
+              {movie.year}
+            </p>
             <p>Movie rating:</p>
             {ReadOnlyRating(3)}
             <p>Your rating:</p>

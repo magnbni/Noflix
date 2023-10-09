@@ -1,22 +1,28 @@
-import * as React from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { FilmOptionType, top100Films } from "../types";
+import React from "react";
 
-export default function ComboBox() {
+interface ComboBoxProps {
+  onMovieSelect: (selectedOption: string | null) => void;
+}
+
+export default function ComboBox({ onMovieSelect }: ComboBoxProps) {
+  const [value, setValue] = React.useState<FilmOptionType | null>(null);
+  const [inputValue, setInputValue] = React.useState("");
+
   const defaultProps = {
     options: top100Films,
     getOptionLabel: (option: FilmOptionType) => option.title,
   };
-  const [value, setValue] = React.useState<FilmOptionType | null>(null);
-  const [inputValue, setInputValue] = React.useState("");
-  console.log("value: ", value);
 
   return (
     <Autocomplete
       value={value}
       onChange={(_event: unknown, newValue: FilmOptionType | null) => {
         setValue(newValue);
+        setInputValue(newValue?.title || "");
+        onMovieSelect(newValue?.title || "");
       }}
       inputValue={inputValue}
       onInputChange={(_event, newInputValue) => {
@@ -24,17 +30,14 @@ export default function ComboBox() {
       }}
       onKeyDown={(event) => {
         if (event.key === "Enter") {
-          search(inputValue);
+          onMovieSelect(inputValue);
         }
       }}
       {...defaultProps}
       id="clear-on-escape"
-      clearOnEscape
       renderInput={(params) => (
         <TextField {...params} label="Movies" variant="standard" />
       )}
     />
   );
 }
-
-
