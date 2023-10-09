@@ -9,7 +9,7 @@ import { FilmOptionType } from "../types";
 
 export default function ActionAreaCard(movie: FilmOptionType) {
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ width: 330, heigth: 350 }}>
       <CardActionArea>
         <CardMedia
           component="img"
