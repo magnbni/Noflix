@@ -1,18 +1,10 @@
-import "./App.css";
-import { Routes, Route, useNavigate} from "react-router-dom";
+import React, { useState } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Root from "./Root";
 import Results from "./Routes/Results";
+import ComboBox from "./Components/ComboBox";
 
 function App() {
-  const navigate = useNavigate();
-
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    navigate('');
-  };
-
-
   return (
     <div>
       <Routes>

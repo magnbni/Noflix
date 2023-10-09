@@ -18,6 +18,7 @@ function search(searchWord: string) {
 export default function Results() {
   const { id } = useParams<string>();
   let movieHits: FilmOptionType[] = [];
+  console.log("hei")
 
   if (id) {
     movieHits = search(id);
