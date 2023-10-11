@@ -3,6 +3,7 @@ import "./Results.css";
 import NestedModal from "../Components/NestedModal";
 import { FilmOptionType, top100Films } from "../types";
 import { useParams } from "react-router-dom";
+import SwitchesGroup from "../Components/Switch";
 
 function search(searchWord: string) {
   const movies: FilmOptionType[] = [];
@@ -14,43 +15,25 @@ function search(searchWord: string) {
   return movies;
 }
 
-function searchByYear(searchYear: number) {
-  const movies: FilmOptionType[] = [];
-  top100Films.forEach((film) => {
-    if (film.year === searchYear) {
-      movies.push(film);
-    }
-  });
-  return movies;
-}
+// function searchByYear(searchYear: number) {
+//   const movies: FilmOptionType[] = [];
+//   top100Films.forEach((film) => {
+//     if (film.year === searchYear) {
+//       movies.push(film);
+//     }
+//   });
+//   return movies;
+// }
 
-function sortMovies(movieHits: FilmOptionType[], type: string) {
-  if (type == "asc") {
-    movieHits.sort((a, b) => {
-      if (a.year < b.year) {
-        return 1;
-      }
-
-      if (a.year > b.year) {
-        return -1;
-      }
-
-      return 0;
-    });
-  } else if (type == "desc") {
-    movieHits.sort((a, b) => {
-      if (a.year > b.year) {
-        return 1;
-      }
-
-      if (a.year < b.year) {
-        return -1;
-      }
-
-      return 0;
-    });
-  }
-}
+// function sortMovies(movies: FilmOptionType[], type: "asc" | "desc") {
+//   return movies.slice().sort((a, b) => {
+//     if (type === "asc") {
+//       return a.year - b.year;
+//     } else {
+//       return b.year - a.year;
+//     }
+//   });
+// }
 
 export default function Results() {
   const { id } = useParams<string>();
@@ -70,6 +53,7 @@ export default function Results() {
   });
   return (
     <div className="results">
+      {SwitchesGroup()}
       <div className="row">{movies}</div>
     </div>
   );
