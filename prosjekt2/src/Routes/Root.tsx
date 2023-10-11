@@ -1,7 +1,7 @@
 import { useState } from "react";
-import ComboBox from "./Components/ComboBox";
 import { useNavigate } from "react-router-dom";
-import "./index.css"
+import "../index.css"
+import ComboBox from "../Components/ComboBox";
 
 export default function Root() {
   const navigate = useNavigate();
