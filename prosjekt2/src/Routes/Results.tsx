@@ -14,6 +14,44 @@ function search(searchWord: string) {
   return movies;
 }
 
+function searchByYear(searchYear: number) {
+  const movies: FilmOptionType[] = [];
+  top100Films.forEach((film) => {
+    if (film.year === searchYear) {
+      movies.push(film);
+    }
+  });
+  return movies;
+}
+
+function sortMovies(movieHits: FilmOptionType[], type: string) {
+  if (type == "asc") {
+    movieHits.sort((a, b) => {
+      if (a.year < b.year) {
+        return 1;
+      }
+
+      if (a.year > b.year) {
+        return -1;
+      }
+
+      return 0;
+    });
+  } else if (type == "desc") {
+    movieHits.sort((a, b) => {
+      if (a.year > b.year) {
+        return 1;
+      }
+
+      if (a.year < b.year) {
+        return -1;
+      }
+
+      return 0;
+    });
+  }
+}
+
 export default function Results() {
   const { id } = useParams<string>();
   let movieHits: FilmOptionType[] = [];
