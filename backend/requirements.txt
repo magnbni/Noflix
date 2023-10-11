@@ -1,0 +1,5 @@
+pymongo
+python-dotenv
+graphene
+flask
+flask_graphql
