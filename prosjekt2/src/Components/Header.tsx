@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import "../index.css";
 
+// The default Header of our application
 export default function Head() {
   return (
     <div className="header">

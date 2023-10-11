@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "../index.css";
 import ComboBox from "../Components/ComboBox";
 
+// The "Homepage" of the application is present within Root, and contains the searchbar and logo.
 export default function Root() {
   const navigate = useNavigate();
   const [, setSelectedMovie] = useState<string | null>(null);

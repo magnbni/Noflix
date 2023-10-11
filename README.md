@@ -1,6 +1,6 @@
 # Welcome to Noflix!
 
-![Noflix default logo](https://upload.wikimedia.org/wikipedia/commons/3/3f/Film_reel.svg)
+<img width="300" height="300" src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Film_reel.svg"></img>
 
 ## Start the application
 
@@ -63,4 +63,4 @@ The third and final version aims to complete the product. In addition to a fully
 - Unit, mock and other tests based on the vitest testing library
 - Deployment to a server
 
-For any further inquires about the application, please contact us <button onclick="window.location.href ='https://www.youtube.com/watch?v=dQw4w9WgXcQ&pp=ygULcmljayBhc3RsZXk%3D'">here</button>
+For any further inquires about the application, please contact us <button onclick="window.location.href='https://www.youtube.com/watch?v=dQw4w9WgXcQ&pp=ygULcmljayBhc3RsZXk%3D'">here</button>
