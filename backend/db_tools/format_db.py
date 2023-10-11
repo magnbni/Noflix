@@ -50,8 +50,8 @@ def convert_genre_strings_to_array():
     ])
 
 def main():
-    # convert_non_numerical_fields_to_none()
-    convert_genre_strings_to_array()
+    convert_non_numerical_fields_to_none()
+    # convert_genre_strings_to_array()
 
 if __name__ == "__main__":
     main()
