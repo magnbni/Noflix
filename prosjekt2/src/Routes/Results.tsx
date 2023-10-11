@@ -43,6 +43,15 @@ export default function Results() {
   if (id) {
     movieHits = search(id);
   }
+  if (movieHits.length === 0) {
+    return (
+      <div>
+        <Head></Head>
+        <h1>Oh no! :(</h1>
+        <h2>No results found for {id}</h2>
+      </div>
+    );
+  }
 
   const movies: ReactElement<string, string>[] = [];
   movieHits.forEach((film) => {
