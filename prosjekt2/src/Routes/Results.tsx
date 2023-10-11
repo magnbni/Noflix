@@ -3,6 +3,7 @@ import "./Results.css";
 import NestedModal from "../Components/NestedModal";
 import { FilmOptionType, top100Films } from "../types";
 import { useParams } from "react-router-dom";
+import Header from "../Components/Header";
 
 function search(searchWord: string) {
   const movies: FilmOptionType[] = [];
@@ -32,6 +33,7 @@ export default function Results() {
   });
   return (
     <div className="results">
+      <Header />
       <div className="row">{movies}</div>
     </div>
   );

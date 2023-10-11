@@ -6,5 +6,6 @@ export default defineConfig({
   plugins: [react()],
   server: {
     open: '/project2'
-  }
+  },
+  base: '/project2',
 })
