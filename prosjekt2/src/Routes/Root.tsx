@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../index.css"
+import "../index.css";
 import ComboBox from "../Components/ComboBox";
 
 export default function Root() {
@@ -15,6 +15,12 @@ export default function Root() {
   };
   return (
     <div>
+      <div className="logoDiv">
+        <img
+          className="logo"
+          src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Film_reel.svg"
+        />
+      </div>
       <h1> Search for a movie</h1>
       <ComboBox onMovieSelect={handleMovieSelect} />
     </div>
