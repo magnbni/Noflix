@@ -79,9 +79,7 @@ export default function NestedModal(movie: FilmOptionType) {
               alt="green iguana"
             />
             <h2>{movie.title}</h2>
-            <p>
-              {movie.year}
-            </p>
+            <p>{movie.year}</p>
             <p>Movie rating:</p>
             {ReadOnlyRating(3)}
             <p>Your rating:</p>
