@@ -3,7 +3,7 @@ import "./Results.css";
 import NestedModal from "../Components/NestedModal";
 import { FilmOptionType, top100Films } from "../types";
 import { useParams } from "react-router-dom";
-import SwitchesGroup from "../Components/Switch";
+import Switch from "../Components/Switch";
 
 function search(searchWord: string) {
   const movies: FilmOptionType[] = [];
@@ -53,7 +53,7 @@ export default function Results() {
   });
   return (
     <div className="results">
-      {SwitchesGroup()}
+      {Switch()}
       <div className="row">{movies}</div>
     </div>
   );
