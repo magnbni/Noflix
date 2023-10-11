@@ -17,7 +17,6 @@ function search(searchWord: string) {
 export default function Results() {
   const { id } = useParams<string>();
   let movieHits: FilmOptionType[] = [];
-  console.log("hei")
 
   if (id) {
     movieHits = search(id);
@@ -31,28 +30,9 @@ export default function Results() {
       </div>
     );
   });
-
-  const cardsPerRow = 3;
-
-  const numRows = Math.ceil(movieHits.length / cardsPerRow);
-
-  const rows: ReactElement<string, string>[] = [];
-
-  for (let i = 0; i < numRows; i++) {
-    const startIndex = i * cardsPerRow;
-    const endIndex = startIndex + cardsPerRow;
-    const rowCards = movies.slice(startIndex, endIndex);
-    while (rowCards.length < cardsPerRow) {
-      rowCards.push(
-        <div className="card" key={`empty-${rowCards.length}`}></div>
-      );
-    }
-
-    rows.push(
-      <div className="row" key={`row-${i}`}>
-        {rowCards}
-      </div>
-    );
-  }
-  return <div className="comp">{rows}</div>;
+  return (
+    <div className="results">
+      <div className="row">{movies}</div>
+    </div>
+  );
 }
