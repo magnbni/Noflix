@@ -7,8 +7,12 @@ import { Rate } from "./BasicRating";
 import iguana from "../assets/iguana.png";
 import { FilmOptionType } from "../types";
 
+/*
+  Custom actioncard used to present each individual movie.
+*/
 export default function ActionAreaCard(movie: FilmOptionType) {
   return (
+    // Material-UI Card component with custom styles
     <Card sx={{ width: 330, heigth: 350 }}>
       <CardActionArea>
         <CardMedia
@@ -25,6 +29,9 @@ export default function ActionAreaCard(movie: FilmOptionType) {
             {movie.year}
           </Typography>
         </CardContent>
+        {/* Uses the Rate component to provide a rating. Default value is set to 2 stars
+            as of version 1.
+        */}
         {Rate(2)}
       </CardActionArea>
     </Card>

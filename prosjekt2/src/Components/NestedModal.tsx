@@ -22,6 +22,8 @@ const style = {
   pb: 3,
 };
 
+// This code may be used in future versions of the application, and is thus left as is for now.
+
 // function ChildModal() {
 //   const [open, setOpen] = React.useState(false);
 //   const handleOpen = () => {
@@ -52,6 +54,10 @@ const style = {
 //   );
 // }
 
+/*
+  This is the main modal used for showing the movies on the results page.
+  
+*/
 export default function NestedModal(movie: FilmOptionType) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {

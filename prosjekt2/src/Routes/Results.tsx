@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import Head from "../Components/Header";
 import Switch from "../Components/Switch";
 
+// The main search function. Uses iteration to find the movies, will probably be implemented differently on the backend.
 function search(searchWord: string) {
   const movies: FilmOptionType[] = [];
   top100Films.forEach((film) => {
@@ -15,6 +16,8 @@ function search(searchWord: string) {
   });
   return movies;
 }
+
+// This may be used in future implementations, and is therefore left as is.
 
 // function searchByYear(searchYear: number) {
 //   const movies: FilmOptionType[] = [];
@@ -36,10 +39,14 @@ function search(searchWord: string) {
 //   });
 // }
 
+/* 
+  This is the Results component that displays search results in a grid like fashion.
+*/
 export default function Results() {
+  // Fetch the query from the parameters
   const { id } = useParams<string>();
   let movieHits: FilmOptionType[] = [];
-
+  // Search database for the given query
   if (id) {
     movieHits = search(id);
   }
@@ -53,7 +60,10 @@ export default function Results() {
     );
   }
 
+  // The list of movie-elements.
   const movies: ReactElement<string, string>[] = [];
+
+  // Each movie has its own NestedModal component
   movieHits.forEach((film) => {
     movies.push(
       <div className="card" key={`movie-${film.title}`}>
@@ -64,7 +74,10 @@ export default function Results() {
   return (
     <div className="results">
       <Head></Head>
-      {Switch()}
+      {
+        // Currently functional, will be implemented in future iterations.
+        Switch()
+      }
       <div className="row">{movies}</div>
     </div>
   );
