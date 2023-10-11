@@ -3,6 +3,7 @@ import "./Results.css";
 import NestedModal from "../Components/NestedModal";
 import { FilmOptionType, top100Films } from "../types";
 import { useParams } from "react-router-dom";
+import Head from "../Components/Header";
 import Switch from "../Components/Switch";
 
 function search(searchWord: string) {
@@ -42,17 +43,27 @@ export default function Results() {
   if (id) {
     movieHits = search(id);
   }
+  if (movieHits.length === 0) {
+    return (
+      <div>
+        <Head></Head>
+        <h1>Oh no! :(</h1>
+        <h2>No results found for {id}</h2>
+      </div>
+    );
+  }
 
   const movies: ReactElement<string, string>[] = [];
   movieHits.forEach((film) => {
     movies.push(
       <div className="card" key={`movie-${film.title}`}>
         {NestedModal(film)}
-      </div>
+      </div>,
     );
   });
   return (
     <div className="results">
+      <Head></Head>
       {Switch()}
       <div className="row">{movies}</div>
     </div>

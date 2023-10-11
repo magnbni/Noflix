@@ -6,7 +6,10 @@ import Switch from "@mui/material/Switch";
 export default function SwitchLabels() {
   return (
     <FormGroup>
-      <FormControlLabel control={<Switch defaultChecked />} label="Sort by year" />
+      <FormControlLabel
+        control={<Switch defaultChecked />}
+        label="Sort by year"
+      />
     </FormGroup>
   );
 }

@@ -25,8 +25,7 @@ export default function ActionAreaCard(movie: FilmOptionType) {
             {movie.year}
           </Typography>
         </CardContent>
-      {Rate(2)}
-
+        {Rate(2)}
       </CardActionArea>
     </Card>
   );
