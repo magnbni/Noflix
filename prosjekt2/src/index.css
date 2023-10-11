@@ -50,3 +50,13 @@ h1 {
   align-items: center; /* You can use this to vertically center the image and text within the icon div */
   margin-right: 10px; /* Add some margin between the image and the heading */
 }
+
+.home {
+  position: fixed;
+  right: 3%;
+}
+
+.headerName {
+  font-family: Papyrus, sans-serif;
+  font-size: 30px;
+}
