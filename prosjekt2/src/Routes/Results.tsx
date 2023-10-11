@@ -3,7 +3,7 @@ import "./Results.css";
 import NestedModal from "../Components/NestedModal";
 import { FilmOptionType, top100Films } from "../types";
 import { useParams } from "react-router-dom";
-import Header from "../Components/Header";
+import Switch from "../Components/Switch";
 
 function search(searchWord: string) {
   const movies: FilmOptionType[] = [];
@@ -14,6 +14,26 @@ function search(searchWord: string) {
   });
   return movies;
 }
+
+// function searchByYear(searchYear: number) {
+//   const movies: FilmOptionType[] = [];
+//   top100Films.forEach((film) => {
+//     if (film.year === searchYear) {
+//       movies.push(film);
+//     }
+//   });
+//   return movies;
+// }
+
+// function sortMovies(movies: FilmOptionType[], type: "asc" | "desc") {
+//   return movies.slice().sort((a, b) => {
+//     if (type === "asc") {
+//       return a.year - b.year;
+//     } else {
+//       return b.year - a.year;
+//     }
+//   });
+// }
 
 export default function Results() {
   const { id } = useParams<string>();
@@ -33,7 +53,7 @@ export default function Results() {
   });
   return (
     <div className="results">
-      <Header />
+      {Switch()}
       <div className="row">{movies}</div>
     </div>
   );

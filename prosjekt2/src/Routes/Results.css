@@ -1,12 +1,5 @@
-.comp {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    border-radius: 10px;
-    width: 96%;
-    overflow-y: auto;
-    padding-left: 2%;
-    padding-right: 2%;
+.results {
+    margin-top: 90px;
 }
 
 /* Results.css */

@@ -51,11 +51,12 @@ h1 {
   margin-right: 10px; /* Add some margin between the image and the heading */
 }
 
-.logoDiv {
-  text-align: center;
-  width: 100%;
+.home {
+  position: fixed;
+  right: 3%;
 }
 
-.logo {
-  width: 80%;
+.headerName {
+  font-family: Papyrus, sans-serif;
+  font-size: 30px;
 }
