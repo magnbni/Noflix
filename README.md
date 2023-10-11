@@ -45,7 +45,6 @@ The first version of our application consists of the following:
 - A first look at the application
 - A responsive design
 - The ability to search through mock data
-- Filter/sort the mock data based on provided options (this will be added in the next version)
 
 ### Version 2: Connecting to the backend
 
