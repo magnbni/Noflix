@@ -49,7 +49,7 @@ export default function Results() {
     movies.push(
       <div className="card" key={`movie-${film.title}`}>
         {NestedModal(film)}
-      </div>
+      </div>,
     );
   });
   return (

@@ -1,13 +1,12 @@
 export interface FilmOptionType {
-    title: string;
-    year: number;
+  title: string;
+  year: number;
 }
 
 export interface ComboBoxProps {
   onMovieSelect: (selectedOption: string | null) => void;
 }
 
-  
 // Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
 export const top100Films = [
   { title: "The Shawshank Redemption", year: 1994 },
