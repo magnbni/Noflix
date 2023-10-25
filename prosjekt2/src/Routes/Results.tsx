@@ -17,15 +17,15 @@ function search(searchWord: string) {
   return movies;
 }
 
-function filterByYear(searchYear: number) {
-  const movies: FilmOptionType[] = [];
-  top100Films.forEach((film) => {
-    if (film.year === searchYear) {
-      movies.push(film);
-    }
-  });
-  return movies;
-}
+// function filterByYear(searchYear: number) {
+//   const movies: FilmOptionType[] = [];
+//   top100Films.forEach((film) => {
+//     if (film.year === searchYear) {
+//       movies.push(film);
+//     }
+//   });
+//   return movies;
+// }
 
 function sortMovies(movies: FilmOptionType[], type: "asc" | "desc") {
   return movies.slice().sort((a, b) => {
@@ -48,7 +48,7 @@ export default function Results() {
   const updateSort = () => {
     setSort(!sort);
     setMovies(sortMovies(movies, sort ? "asc" : "desc"));
-  }
+  };
 
   if (movies.length === 0) {
     return (
@@ -64,7 +64,6 @@ export default function Results() {
 
   // Each movie has its own NestedModal component
 
-
   return (
     <div className="results">
       <Head></Head>
@@ -74,11 +73,13 @@ export default function Results() {
           label="Sort by year"
         />
       </FormGroup>
-      <div className="row">{movies.map((movie) => 
+      <div className="row">
+        {movies.map((movie) => (
           <div className="card" key={`movie-${movie.title}`}>
             {NestedModal(movie)}
           </div>
-       )}</div>
+        ))}
+      </div>
     </div>
   );
 }
