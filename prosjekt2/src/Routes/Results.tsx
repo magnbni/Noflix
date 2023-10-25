@@ -1,10 +1,10 @@
-import { ReactElement } from "react";
 import "./Results.css";
 import NestedModal from "../Components/NestedModal";
 import { FilmOptionType, top100Films } from "../types";
 import { useParams } from "react-router-dom";
 import Head from "../Components/Header";
-import Switch from "../Components/Switch";
+import { FormControlLabel, FormGroup, Switch } from "@mui/material";
+import React from "react";
 
 // The main search function. Uses iteration to find the movies, will probably be implemented differently on the backend.
 function search(searchWord: string) {
@@ -17,40 +17,40 @@ function search(searchWord: string) {
   return movies;
 }
 
-// This may be used in future implementations, and is therefore left as is.
+function filterByYear(searchYear: number) {
+  const movies: FilmOptionType[] = [];
+  top100Films.forEach((film) => {
+    if (film.year === searchYear) {
+      movies.push(film);
+    }
+  });
+  return movies;
+}
 
-// function searchByYear(searchYear: number) {
-//   const movies: FilmOptionType[] = [];
-//   top100Films.forEach((film) => {
-//     if (film.year === searchYear) {
-//       movies.push(film);
-//     }
-//   });
-//   return movies;
-// }
-
-// function sortMovies(movies: FilmOptionType[], type: "asc" | "desc") {
-//   return movies.slice().sort((a, b) => {
-//     if (type === "asc") {
-//       return a.year - b.year;
-//     } else {
-//       return b.year - a.year;
-//     }
-//   });
-// }
+function sortMovies(movies: FilmOptionType[], type: "asc" | "desc") {
+  return movies.slice().sort((a, b) => {
+    if (type === "asc") {
+      return a.year - b.year;
+    } else {
+      return b.year - a.year;
+    }
+  });
+}
 
 /* 
   This is the Results component that displays search results in a grid like fashion.
 */
 export default function Results() {
-  // Fetch the query from the parameters
   const { id } = useParams<string>();
-  let movieHits: FilmOptionType[] = [];
-  // Search database for the given query
-  if (id) {
-    movieHits = search(id);
+  const [sort, setSort] = React.useState(false);
+  const [movies, setMovies] = React.useState(search(id ? id : ""));
+
+  const updateSort = () => {
+    setSort(!sort);
+    setMovies(sortMovies(movies, sort ? "asc" : "desc"));
   }
-  if (movieHits.length === 0) {
+
+  if (movies.length === 0) {
     return (
       <div>
         <Head></Head>
@@ -61,24 +61,24 @@ export default function Results() {
   }
 
   // The list of movie-elements.
-  const movies: ReactElement<string, string>[] = [];
 
   // Each movie has its own NestedModal component
-  movieHits.forEach((film) => {
-    movies.push(
-      <div className="card" key={`movie-${film.title}`}>
-        {NestedModal(film)}
-      </div>,
-    );
-  });
+
+
   return (
     <div className="results">
       <Head></Head>
-      {
-        // Currently functional, will be implemented in future iterations.
-        Switch()
-      }
-      <div className="row">{movies}</div>
+      <FormGroup>
+        <FormControlLabel
+          control={<Switch defaultChecked onChange={updateSort} />}
+          label="Sort by year"
+        />
+      </FormGroup>
+      <div className="row">{movies.map((movie) => 
+          <div className="card" key={`movie-${movie.title}`}>
+            {NestedModal(movie)}
+          </div>
+       )}</div>
     </div>
   );
 }
