@@ -1,5 +1,9 @@
 pymongo
+mongoengine
 python-dotenv
-graphene
+graphene==2.1.8
+graphene-mongo
+graphql-core==2.2.1
 flask
-flask_graphql
+flask-graphql
+flask-mongoengine
