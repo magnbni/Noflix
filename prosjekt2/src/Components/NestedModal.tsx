@@ -58,7 +58,7 @@ const style = {
   This is the main modal used for showing the movies on the results page.
   
 */
-export default function NestedModal(movie: FilmOptionType) {
+const NestedModal = ({movie}: {movie :FilmOptionType}) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     setOpen(true);
@@ -101,4 +101,6 @@ export default function NestedModal(movie: FilmOptionType) {
       </Modal>
     </div>
   );
-}
+};
+
+export default NestedModal;

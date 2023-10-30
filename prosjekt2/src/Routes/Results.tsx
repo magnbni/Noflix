@@ -4,7 +4,7 @@ import { FilmOptionType, top100Films } from "../types";
 import { useParams } from "react-router-dom";
 import Head from "../Components/Header";
 import { FormControlLabel, FormGroup, Slider, Switch } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 
 // The main search function. Uses iteration to find the movies, will probably be implemented differently on the backend.
 function search(searchWord: string) {
@@ -64,9 +64,10 @@ function filterByYear(
   lowerLimit: number,
   upperLimit: number
 ) {
-  return movies.filter((movie) => {
-    return movie.year >= lowerLimit && movie.year <= upperLimit;
-  });
+  movies.filter(
+    (movie) => movie.year >= lowerLimit && movie.year <= upperLimit
+  );
+  return movies;
 }
 
 function filterByGenre(movies: FilmOptionType[], genre: string) {}
@@ -115,43 +116,38 @@ export default function Results() {
   const { id } = useParams<string>();
   const [sortByYear, setSortByYear] = React.useState(false);
   const [sortByTitle, setSortByTitle] = React.useState(false);
-  const [movies, setMovies] = React.useState(search(id ? id : ""));
-  const [marks, _setMarks] = React.useState<markType[]>(createMarks(movies));
+  const [movies] = React.useState(search(id ? id : ""));
+  const [filteredMovies, setFilteredMovies] = React.useState(
+    search(id ? id : "")
+  );
   const [range, setRange] = React.useState<number[]>([
-    marks[0].value,
-    marks[marks.length - 1].value,
+    findYearLimits(movies).lowestYear!,
+    findYearLimits(movies).highestYear!,
   ]);
   const [genre, setGenre] = React.useState("All");
+  const marks = createMarks(movies);
 
   const updateSortByYear = () => {
     setSortByYear(!sortByYear);
-    setMovies(sortMoviesByYear(movies, sortByYear ? "asc" : "desc"));
+    setFilteredMovies(sortMoviesByYear(movies, sortByYear ? "asc" : "desc"));
   };
 
   const updateSortByTitle = () => {
     setSortByTitle(!sortByTitle);
-    setMovies(sortMoviesByTitle(movies, sortByTitle ? "asc" : "desc"));
+    setFilteredMovies(sortMoviesByTitle(movies, sortByTitle ? "asc" : "desc"));
   };
 
   const updateFilterByYear = (_event: Event, newRange: number | number[]) => {
     let newRangeArray: number[] = newRange as number[];
-    setRange(newRangeArray);
-    setMovies(filterByYear(movies, newRangeArray[0], newRangeArray[1]));
-  };
+    setRange([newRangeArray[0], newRangeArray[1]]);
 
-  if (movies.length === 0) {
-    return (
-      <div>
-        <Head></Head>
-        <h1>Oh no! :(</h1>
-        <h2>No results found for {id}</h2>
-      </div>
+    setFilteredMovies(
+      movies.filter(
+        (movie) =>
+          movie.year >= newRangeArray[0] && movie.year <= newRangeArray[1]
+      )
     );
-  }
-
-  // The list of movie-elements.
-
-  // Each movie has its own NestedModal component
+  };
 
   return (
     <div className="results">
@@ -167,7 +163,7 @@ export default function Results() {
         />
         <Slider
           getAriaLabel={() => "Release year range"}
-          value={range}
+          value={[range[0], range[1]]}
           onChange={updateFilterByYear}
           valueLabelDisplay="auto"
           getAriaValueText={valuetext}
@@ -177,13 +173,20 @@ export default function Results() {
           max={marks[marks.length - 1].value}
         />
       </FormGroup>
-      <div className="row">
-        {movies.map((movie) => (
-          <div className="card" key={`movie-${movie.title}`}>
-            {NestedModal(movie)}
-          </div>
-        ))}
-      </div>
+      {filteredMovies.length == 0 || movies.length == 0 ? (
+        <div>
+          <h1>Oh no! :(</h1>
+          <h2>No results found</h2>
+        </div>
+      ) : (
+        <div className="row">
+          {filteredMovies.map((movie) => (
+            <div className="card" key={`movie-${movie.title}`}>
+              <NestedModal movie={movie}></NestedModal>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
