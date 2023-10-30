@@ -76,24 +76,40 @@ export default function NestedModal(movie: FilmOptionType) {
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
       >
-        <Box sx={{ ...style, width: 400 }}>
+        <Box
+          sx={{
+            ...style,
+            width: 400,
+            maxWidth: "60%",
+            maxHeight: "80%",
+            overflow: "scroll",
+            backgroundColor: "lightgrey",
+            borderRadius: "10px",
+          }}
+        >
           <div>
             <CardMedia
               component="img"
-              height="140"
+              height="200"
               image={iguana}
               alt="green iguana"
             />
-            <h2>{movie.title}</h2>
-            <p>{movie.year}</p>
-            <p>Movie rating:</p>
-            {ReadOnlyRating(3)}
-            <p>Your rating:</p>
-            {Rate(2)}
+            <h2 style={{ marginBottom: "0px" }}>{movie.title}</h2>
+            <p style={{ marginTop: "0px", fontSize: "12px" }}>{movie.year}</p>
             <p>
               Lizards are a widespread group of squamate reptiles, with over
-              6,000 species, ranging across all continents except Antarctica
+              6,000 species, ranging across all continents except
+              AntarcticaLizards are a widespread group of squamate reptiles,
+              with over 6,000 species, ranging across all continents except
+              AntarcticaLizards are a widespread group of squamate reptiles,
+              with over 6,000 species, ranging across all continents except
+              Antarctica
             </p>
+            <br />
+            <p style={{ marginBottom: "0px" }}>Movie rating:</p>
+            {ReadOnlyRating(3)}
+            <p style={{ marginBottom: "0px" }}>Your rating:</p>
+            {Rate(2)}
           </div>
 
           {/* <ChildModal /> */}
