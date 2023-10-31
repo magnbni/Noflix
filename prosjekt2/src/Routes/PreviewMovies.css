@@ -1,0 +1,37 @@
+.previewMovies {
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  margin: -40px;
+  display: flex;
+  align-content: center;
+  overflow-x: hidden; /* Hide horizontal scrollbar of the body */
+}
+
+.scrollable-container {
+  margin: 33px;
+  width: 100vw; /* 100% of the viewport width */
+  overflow-x: auto; /* Enable horizontal scrolling */
+  white-space: nowrap; /* Prevent content from wrapping */
+  display: flex; /* Use flex display for content */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.content {
+  width: 200%; /* Make the content twice as wide as the viewport */
+  padding: 20px; /* Optional padding for content */
+  /* Add your content styles here */
+}
+
+.scrollable-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.example {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}

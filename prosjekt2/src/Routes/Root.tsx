@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../index.css";
 import ComboBox from "../Components/ComboBox";
+import PreviewMovies from "./PreviewMovies";
 
 // The "Homepage" of the application is present within Root, and contains the searchbar and logo.
 export default function Root() {
@@ -15,7 +16,8 @@ export default function Root() {
     }
   };
   return (
-    <div>
+    <div className="notbody">
+      <div className="searchContainer">
       <div className="logoDiv">
         <img
           className="logo"
@@ -24,6 +26,8 @@ export default function Root() {
       </div>
       <h1> Search for a movie</h1>
       <ComboBox onMovieSelect={handleMovieSelect} />
+      </div>
+      {PreviewMovies()}
     </div>
   );
 }

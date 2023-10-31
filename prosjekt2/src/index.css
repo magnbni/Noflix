@@ -24,6 +24,18 @@ body {
   padding: 0;
 }
 
+.notbody {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-width: 320px;
+  min-height: 100vh;
+  padding: 0;
+  margin-left: 1rem;
+}
+
 h1 {
   font-size: 230%;
   line-height: 1.1;
@@ -59,4 +71,17 @@ h1 {
 .headerName {
   font-family: Papyrus, sans-serif;
   font-size: 30px;
+}
+
+.searchContainer {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.logo {
+  width: 75%;
+  height: 75%;
+  object-fit: contain;
+  margin-left: 2rem;
 }
