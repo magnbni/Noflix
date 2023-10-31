@@ -62,10 +62,10 @@ function sortMoviesByTitle(movies: FilmOptionType[], type: "asc" | "desc") {
 function filterByYear(
   movies: FilmOptionType[],
   lowerLimit: number,
-  upperLimit: number
+  upperLimit: number,
 ) {
   movies.filter(
-    (movie) => movie.year >= lowerLimit && movie.year <= upperLimit
+    (movie) => movie.year >= lowerLimit && movie.year <= upperLimit,
   );
   return movies;
 }
@@ -118,7 +118,7 @@ export default function Results() {
   const [sortByTitle, setSortByTitle] = React.useState(false);
   const [movies] = React.useState(search(id ? id : ""));
   const [filteredMovies, setFilteredMovies] = React.useState(
-    search(id ? id : "")
+    search(id ? id : ""),
   );
   const [range, setRange] = React.useState<number[]>([
     findYearLimits(movies).lowestYear!,
@@ -144,8 +144,8 @@ export default function Results() {
     setFilteredMovies(
       movies.filter(
         (movie) =>
-          movie.year >= newRangeArray[0] && movie.year <= newRangeArray[1]
-      )
+          movie.year >= newRangeArray[0] && movie.year <= newRangeArray[1],
+      ),
     );
   };
 
