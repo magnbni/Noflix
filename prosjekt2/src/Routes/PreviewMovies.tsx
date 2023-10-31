@@ -9,7 +9,7 @@ interface category {
 
 export default function PreviewMovies() {
   const aMovie = top100Films.filter((film) =>
-    film.title.toLowerCase().startsWith("a".toLowerCase())
+    film.title.toLowerCase().startsWith("a".toLowerCase()),
   );
   const movieBefore1950 = top100Films.filter((film) => {
     return film.year < 1950;
@@ -24,7 +24,7 @@ export default function PreviewMovies() {
     <div className="previewMovies">
       {categories.map((category) => (
         <div>
-          <p>{category.title}</p>
+          <h3>{category.title}</h3>
           <div className="container">
             <div className="scrollable-container">
               {category.movies.map((movie) => (
