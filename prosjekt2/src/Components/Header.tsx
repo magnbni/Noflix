@@ -2,6 +2,8 @@ import { Link, useNavigate } from "react-router-dom";
 import "../index.css";
 import ComboBox from "./ComboBox";
 import { useState } from "react";
+// import DeleteIcon from '@mui/icons-material/Delete';
+
 
 // The default Header of our application
 export default function Head() {
@@ -25,10 +27,13 @@ export default function Head() {
           />
         </Link>
         <h1 className="headerName"> Noflix</h1>
+        {location.pathname !== "/project2" && (
         <div className="searchHeader">
           <ComboBox onMovieSelect={handleMovieSelect} />
         </div>
+        )}
       </div>
+      {/* <DeleteIcon/> */}
       <div className="home">
         <Link to="/">
           <img
