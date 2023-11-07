@@ -13,7 +13,7 @@ import { FilmOptionType } from "../types";
 */
 export default function ActionAreaCard(movie: FilmOptionType) {
   const truncatedTitle =
-    movie.title.length > 25 ? movie.title.slice(0, 25) + "..." : movie.title;
+    movie.title.length > 20 ? movie.title.slice(0, 20) + "..." : movie.title;
 
   return (
     // Material-UI Card component with custom styles
