@@ -63,7 +63,7 @@ h1 {
   align-items: center; /* You can use this to vertically center the image and text within the icon div */
   margin-left: 10px; 
   padding-top: 6.5px;
-
+  text-decoration: none;
 }
 
 .home {

@@ -4,7 +4,6 @@ import ComboBox from "./ComboBox";
 import { useState } from "react";
 // import DeleteIcon from '@mui/icons-material/Delete';
 
-
 // The default Header of our application
 export default function Head() {
   const navigate = useNavigate();
@@ -19,20 +18,21 @@ export default function Head() {
 
   return (
     <div className="header">
-      <div className="icon">
-        <Link to="/">
+      <Link to="/" style={{ textDecoration: "none", color: "black" }}>
+        <div className="icon">
           <img
             src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Film_reel.svg"
             style={{ height: 45 }}
           />
-        </Link>
-        <h1 className="headerName"> Noflix</h1>
-        {location.pathname !== "/project2" && (
-        <div className="searchHeader">
-          <ComboBox onMovieSelect={handleMovieSelect} />
+
+          <h1 className="headerName"> Noflix</h1>
+          {location.pathname !== "/project2" && (
+            <div className="searchHeader">
+              <ComboBox onMovieSelect={handleMovieSelect} />
+            </div>
+          )}
         </div>
-        )}
-      </div>
+      </Link>
       {/* <DeleteIcon/> */}
       <div className="home">
         <Link to="/">
