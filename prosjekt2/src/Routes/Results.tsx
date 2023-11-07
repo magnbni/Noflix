@@ -62,10 +62,10 @@ function sortMoviesByTitle(movies: FilmOptionType[], type: "asc" | "desc") {
 function filterByYear(
   moviesToFilter: FilmOptionType[],
   lowerLimit: number,
-  upperLimit: number
+  upperLimit: number,
 ) {
   const filteredMovies = moviesToFilter.filter(
-    (movie) => movie.year >= lowerLimit && movie.year <= upperLimit
+    (movie) => movie.year >= lowerLimit && movie.year <= upperLimit,
   );
   return filteredMovies;
 }
