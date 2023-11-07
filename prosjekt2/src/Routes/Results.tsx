@@ -4,7 +4,7 @@ import { FilmOptionType, top100Films } from "../types";
 import { useParams } from "react-router-dom";
 import Head from "../Components/Header";
 import { FormControlLabel, FormGroup, Slider, Switch } from "@mui/material";
-import React, { useEffect } from "react";
+import { useState } from "react";
 
 // The main search function. Uses iteration to find the movies, will probably be implemented differently on the backend.
 function search(searchWord: string) {
@@ -15,11 +15,6 @@ function search(searchWord: string) {
     }
   });
   return movies;
-}
-
-interface markType {
-  value: number;
-  label: string;
 }
 
 function findYearLimits(movies: FilmOptionType[]) {
@@ -60,17 +55,15 @@ function sortMoviesByTitle(movies: FilmOptionType[], type: "asc" | "desc") {
 }
 
 function filterByYear(
-  movies: FilmOptionType[],
+  moviesToFilter: FilmOptionType[],
   lowerLimit: number,
   upperLimit: number,
 ) {
-  movies.filter(
+  const filteredMovies = moviesToFilter.filter(
     (movie) => movie.year >= lowerLimit && movie.year <= upperLimit,
   );
-  return movies;
+  return filteredMovies;
 }
-
-function filterByGenre(movies: FilmOptionType[], genre: string) {}
 
 function valuetext(value: number) {
   return `${value}`;
@@ -114,17 +107,14 @@ function createMarks(movies: FilmOptionType[]) {
 */
 export default function Results() {
   const { id } = useParams<string>();
-  const [sortByYear, setSortByYear] = React.useState(false);
-  const [sortByTitle, setSortByTitle] = React.useState(false);
-  const [movies] = React.useState(search(id ? id : ""));
-  const [filteredMovies, setFilteredMovies] = React.useState(
-    search(id ? id : ""),
-  );
-  const [range, setRange] = React.useState<number[]>([
+  const [sortByYear, setSortByYear] = useState(false);
+  const [sortByTitle, setSortByTitle] = useState(false);
+  const [movies] = useState(search(id ? id : ""));
+  const [filteredMovies, setFilteredMovies] = useState(search(id ? id : ""));
+  const [range, setRange] = useState<number[]>([
     findYearLimits(movies).lowestYear!,
     findYearLimits(movies).highestYear!,
   ]);
-  const [genre, setGenre] = React.useState("All");
   const marks = createMarks(movies);
 
   const updateSortByYear = () => {
@@ -138,15 +128,9 @@ export default function Results() {
   };
 
   const updateFilterByYear = (_event: Event, newRange: number | number[]) => {
-    let newRangeArray: number[] = newRange as number[];
+    const newRangeArray: number[] = newRange as number[];
     setRange([newRangeArray[0], newRangeArray[1]]);
-
-    setFilteredMovies(
-      movies.filter(
-        (movie) =>
-          movie.year >= newRangeArray[0] && movie.year <= newRangeArray[1],
-      ),
-    );
+    setFilteredMovies(filterByYear(movies, newRangeArray[0], newRangeArray[1]));
   };
 
   return (
