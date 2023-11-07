@@ -17,11 +17,6 @@ function search(searchWord: string) {
   return movies;
 }
 
-interface markType {
-  value: number;
-  label: string;
-}
-
 function findYearLimits(movies: FilmOptionType[]) {
   let lowestYear: number | null = null;
   let highestYear: number | null = null;
@@ -133,7 +128,7 @@ export default function Results() {
   };
 
   const updateFilterByYear = (_event: Event, newRange: number | number[]) => {
-    let newRangeArray: number[] = newRange as number[];
+    const newRangeArray: number[] = newRange as number[];
     setRange([newRangeArray[0], newRangeArray[1]]);
     setFilteredMovies(filterByYear(movies, newRangeArray[0], newRangeArray[1]));
   };
