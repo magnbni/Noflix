@@ -24,7 +24,7 @@ export default function PreviewMovies() {
     <div className="previewMovies">
       {categories.map((category) => (
         <div className="container">
-          <h3>{category.title}</h3>
+          <h3 className="movies-container-header">{category.title}</h3>
           <div className="movies-container">
             <div className="scrollable-container">
               {category.movies.map((movie) => (

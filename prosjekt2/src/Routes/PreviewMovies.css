@@ -2,13 +2,17 @@
   display: flex;
   flex-direction: column;
   overflow-x: clip;
+  margin-left: -5px;
 }
 
 .movies-container{
-  margin-left: -1em;
   display: flex;
   overflow-x: hidden; /* Hide horizontal scrollbar of the body */
   object-fit: contain;
+}
+
+.movies-container-header{
+  margin-left: 0.5em;
 }
 
 .scrollable-container {
