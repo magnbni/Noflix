@@ -34,6 +34,7 @@ body {
   min-height: 100vh;
   padding: 0;
   margin-left: 1rem;
+  margin-top: 70px;
 }
 
 h1 {
@@ -80,8 +81,15 @@ h1 {
 }
 
 .logo {
-  width: 75%;
-  height: 75%;
+  width: 28%;
+  height: 28%;
   object-fit: contain;
   margin-left: 2rem;
+}
+
+.searchHeader {
+  position: fixed;
+  width: 40%;
+  right: 9%;
+  top: 0px;
 }

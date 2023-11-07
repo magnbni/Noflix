@@ -1,8 +1,20 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../index.css";
+import ComboBox from "./ComboBox";
+import { useState } from "react";
 
 // The default Header of our application
 export default function Head() {
+  const navigate = useNavigate();
+  const [, setSelectedMovie] = useState<string | null>(null);
+  const handleMovieSelect = (selectedOption: string | null) => {
+    if (selectedOption) {
+      setSelectedMovie(selectedOption);
+      navigate(`/${selectedOption}`);
+      window.location.reload();
+    }
+  };
+
   return (
     <div className="header">
       <div className="icon">
@@ -13,6 +25,9 @@ export default function Head() {
           />
         </Link>
         <h1 className="headerName"> Noflix</h1>
+        <div className="searchHeader">
+          <ComboBox onMovieSelect={handleMovieSelect} />
+        </div>
       </div>
       <div className="home">
         <Link to="/">
