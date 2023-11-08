@@ -1,0 +1,13 @@
+.hammiIconOpen {
+    height: 1.5em;
+    will-change: filter;
+    transition: filter 300ms;
+    position: fixed;
+    right: 10%;
+  }
+
+  .hammiIconClose {
+    height: 1.5em;
+    will-change: filter;
+    transition: filter 300ms;
+  }
