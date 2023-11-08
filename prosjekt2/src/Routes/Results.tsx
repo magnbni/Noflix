@@ -1,7 +1,7 @@
 import "./Results.css";
 import NestedModal from "../Components/NestedModal";
 import HeaderAndDrawer from "../Components/HeaderAndDrawer";
-import { gql, useQuery } from '@apollo/client';
+import { gql, useQuery } from "@apollo/client";
 
 const GET_MOVIES = gql`
   query {
@@ -15,8 +15,6 @@ const GET_MOVIES = gql`
   }
 `;
 
-
-
 /* 
   This is the Results component that displays search results in a grid like fashion.
 */
@@ -25,7 +23,7 @@ export default function Results() {
 
   const { loading, error, data } = useQuery(GET_MOVIES);
 
-  if (loading) return 'Loading...';
+  if (loading) return "Loading...";
   if (error) return `Error! ${error.message}`;
 
   console.log(data);
@@ -35,10 +33,10 @@ export default function Results() {
       <HeaderAndDrawer />
       <div className="row">
         {data.allMovies.map((movie: any) => (
-            <div className="card" key={`movie-${movie.title}`}>
-              <NestedModal movie={movie}></NestedModal>
-            </div>
-          ))}
+          <div className="card" key={`movie-${movie.title}`}>
+            <NestedModal movie={movie}></NestedModal>
+          </div>
+        ))}
       </div>
     </div>
   );
