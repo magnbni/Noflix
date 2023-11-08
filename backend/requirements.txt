@@ -1,11 +1,11 @@
 pymongo
 mongoengine
 python-dotenv
-graphene==2.1.8
+graphene
 graphene-mongo
-graphql-core==2.2.1
+graphql-core
+graphql-server[flask]
 flask
-flask-graphql
 flask-mongoengine
 flask-cors
 bcrypt
