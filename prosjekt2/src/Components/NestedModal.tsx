@@ -105,12 +105,6 @@ const NestedModal: React.FC<NestedModalProps> = ({ movie }) => {
           />
 
           <div>
-            {/* <CardMedia
-              component="img"
-              height="200"
-              image={iguana}
-              alt="green iguana"
-            /> */}
             <div
               style={{
                 margin: "auto",
@@ -130,7 +124,9 @@ const NestedModal: React.FC<NestedModalProps> = ({ movie }) => {
             <p>{movie.overview}</p>
             <br />
             <p style={{ marginBottom: "0px" }}>Movie rating:</p>
-            {ReadOnlyRating(movie.voteAverage.valueOf() / 2)}
+            {movie.voteAverage && (
+              <div>{ReadOnlyRating(movie.voteAverage.valueOf() / 2)}</div>
+            )}
             <p style={{ marginBottom: "0px" }}>Your rating:</p>
             {Rate(2)}
           </div>

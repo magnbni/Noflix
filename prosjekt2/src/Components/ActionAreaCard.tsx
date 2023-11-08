@@ -1,10 +1,8 @@
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
 import { Rate } from "./BasicRating";
-import iguana from "../assets/iguana.png";
 import { FilmOptionType } from "../types";
 
 /*
@@ -18,11 +16,15 @@ export default function ActionAreaCard(movie: FilmOptionType) {
     // Material-UI Card component with custom styles
     <Card sx={{ width: 300, heigth: 350 }}>
       <CardActionArea>
-        <CardMedia
-          component="img"
-          height="140"
-          image={iguana}
-          alt="green iguana"
+        <div
+          style={{
+            width: "300px",
+            height: "300px",
+            backgroundImage:
+              "url(https://image.tmdb.org/t/p/original//" +
+              movie.posterPath +
+              ")",
+          }}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
