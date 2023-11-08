@@ -3,8 +3,6 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import ActionAreaCard from "./ActionAreaCard";
 import { grey } from "@mui/material/colors";
-import { CardMedia } from "@mui/material";
-import iguana from "../assets/iguana.png";
 import { Rate, ReadOnlyRating } from "./BasicRating";
 import { FilmOptionType } from "../types";
 import CloseIcon from "../assets/close.svg";
@@ -109,13 +107,24 @@ const NestedModal = (movie: FilmOptionType) => {
               image={iguana}
               alt="green iguana"
             /> */}
-            <div style={{width: "200px", height: "200px", backgroundImage: "url(https://image.tmdb.org/t/p/original//" + movie.posterPath+")"}}/>
+            <div
+              style={{
+                width: "200px",
+                height: "200px",
+                backgroundImage:
+                  "url(https://image.tmdb.org/t/p/original//" +
+                  movie.posterPath +
+                  ")",
+              }}
+            />
             <h2 style={{ marginBottom: "0px" }}>{movie.title}</h2>
-            <p style={{ marginTop: "0px", fontSize: "12px" }}>{movie.releaseDate}</p>
+            <p style={{ marginTop: "0px", fontSize: "12px" }}>
+              {movie.releaseDate}
+            </p>
             <p>{movie.overview}</p>
             <br />
             <p style={{ marginBottom: "0px" }}>Movie rating:</p>
-            {ReadOnlyRating(movie.voteAverage.valueOf()/2)}
+            {ReadOnlyRating(movie.voteAverage.valueOf() / 2)}
             <p style={{ marginBottom: "0px" }}>Your rating:</p>
             {Rate(2)}
           </div>

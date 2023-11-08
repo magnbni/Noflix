@@ -8,17 +8,17 @@ To begin using our application, you must:
 
 1. Navigate to the folder 'prosjekt2/backend' and run the following commands:
 
-    ```bash
-    pip install -r requirements.txt
-    python app.py
-    ```
+   ```bash
+   pip install -r requirements.txt
+   python app.py
+   ```
 
 2. Navigate to the folder 'prosjekt2/frontend' and in a new terminal run the following commands:
 
-    ```bash
-    npm install
-    npm run dev
-    ```
+   ```bash
+   npm install
+   npm run dev
+   ```
 
 ## What is Noflix?
 
