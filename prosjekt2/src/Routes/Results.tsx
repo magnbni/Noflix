@@ -4,18 +4,18 @@ import HeaderAndDrawer from "../Components/HeaderAndDrawer";
 import { gql, useQuery } from '@apollo/client';
 
 const GET_MOVIES = gql`
-  query {allMovies(first: 10) {
-    edges {
-      node {
-        title
-        releaseDate
-        overview
-        voteAverage
-        posterPath
-      }
+  query {
+    allMovies(first: 100) {
+      title
+      releaseDate
+      overview
+      voteAverage
+      posterPath
     }
-  }}
+  }
 `;
+
+
 
 /* 
   This is the Results component that displays search results in a grid like fashion.
@@ -28,13 +28,15 @@ export default function Results() {
   if (loading) return 'Loading...';
   if (error) return `Error! ${error.message}`;
 
+  console.log(data);
+
   return (
     <div className="results">
       <HeaderAndDrawer />
       <div className="row">
-        {data.allMovies.edges.map((movie: any) => (
-            <div className="card" key={`movie-${movie.node.title}`}>
-              <NestedModal movie={movie.node}></NestedModal>
+        {data.allMovies.map((movie: any) => (
+            <div className="card" key={`movie-${movie.title}`}>
+              <NestedModal movie={movie}></NestedModal>
             </div>
           ))}
       </div>
