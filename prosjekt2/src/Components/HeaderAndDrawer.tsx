@@ -9,8 +9,8 @@ import TuningIcon from "../assets/tuning.svg";
 import CloseIcon from "../assets/close.svg";
 import "./HeaderAndDrawer.css";
 import { Link, useNavigate } from "react-router-dom";
-import ComboBox from "./ComboBox";
 import { useState } from "react";
+import { TextField } from "@mui/material";
 
 const drawerWidth = 320;
 
@@ -45,6 +45,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 export default function HeaderAndDrawer() {
   const navigate = useNavigate();
+  const [searchValue, setSearchValue] = useState<string>("");
   const [, setSelectedMovie] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
 
@@ -56,10 +57,14 @@ export default function HeaderAndDrawer() {
     setOpen(false);
   };
 
-  const handleMovieSelect = (selectedOption: string | null) => {
-    if (selectedOption) {
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(event.target.value);
+  };
+
+  const handleSearch = (selectedOption: string | null) => {
+    if (searchValue !== "") {
       setSelectedMovie(selectedOption);
-      navigate(`/search/${selectedOption}`);
+      navigate(`/search/${searchValue}`);
       window.location.reload();
     }
   };
@@ -81,7 +86,11 @@ export default function HeaderAndDrawer() {
             </div>
             {location.pathname !== "/project2" && (
               <div className="searchHeader">
-                <ComboBox onMovieSelect={handleMovieSelect} />
+                <TextField onChange={handleSearchChange} />
+                <button
+                  onClick={() => {
+                    handleSearch(searchValue);
+                  }}>Search</button>
               </div>
             )}
             {location.pathname.includes("project2/search/") && (

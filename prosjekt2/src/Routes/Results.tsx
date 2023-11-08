@@ -7,8 +7,9 @@ import HeaderAndDrawer from "../Components/HeaderAndDrawer";
 import { gql, useQuery } from "@apollo/client";
 import { FilmOptionType } from "../types";
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 
-const getQuery = (sortOption: string, orderDirection: string) => {
+const getQuery = (sortOption: string, orderDirection: string, id?: string) => {
   let sortValue = "";
   if (sortOption === "title" && orderDirection === "asc") {
     sortValue = "TITLE_ASC";
@@ -22,7 +23,7 @@ const getQuery = (sortOption: string, orderDirection: string) => {
 
   return gql`
     query {
-      allMovies(first: 100, sort: ${sortValue}) {
+      allMovies(first: 100, sort: ${sortValue}, title: "${id}") {
         title
         releaseDate
         overview
@@ -37,11 +38,13 @@ const getQuery = (sortOption: string, orderDirection: string) => {
   This is the Results component that displays search results in a grid like fashion.
 */
 export default function Results() {
+  const { id } = useParams<string>();
+
   const [sortOption, setSortOption] = useState("title");
   const [orderDirection, setOrderDirection] = useState("desc");
 
   const { loading, error, data } = useQuery(
-    getQuery(sortOption, orderDirection),
+    getQuery(sortOption, orderDirection, id),
   );
 
   const updateSort = (event: React.ChangeEvent<HTMLInputElement>) => {
