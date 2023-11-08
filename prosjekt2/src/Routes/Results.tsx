@@ -26,7 +26,7 @@ export default function Results() {
  
 
   return (
-    <div>
+    <div className="results">
       <HeaderAndDrawer />
       {movies.length == 0 || movies.length == 0 ? (
         <div>
@@ -34,7 +34,7 @@ export default function Results() {
           <h2>No results found</h2>
         </div>
       ) : (
-        <div className="results">
+        <div className="row">
           {movies.map((movie) => (
             <div className="card" key={`movie-${movie.title}`}>
               <NestedModal movie={movie}></NestedModal>

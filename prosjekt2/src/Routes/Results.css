@@ -5,15 +5,29 @@
   right: 0;
   bottom: 0;
   display: flex;
-  margin-top: 90px;
+  flex-direction: column; /* Change flex-direction to column */
   justify-content: flex-start;
   align-items: flex-start;
-  flex-wrap: wrap;
+  padding-top: 90px; /* Change margin-top to padding-top */
   padding-left: 5%;
   padding-right: 5%;
 }
 
+.row {
+  display: grid;
+  gap: 10px; /* Adjust the gap as needed */
+}
+
+@media screen and (min-width: 768px) {
+  .row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media screen and (min-width: 1200px) {
+  .row {
+    grid-template-columns: repeat(3, 1fr);
+  }
   .results {
     padding-left: 10%;
     padding-right: 10%;
@@ -22,7 +36,7 @@
 
 @media screen and (max-width: 767px) {
   .results {
-    padding-left: 5%; 
+    padding-left: 5%;
     padding-right: 5%;
   }
 }
