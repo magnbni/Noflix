@@ -1,7 +1,5 @@
 import "./Results.css";
 import NestedModal from "../Components/NestedModal";
-import { useParams } from "react-router-dom";
-import { useState } from "react";
 import HeaderAndDrawer from "../Components/HeaderAndDrawer";
 import { gql, useQuery } from '@apollo/client';
 
@@ -23,7 +21,7 @@ const GET_MOVIES = gql`
   This is the Results component that displays search results in a grid like fashion.
 */
 export default function Results() {
-  const { id } = useParams<string>();
+  // const { id } = useParams<string>();
 
   const { loading, error, data } = useQuery(GET_MOVIES);
 
