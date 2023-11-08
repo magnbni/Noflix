@@ -9,14 +9,14 @@ import { FilmOptionType } from "../types";
 import { useState } from "react";
 
 const getQuery = (sortOption: string, orderDirection: string) => {
-  let sortValue = '';
-  if (sortOption === 'title' && orderDirection === 'asc') {
+  let sortValue = "";
+  if (sortOption === "title" && orderDirection === "asc") {
     sortValue = "TITLE_ASC";
-  } else if (sortOption === 'title' && orderDirection === 'desc') {
+  } else if (sortOption === "title" && orderDirection === "desc") {
     sortValue = "TITLE_DESC";
-  } else if (sortOption === 'releaseYear' && orderDirection === 'asc') {
+  } else if (sortOption === "releaseYear" && orderDirection === "asc") {
     sortValue = "RELEASE_DATE_ASC";
-  } else if (sortOption === 'releaseYear' && orderDirection === 'desc') {
+  } else if (sortOption === "releaseYear" && orderDirection === "desc") {
     sortValue = "RELEASE_DATE_DESC";
   }
 
@@ -37,11 +37,12 @@ const getQuery = (sortOption: string, orderDirection: string) => {
   This is the Results component that displays search results in a grid like fashion.
 */
 export default function Results() {
+  const [sortOption, setSortOption] = useState("title");
+  const [orderDirection, setOrderDirection] = useState("desc");
 
-  const [sortOption, setSortOption] = useState('title');
-  const [orderDirection, setOrderDirection] = useState('desc');
-
-  const { loading, error, data } = useQuery(getQuery(sortOption, orderDirection));
+  const { loading, error, data } = useQuery(
+    getQuery(sortOption, orderDirection)
+  );
 
   const updateSort = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSortOption(event.target.value);
@@ -49,7 +50,7 @@ export default function Results() {
 
   const updateOrderDirection = (event: React.ChangeEvent<HTMLInputElement>) => {
     setOrderDirection(event.target.value);
-  }
+  };
 
   // if (loading) return 'Loading...';
   // if (error) return `Error! ${error.message}`;
@@ -59,29 +60,46 @@ export default function Results() {
   return (
     <div className="results">
       <HeaderAndDrawer />
-        <List className="list">
+      <List className="list">
         <ListItem key="sortoption" disablePadding>
           <RadioGroup row defaultValue="title" onChange={updateSort}>
-            <FormControlLabel value="title" control={<Radio color="default" />} label="Sort by Title" />
-            <FormControlLabel value="releaseYear" control={<Radio color="default" />} label="Sort by Release Year" />
+            <FormControlLabel
+              value="title"
+              control={<Radio color="default" />}
+              label="Sort by Title"
+            />
+            <FormControlLabel
+              value="releaseYear"
+              control={<Radio color="default" />}
+              label="Sort by Release Year"
+            />
           </RadioGroup>
         </ListItem>
         <ListItem key="orderdirection" disablePadding>
           <RadioGroup row defaultValue="desc" onChange={updateOrderDirection}>
-            <FormControlLabel value="desc" control={<Radio color="default" />} label="Descending" />
-            <FormControlLabel value="asc" control={<Radio color="default" />} label="Ascending" />
+            <FormControlLabel
+              value="desc"
+              control={<Radio color="default" />}
+              label="Descending"
+            />
+            <FormControlLabel
+              value="asc"
+              control={<Radio color="default" />}
+              label="Ascending"
+            />
           </RadioGroup>
         </ListItem>
       </List>
-      {(loading || error) && <p>{error ? error.message : 'Loading...'}</p>}
-      {data && <div className="row">
-        {data.allMovies.map((movie: FilmOptionType) => (
+      {(loading || error) && <p>{error ? error.message : "Loading..."}</p>}
+      {data && (
+        <div className="row">
+          {data.allMovies.map((movie: FilmOptionType) => (
             <div className="card" key={`movie-${movie.title}`}>
               <NestedModal movie={movie}></NestedModal>
             </div>
           ))}
-      </div>}
-      
+        </div>
+      )}
     </div>
   );
 }
