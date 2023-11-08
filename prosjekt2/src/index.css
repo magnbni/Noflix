@@ -24,6 +24,19 @@ body {
   padding: 0;
 }
 
+.notbody {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-width: 320px;
+  min-height: 100vh;
+  padding: 0;
+  margin-left: 1rem;
+  margin-top: 70px;
+}
+
 h1 {
   font-size: 230%;
   line-height: 1.1;
