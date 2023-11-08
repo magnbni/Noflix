@@ -27,7 +27,7 @@ export default function PreviewMovies() {
   console.log(data);
 
   const categories: category[] = [
-    { title: "Movies starting with A", movies: data.allMovies },
+    { title: "Movies containing A in their title", movies: data.allMovies },
   ];
 
   return (
