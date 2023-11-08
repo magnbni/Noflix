@@ -3,8 +3,6 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import ActionAreaCard from "./ActionAreaCard";
 import { grey } from "@mui/material/colors";
-import { CardMedia } from "@mui/material";
-import iguana from "../assets/iguana.png";
 import { Rate, ReadOnlyRating } from "./BasicRating";
 import { FilmOptionType } from "../types";
 import CloseIcon from "../assets/close.svg";
@@ -55,11 +53,15 @@ const style = {
 //   );
 // }
 
+interface NestedModalProps {
+  movie: FilmOptionType;
+}
+
 /*
   This is the main modal used for showing the movies on the results page.
   
 */
-const NestedModal = (movie: FilmOptionType) => {
+const NestedModal: React.FC<NestedModalProps> = ({ movie }) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     setOpen(true);
@@ -103,32 +105,35 @@ const NestedModal = (movie: FilmOptionType) => {
           />
 
           <div>
-            <CardMedia
+            {/* <CardMedia
               component="img"
               height="200"
               image={iguana}
               alt="green iguana"
-              style={{ top: "15px", position: "relative", marginBottom: "5px" }}
+            /> */}
+            <div
+              style={{
+                margin: "auto",
+                width: "80%",
+                height: "200px",
+                backgroundSize: "cover",
+                backgroundImage:
+                  "url(https://image.tmdb.org/t/p/original//" +
+                  movie.posterPath +
+                  ")",
+              }}
             />
             <h2 style={{ marginBottom: "0px" }}>{movie.title}</h2>
-            <p style={{ marginTop: "0px", fontSize: "12px" }}>{movie.year}</p>
-            <p>
-              Lizards are a widespread group of squamate reptiles, with over
-              6,000 species, ranging across all continents except
-              AntarcticaLizards are a widespread group of squamate reptiles,
-              with over 6,000 species, ranging across all continents except
-              AntarcticaLizards are a widespread group of squamate reptiles,
-              with over 6,000 species, ranging across all continents except
-              Antarctica
+            <p style={{ marginTop: "0px", fontSize: "12px" }}>
+              {movie.releaseDate}
             </p>
+            <p>{movie.overview}</p>
             <br />
             <p style={{ marginBottom: "0px" }}>Movie rating:</p>
-            {ReadOnlyRating(3)}
+            {ReadOnlyRating(movie.voteAverage.valueOf() / 2)}
             <p style={{ marginBottom: "0px" }}>Your rating:</p>
             {Rate(2)}
           </div>
-
-          {/* <ChildModal /> */}
         </Box>
       </Modal>
     </div>

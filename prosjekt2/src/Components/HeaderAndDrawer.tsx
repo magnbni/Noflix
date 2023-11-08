@@ -3,14 +3,12 @@ import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import TuningIcon from "../assets/tuning.svg";
 import CloseIcon from "../assets/close.svg";
 import "./HeaderAndDrawer.css";
 import { Link, useNavigate } from "react-router-dom";
-import FilterAndSort from "./FilterAndSort";
 import ComboBox from "./ComboBox";
 import { useState } from "react";
 
@@ -119,9 +117,9 @@ export default function HeaderAndDrawer() {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <List>
+        {/* <List>
           <FilterAndSort />
-        </List>
+        </List> */}
         <Divider />
       </Drawer>
     </Box>

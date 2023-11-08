@@ -1,6 +1,9 @@
 export interface FilmOptionType {
   title: string;
-  year: number;
+  releaseDate: string;
+  overview: string;
+  voteAverage: number;
+  posterPath: string;
 }
 
 export interface ComboBoxProps {
