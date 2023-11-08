@@ -1,3 +1,4 @@
+import React from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
@@ -8,9 +9,12 @@ import iguana from "../assets/iguana.png";
 import { FilmOptionType } from "../types";
 
 /*
-  Custom actioncard used to present each individual movie.
+  Custom action card used to present each individual movie.
 */
 export default function ActionAreaCard(movie: FilmOptionType) {
+  const truncatedTitle =
+    movie.title.length > 25 ? movie.title.slice(0, 25) + "..." : movie.title;
+
   return (
     // Material-UI Card component with custom styles
     <Card sx={{ width: 330, heigth: 350 }}>
@@ -23,7 +27,7 @@ export default function ActionAreaCard(movie: FilmOptionType) {
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            {movie.title}
+            {truncatedTitle}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             {movie.year}
