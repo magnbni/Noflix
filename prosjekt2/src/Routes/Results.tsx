@@ -6,7 +6,7 @@ import { FilmOptionType } from "../types";
 
 const GET_MOVIES = gql`
   query {
-    allMovies(first: 100) {
+    allMovies(first: 10) {
       title
       releaseDate
       overview
@@ -35,7 +35,7 @@ export default function Results() {
       <div className="row">
         {data.allMovies.map((movie: FilmOptionType) => (
           <div className="card" key={`movie-${movie.title}`}>
-            {NestedModal(movie)}
+            <NestedModal movie={movie} />
           </div>
         ))}
       </div>

@@ -6,6 +6,7 @@ import { grey } from "@mui/material/colors";
 import { Rate, ReadOnlyRating } from "./BasicRating";
 import { FilmOptionType } from "../types";
 import CloseIcon from "../assets/close.svg";
+import { CardMedia } from "@mui/material";
 
 const style = {
   position: "absolute" as const,
@@ -57,7 +58,7 @@ const style = {
   This is the main modal used for showing the movies on the results page.
   
 */
-const NestedModal = (movie: FilmOptionType) => {
+const NestedModal = ({ movie }: { movie: FilmOptionType }) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     setOpen(true);
@@ -101,16 +102,10 @@ const NestedModal = (movie: FilmOptionType) => {
           />
 
           <div>
-            {/* <CardMedia
-              component="img"
-              height="200"
-              image={iguana}
-              alt="green iguana"
-            /> */}
             <div
               style={{
-                width: "200px",
-                height: "200px",
+                width: "300px",
+                height: "3g00px",
                 backgroundImage:
                   "url(https://image.tmdb.org/t/p/original//" +
                   movie.posterPath +
@@ -124,7 +119,9 @@ const NestedModal = (movie: FilmOptionType) => {
             <p>{movie.overview}</p>
             <br />
             <p style={{ marginBottom: "0px" }}>Movie rating:</p>
-            {ReadOnlyRating(movie.voteAverage.valueOf() / 2)}
+            {movie.voteAverage && (
+              <div>{ReadOnlyRating(movie.voteAverage.valueOf() / 2)}</div>
+            )}
             <p style={{ marginBottom: "0px" }}>Your rating:</p>
             {Rate(2)}
           </div>
