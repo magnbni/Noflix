@@ -1,5 +1,4 @@
 import List from "@mui/material/List";
-
 import ListItem from "@mui/material/ListItem";
 import { FormControlLabel, Slider, Switch } from "@mui/material";
 import { FilmOptionType, top100Films } from "../types";
