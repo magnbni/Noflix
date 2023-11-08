@@ -5,37 +5,29 @@
   margin-left: -5px;
 }
 
-.movies-container{
+.movies-container {
   display: flex;
-  overflow-x: hidden; /* Hide horizontal scrollbar of the body */
+  overflow-x: hidden;
   object-fit: contain;
 }
 
-.movies-container-header{
+.movies-container-header {
   margin-left: 0.5em;
 }
 
 .scrollable-container {
-  width: 98vw; /* 100% of the viewport width */
-  overflow-x: auto; /* Enable horizontal scrolling */
-  white-space: nowrap; /* Prevent content from wrapping */
-  display: flex; /* Use flex display for content */
+  width: 98vw;
+  overflow-x: auto;
+  white-space: nowrap;
+  display: flex;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
 
 .content {
-  width: 200%; /* Make the content twice as wide as the viewport */
-  /* padding: 20px; */
-  /* Add your content styles here */
+  width: 200%;
 }
 
 .scrollable-container::-webkit-scrollbar {
   display: none;
-}
-
-/* Hide scrollbar for IE, Edge and Firefox */
-.example {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
 }
