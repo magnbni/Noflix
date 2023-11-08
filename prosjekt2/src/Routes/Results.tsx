@@ -41,7 +41,7 @@ export default function Results() {
   const [orderDirection, setOrderDirection] = useState("desc");
 
   const { loading, error, data } = useQuery(
-    getQuery(sortOption, orderDirection)
+    getQuery(sortOption, orderDirection),
   );
 
   const updateSort = (event: React.ChangeEvent<HTMLInputElement>) => {
