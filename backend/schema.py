@@ -2,6 +2,7 @@ import graphene
 import bcrypt
 from graphene.relay import Node
 from graphene_mongo import MongoengineConnectionField, MongoengineObjectType
+from mongoengine.queryset.visitor import Q
 from models import Movie as MovieModel
 from models import User as UserModel
 
@@ -11,6 +12,10 @@ class Movie(MongoengineObjectType):
         description = "A movie"
         model = MovieModel
         interfaces = (Node,)
+        filter_fields = {
+            'primaryTitle': ['exact', 'iexact', 'contains', 'icontains'],  # Add regex options
+        }
+        order_by = 'primaryTitle'
 
 class User(MongoengineObjectType):
     class Meta:
@@ -38,7 +43,6 @@ class AuthenticateUser(graphene.Mutation):
             success = False
         
         return AuthenticateUser(success=success)
-
 
 class CreateUser(graphene.Mutation):
     class Arguments:
