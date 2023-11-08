@@ -35,7 +35,7 @@ export default function Results() {
       <div className="row">
         {data.allMovies.map((movie: FilmOptionType) => (
           <div className="card" key={`movie-${movie.title}`}>
-            {NestedModal (movie)}
+            {NestedModal(movie)}
           </div>
         ))}
       </div>
