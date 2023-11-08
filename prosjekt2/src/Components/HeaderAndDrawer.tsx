@@ -94,11 +94,7 @@ export default function HeaderAndDrawer() {
                 onClick={handleDrawerOpen}
                 sx={{ ...(open && { display: "none" }) }}
               >
-                <img
-                  src={TuningIcon}
-                  alt="Menu"
-                  className="hammiIconOpen"
-                />
+                <img src={TuningIcon} alt="Menu" className="hammiIconOpen" />
               </IconButton>
             )}
           </div>

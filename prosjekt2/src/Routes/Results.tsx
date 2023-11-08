@@ -23,7 +23,6 @@ export default function Results() {
   const { id } = useParams<string>();
 
   const [movies] = useState(search(id ? id : ""));
- 
 
   return (
     <div className="results">

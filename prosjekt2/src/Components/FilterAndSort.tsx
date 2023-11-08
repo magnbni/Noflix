@@ -3,7 +3,6 @@ import ListItem from "@mui/material/ListItem";
 import { FormControlLabel, Slider, Switch } from "@mui/material";
 import { FilmOptionType, top100Films } from "../types";
 import { useState } from "react";
-import { grey } from '@mui/material/colors';
 import "./FilterAndSort.css";
 
 function valuetext(value: number) {
@@ -87,14 +86,26 @@ export default function FilterAndSort() {
     <List className="list">
       <ListItem key="sortbyyear" disablePadding>
         <FormControlLabel
-          control={<Switch defaultChecked onChange={updateSortByYear} color="default" />}
+          control={
+            <Switch
+              defaultChecked
+              onChange={updateSortByYear}
+              color="default"
+            />
+          }
           label="Sort by year"
           className="switch"
         />
       </ListItem>
       <ListItem key="sortbytitle" disablePadding>
         <FormControlLabel
-          control={<Switch defaultChecked onChange={updateSortByTitle} color="default"/>}
+          control={
+            <Switch
+              defaultChecked
+              onChange={updateSortByTitle}
+              color="default"
+            />
+          }
           label="Sort by title"
           className="switch"
         />
