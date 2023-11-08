@@ -7,6 +7,7 @@ import { CardMedia } from "@mui/material";
 import iguana from "../assets/iguana.png";
 import { Rate, ReadOnlyRating } from "./BasicRating";
 import { FilmOptionType } from "../types";
+import CloseIcon from "../assets/close.svg";
 
 const style = {
   position: "absolute" as const,
@@ -86,7 +87,21 @@ const NestedModal = ({ movie }: { movie: FilmOptionType }) => {
             backgroundColor: "lightgrey",
             borderRadius: "10px",
           }}
+          style={{ backgroundColor: "lightgrey" }}
         >
+          <img
+            src={CloseIcon}
+            alt="close"
+            onClick={handleClose}
+            style={{
+              right: "5px",
+              top: "5px",
+              position: "absolute",
+              width: "25px",
+              height: "25px",
+            }}
+          />
+
           <div>
             {/* <CardMedia
               component="img"

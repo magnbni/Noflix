@@ -29,34 +29,15 @@ h1 {
   line-height: 1.1;
 }
 
-.header {
+.searchContainer {
   display: flex;
-  position: fixed;
-  background-color: #f1f3f5;
-  align-items: center;
-  top: 0;
-  left: 0;
-  height: 4rem;
-  width: 100%;
-  border: 1px solid #d5dfe6;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  z-index: 1;
+  flex-direction: column;
+  padding: 2rem;
 }
 
-.icon {
-  display: flex;
-  align-items: center; /* You can use this to vertically center the image and text within the icon div */
-  margin-right: 10px; /* Add some margin between the image and the heading */
-}
-
-.home {
-  position: fixed;
-  right: 3%;
-}
-
-.headerName {
-  font-family: Papyrus, sans-serif;
-  font-size: 30px;
+.logo {
+  width: 28%;
+  height: 28%;
+  object-fit: contain;
+  margin-left: 2rem;
 }
