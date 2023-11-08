@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import Head from "../Components/Header";
 import { FormControlLabel, FormGroup, Slider, Switch } from "@mui/material";
 import { useState } from "react";
+import { gql, useQuery } from '@apollo/client';
 
 // The main search function. Uses iteration to find the movies, will probably be implemented differently on the backend.
 function search(searchWord: string) {
@@ -102,6 +103,20 @@ function createMarks(movies: FilmOptionType[]) {
   return marks;
 }
 
+const GET_MOVIES = gql`
+  query {allMovies(first: 10) {
+    edges {
+      node {
+        title
+        releaseDate
+        overview
+        voteAverage
+        posterPath
+      }
+    }
+  }}
+`;
+
 /* 
   This is the Results component that displays search results in a grid like fashion.
 */
@@ -116,6 +131,11 @@ export default function Results() {
     findYearLimits(movies).highestYear!,
   ]);
   const marks = createMarks(movies);
+
+  const { loading, error, data } = useQuery(GET_MOVIES);
+
+  if (loading) return 'Loading...';
+  if (error) return `Error! ${error.message}`;
 
   const updateSortByYear = () => {
     setSortByYear(!sortByYear);
@@ -157,7 +177,21 @@ export default function Results() {
           max={marks[marks.length - 1].value}
         />
       </FormGroup>
-      {filteredMovies.length == 0 || movies.length == 0 ? (
+      {
+        <div className="row">
+          {data.allMovies.edges.map((movie: any) => (
+            <div className="card" key={`movie-${movie.node.title}`}>
+              <NestedModal movie={movie.node}></NestedModal>
+            </div>
+          ))}
+          {/* {filteredMovies.map((movie) => (
+            <div className="card" key={`movie-${movie.title}`}>
+              <NestedModal movie={movie}></NestedModal>
+            </div>
+          ))} */}
+        </div>
+      }
+      {/* {filteredMovies.length == 0 || movies.length == 0 ? (
         <div>
           <h1>Oh no! :(</h1>
           <h2>No results found</h2>
@@ -170,7 +204,7 @@ export default function Results() {
             </div>
           ))}
         </div>
-      )}
+      )} */}
     </div>
   );
 }

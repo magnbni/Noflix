@@ -13,9 +13,9 @@ class Movie(MongoengineObjectType):
         model = MovieModel
         interfaces = (Node,)
         filter_fields = {
-            'primaryTitle': ['exact', 'iexact', 'contains', 'icontains'],  # Add regex options
+            'title': ['exact', 'iexact', 'contains', 'icontains'],  # Add regex options
         }
-        order_by = 'primaryTitle'
+        order_by = 'title'
 
 class User(MongoengineObjectType):
     class Meta:

@@ -88,26 +88,19 @@ const NestedModal = ({ movie }: { movie: FilmOptionType }) => {
           }}
         >
           <div>
-            <CardMedia
+            {/* <CardMedia
               component="img"
               height="200"
               image={iguana}
               alt="green iguana"
-            />
+            /> */}
+            <div style={{width: "200px", height: "200px", backgroundImage: "url(https://image.tmdb.org/t/p/original//" + movie.posterPath+")"}}/>
             <h2 style={{ marginBottom: "0px" }}>{movie.title}</h2>
-            <p style={{ marginTop: "0px", fontSize: "12px" }}>{movie.year}</p>
-            <p>
-              Lizards are a widespread group of squamate reptiles, with over
-              6,000 species, ranging across all continents except
-              AntarcticaLizards are a widespread group of squamate reptiles,
-              with over 6,000 species, ranging across all continents except
-              AntarcticaLizards are a widespread group of squamate reptiles,
-              with over 6,000 species, ranging across all continents except
-              Antarctica
-            </p>
+            <p style={{ marginTop: "0px", fontSize: "12px" }}>{movie.releaseDate}</p>
+            <p>{movie.overview}</p>
             <br />
             <p style={{ marginBottom: "0px" }}>Movie rating:</p>
-            {ReadOnlyRating(3)}
+            {ReadOnlyRating(movie.voteAverage.valueOf()/2)}
             <p style={{ marginBottom: "0px" }}>Your rating:</p>
             {Rate(2)}
           </div>

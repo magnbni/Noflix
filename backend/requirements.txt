@@ -7,3 +7,5 @@ graphql-core==2.2.1
 flask
 flask-graphql
 flask-mongoengine
+flask-cors
+bcrypt

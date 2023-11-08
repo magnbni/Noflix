@@ -4,6 +4,7 @@ from flask_graphql import GraphQLView
 from mongoengine import connect
 from dotenv import load_dotenv
 from schema import schema
+from flask_cors import CORS
 
 load_dotenv()
 
@@ -13,6 +14,7 @@ CONNECTION_STRING = os.getenv("MONGO_URI")
 client = connect(DATABASE_NAME, host=CONNECTION_STRING, alias="default")
 
 app = Flask(__name__)
+CORS(app)
 
 app.add_url_rule('/graphql', view_func=GraphQLView.as_view('graphql', schema=schema, graphiql=True))
 

@@ -31,3 +31,11 @@ class Movie(Document):
     title = StringField()
     video = BooleanField()
     vote_average = IntField()
+    vote_count = IntField()
+    directors = ListField()
+
+class User(Document):
+    meta = {"collection": os.getenv("MONGO_COLLECTION_USERS")}
+    _id = StringField()
+    email = StringField()
+    password = StringField()
