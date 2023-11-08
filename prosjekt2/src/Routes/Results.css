@@ -4,25 +4,22 @@
 
 /* Results.css */
 .row {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
   gap: 10px; /* Adjust the gap as needed */
 }
 
 @media screen and (min-width: 768px) {
   .row {
-    grid-template-columns: repeat(
-      2,
-      1fr
-    ); /* 2 cards per row for screens wider than 768px and less than 1200px */
+    padding-left: 1%;
+    padding-right: 1%;
   }
 }
 
 @media screen and (min-width: 1200px) {
   .row {
-    grid-template-columns: repeat(
-      3,
-      1fr
-    ); /* 3 cards per row for screens wider than 1200px */
+    padding-left: 10%;
+    padding-right: 10%;
   }
 }
 
