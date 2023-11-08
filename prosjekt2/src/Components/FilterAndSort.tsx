@@ -3,6 +3,8 @@ import ListItem from "@mui/material/ListItem";
 import { FormControlLabel, Slider, Switch } from "@mui/material";
 import { FilmOptionType, top100Films } from "../types";
 import { useState } from "react";
+import { grey } from '@mui/material/colors';
+import "./FilterAndSort.css";
 
 function valuetext(value: number) {
   return `${value}`;
@@ -80,21 +82,24 @@ export default function FilterAndSort() {
     const newRangeArray: number[] = newRange as number[];
     setRange([newRangeArray[0], newRangeArray[1]]);
   };
+
   return (
-    <List>
+    <List className="list">
       <ListItem key="sortbyyear" disablePadding>
         <FormControlLabel
-          control={<Switch defaultChecked onChange={updateSortByYear} />}
+          control={<Switch defaultChecked onChange={updateSortByYear} color="default" />}
           label="Sort by year"
+          className="switch"
         />
       </ListItem>
       <ListItem key="sortbytitle" disablePadding>
         <FormControlLabel
-          control={<Switch defaultChecked onChange={updateSortByTitle} />}
+          control={<Switch defaultChecked onChange={updateSortByTitle} color="default"/>}
           label="Sort by title"
+          className="switch"
         />
       </ListItem>
-      <ListItem key="rangeyear" disablePadding>
+      <ListItem key="rangeyear">
         <Slider
           getAriaLabel={() => "Release year range"}
           value={[range[0], range[1]]}
@@ -105,6 +110,7 @@ export default function FilterAndSort() {
           min={marks[0].value}
           step={1}
           max={marks[marks.length - 1].value}
+          className="slider"
         />
       </ListItem>
     </List>

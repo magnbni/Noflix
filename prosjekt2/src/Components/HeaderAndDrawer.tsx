@@ -14,7 +14,7 @@ import FilterAndSort from "./FilterAndSort";
 import ComboBox from "./ComboBox";
 import { useState } from "react";
 
-const drawerWidth = 240;
+const drawerWidth = 320;
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
