@@ -62,10 +62,23 @@
   transition: filter 300ms;
   position: fixed;
   right: 3%;
+  border: 3px solid transparent;
+  border-radius: 25%;
 }
 
 .hammiIconClose {
   height: 1.5em;
   will-change: filter;
   transition: filter 300ms;
+}
+
+.hammiIconOpen:hover,
+.hammiIconOpen:focus,
+.hammiIconOpen:active,
+.hammiIconClose:hover,
+.hammiIconClose:focus,
+.hammiIconClose:active {
+  border: 3px solid;
+  border-radius: 25%;
+  filter: invert(0.5) sepia(0.2);
 }
