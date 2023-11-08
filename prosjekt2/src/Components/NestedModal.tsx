@@ -6,7 +6,6 @@ import { grey } from "@mui/material/colors";
 import { Rate, ReadOnlyRating } from "./BasicRating";
 import { FilmOptionType } from "../types";
 import CloseIcon from "../assets/close.svg";
-import { CardMedia } from "@mui/material";
 
 const style = {
   position: "absolute" as const,
