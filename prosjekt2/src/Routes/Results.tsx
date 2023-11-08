@@ -2,9 +2,9 @@ import "./Results.css";
 import NestedModal from "../Components/NestedModal";
 import { FilmOptionType, top100Films } from "../types";
 import { useParams } from "react-router-dom";
-import Head from "../Components/Header";
 import { FormControlLabel, FormGroup, Slider, Switch } from "@mui/material";
 import { useState } from "react";
+import HeaderAndDrawer from "../Components/HeaderAndDrawer";
 
 // The main search function. Uses iteration to find the movies, will probably be implemented differently on the backend.
 function search(searchWord: string) {
@@ -57,10 +57,10 @@ function sortMoviesByTitle(movies: FilmOptionType[], type: "asc" | "desc") {
 function filterByYear(
   moviesToFilter: FilmOptionType[],
   lowerLimit: number,
-  upperLimit: number,
+  upperLimit: number
 ) {
   const filteredMovies = moviesToFilter.filter(
-    (movie) => movie.year >= lowerLimit && movie.year <= upperLimit,
+    (movie) => movie.year >= lowerLimit && movie.year <= upperLimit
   );
   return filteredMovies;
 }
@@ -135,7 +135,7 @@ export default function Results() {
 
   return (
     <div className="results">
-      <Head></Head>
+      <HeaderAndDrawer />
       <FormGroup>
         <FormControlLabel
           control={<Switch defaultChecked onChange={updateSortByYear} />}
