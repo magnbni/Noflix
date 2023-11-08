@@ -1,4 +1,3 @@
-import * as React from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -14,6 +13,7 @@ import { Link, useNavigate } from "react-router-dom";
 import FilterAndSort from "./FilterAndSort";
 import ComboBox from "./ComboBox";
 import { useState } from "react";
+import "../index.css";
 
 const drawerWidth = 240;
 
@@ -73,13 +73,14 @@ export default function HeaderAndDrawer() {
         <Toolbar>
           <div className="header">
             <div className="icon">
-              <Link to="/">
+              <Link to="/" className="logoAndTitle">
                 <img
                   src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Film_reel.svg"
                   style={{ height: 45 }}
+                  className="icon"
                 />
+                <h1 className="headerName">Noflix</h1>
               </Link>
-              <h1 className="headerName">Noflix</h1>
             </div>
             {location.pathname !== "/project2" && (
               <div className="searchHeader">
