@@ -9,22 +9,22 @@ function valuetext(value: number) {
   return `${value}`;
 }
 
-function findYearLimits(movies: FilmOptionType[]) {
-  let lowestYear: number | null = null;
-  let highestYear: number | null = null;
+// function findYearLimits(movies: FilmOptionType[]) {
+//   let lowestYear: number | null = null;
+//   let highestYear: number | null = null;
 
-  movies.forEach((movie: FilmOptionType) => {
-    if (lowestYear === null || movie.year < lowestYear) {
-      lowestYear = movie.year;
-    }
+//   movies.forEach((movie: FilmOptionType) => {
+//     if (lowestYear === null || movie.year < lowestYear) {
+//       lowestYear = movie.year;
+//     }
 
-    if (highestYear === null || movie.year > highestYear) {
-      highestYear = movie.year;
-    }
-  });
+//     if (highestYear === null || movie.year > highestYear) {
+//       highestYear = movie.year;
+//     }
+//   });
 
-  return { lowestYear, highestYear };
-}
+//   return { lowestYear, highestYear };
+// }
 
 function createMarks(movies: FilmOptionType[]) {
   const lowerBound: number =

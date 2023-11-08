@@ -53,11 +53,15 @@ const style = {
 //   );
 // }
 
+interface NestedModalProps {
+  movie: FilmOptionType;
+}
+
 /*
   This is the main modal used for showing the movies on the results page.
   
 */
-const NestedModal = ({ movie }: { movie: FilmOptionType }) => {
+const NestedModal: React.FC<NestedModalProps> = ({ movie }) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     setOpen(true);
@@ -103,8 +107,10 @@ const NestedModal = ({ movie }: { movie: FilmOptionType }) => {
           <div>
             <div
               style={{
-                width: "300px",
-                height: "3g00px",
+                margin: "auto",
+                width: "80%",
+                height: "200px",
+                backgroundSize: "cover",
                 backgroundImage:
                   "url(https://image.tmdb.org/t/p/original//" +
                   movie.posterPath +
@@ -124,8 +130,6 @@ const NestedModal = ({ movie }: { movie: FilmOptionType }) => {
             <p style={{ marginBottom: "0px" }}>Your rating:</p>
             {Rate(2)}
           </div>
-
-          {/* <ChildModal /> */}
         </Box>
       </Modal>
     </div>
