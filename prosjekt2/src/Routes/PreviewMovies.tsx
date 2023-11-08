@@ -39,7 +39,7 @@ export default function PreviewMovies() {
             <div className="scrollable-container">
               {category.movies.map((movie) => (
                 <div className="card" key={`movie-${movie.title}`}>
-                  <NestedModal movie={movie} /> 
+                  <NestedModal movie={movie} />
                 </div>
               ))}
             </div>
