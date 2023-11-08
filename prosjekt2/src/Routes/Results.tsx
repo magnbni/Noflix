@@ -36,7 +36,7 @@ export default function Results() {
         <div className="row">
           {movies.map((movie) => (
             <div className="card" key={`movie-${movie.title}`}>
-              <NestedModal movie={movie}></NestedModal>
+              {NestedModal(movie)}
             </div>
           ))}
         </div>
