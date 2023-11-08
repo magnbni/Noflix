@@ -1,8 +1,18 @@
 .results {
-  margin-top: 90px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column; /* Change flex-direction to column */
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-top: 90px; /* Change margin-top to padding-top */
+  padding-left: 5%;
+  padding-right: 5%;
 }
 
-/* Results.css */
 .row {
   display: grid;
   gap: 10px; /* Adjust the gap as needed */
@@ -10,26 +20,29 @@
 
 @media screen and (min-width: 768px) {
   .row {
-    grid-template-columns: repeat(
-      2,
-      1fr
-    ); /* 2 cards per row for screens wider than 768px and less than 1200px */
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media screen and (min-width: 1200px) {
   .row {
-    grid-template-columns: repeat(
-      3,
-      1fr
-    ); /* 3 cards per row for screens wider than 1200px */
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .results {
+    padding-left: 10%;
+    padding-right: 10%;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .results {
+    padding-left: 5%;
+    padding-right: 5%;
   }
 }
 
 .card {
   display: flex;
-  align-items: center;
-  justify-content: center;
   flex: 1;
   padding: 1%;
 }

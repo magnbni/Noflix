@@ -9,10 +9,12 @@ import Root from "./Routes/Root";
 */
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Root />} />
-      <Route path="/:id" element={<Results />} />
-    </Routes>
+    <div>
+      <Routes>
+        <Route path="/" element={<Root />} />
+        <Route path="/search/:id" element={<Results />} />
+      </Routes>
+    </div>
   );
 }
 

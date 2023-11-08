@@ -42,47 +42,10 @@ h1 {
   line-height: 1.1;
 }
 
-.header {
-  display: flex;
-  position: fixed;
-  background-color: #f1f3f5;
-  align-items: center;
-  top: 0;
-  left: 0;
-  height: 4rem;
-  width: 100%;
-  border: 1px solid #d5dfe6;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  z-index: 1;
-}
-
-.icon {
-  display: flex;
-  align-items: center; /* You can use this to vertically center the image and text within the icon div */
-  margin-left: 10px; 
-  padding-top: 6.5px;
-  text-decoration: none;
-}
-
-.home {
-  position: fixed;
-  right: 3%;
-}
-
-.headerName {
-  font-family: Copperplate, sans-serif;
-  font-size: 30px;
-  padding-left: 5px;
-  padding-bottom: 13px;
-
-}
-
 .searchContainer {
-  padding: 2rem;
   display: flex;
   flex-direction: column;
+  padding: 2rem;
 }
 
 .logo {
@@ -90,11 +53,4 @@ h1 {
   height: 28%;
   object-fit: contain;
   margin-left: 2rem;
-}
-
-.searchHeader {
-  position: fixed;
-  width: 40%;
-  right: 9%;
-  top: 0px;
 }
