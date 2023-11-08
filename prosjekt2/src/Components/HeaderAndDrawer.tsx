@@ -7,13 +7,11 @@ import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
 import HamburgerMenuIcon from "../assets/hamburger-menu.svg";
 import CloseIcon from "../assets/close.svg";
 import "./HeaderAndDrawer.css";
 import { Link } from "react-router-dom";
+import FilterAndSort from "./FilterAndSort";
 
 const drawerWidth = 240;
 
@@ -110,33 +108,20 @@ export default function HeaderAndDrawer() {
           <IconButton onClick={handleDrawerClose}>
             <img src={CloseIcon} alt="Close menu" className="hammiIconClose" />
           </IconButton>
+          <div className="home">
+              <Link to="/">
+                <img
+                  src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMjEgMTN2MTBoLTZ2LTZoLTZ2NmgtNnYtMTBoLTNsMTItMTIgMTIgMTJoLTN6bS0xLTUuOTA3di01LjA5M2gtM3YyLjA5M2wzIDN6Ii8+PC9zdmc+"
+                  alt="Back to Root"
+                />
+              </Link>
+            </div>
         </DrawerHeader>
         <Divider />
         <List>
-          {["Inbox", "Starred", "Send email", "Drafts"].map((text) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                {/* <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon> */}
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
+          <FilterAndSort/>
         </List>
         <Divider />
-        <List>
-          {["All mail", "Trash", "Spam"].map((text) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                {/* <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon> */}
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
       </Drawer>
     </Box>
   );
