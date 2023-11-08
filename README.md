@@ -1,4 +1,4 @@
-# Welcome to Noflix!
+# Welcome to Noflix
 
 <img width="300" height="300" src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Film_reel.svg"></img>
 
@@ -6,13 +6,19 @@
 
 To begin using our application, you must:
 
-```
-npm install
-npm run dev
-```
+1. Navigate to the folder 'prosjekt2/backend' and run the following commands:
 
-from the root folder 'prosjekt2'. This is not were the README.md file resides, so if you are reading this,
-you may be in the wrong folder :winky-face:
+    ```bash
+    pip install -r requirements.txt
+    python app.py
+    ```
+
+2. Navigate to the folder 'prosjekt2/frontend' and in a new terminal run the following commands:
+
+    ```bash
+    npm install
+    npm run dev
+    ```
 
 ## What is Noflix?
 
