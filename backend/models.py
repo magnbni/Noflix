@@ -17,3 +17,8 @@ class Movie(Document):
     endYear = IntField()
     runtimeMinutes = IntField()
     genres = ListField(StringField())
+
+class User(Document):
+    meta = {"collection": os.getenv("MONGO_COLLECTION_USERS")}
+    email = StringField()
+    password = StringField()
