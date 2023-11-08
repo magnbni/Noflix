@@ -45,18 +45,50 @@ h1 {
   z-index: 1;
 }
 
-.icon {
-  display: flex;
-  align-items: center; /* You can use this to vertically center the image and text within the icon div */
-  margin-right: 10px; /* Add some margin between the image and the heading */
-}
-
 .home {
   position: fixed;
   right: 3%;
 }
 
+.logoAndTitle {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  text-decoration: none;
+  color: inherit;
+}
+
+.icon {
+  display: flex;
+  margin-top: 7px; /* Adjust the margin to position the icon lower */
+  margin-left: 5px; /* Add margin for spacing */
+}
+
 .headerName {
-  font-family: Papyrus, sans-serif;
+  font-family: Copperplate, sans-serif;
+  color: black;
   font-size: 30px;
+  margin-left: 5px;
+  margin-top: 10px; /* Move the text higher */
+  margin-bottom: 1; /* Remove margin from the bottom */
+}
+
+.searchContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+}
+
+.logo {
+  width: 28%;
+  height: 28%;
+  object-fit: contain;
+  margin-left: 2rem;
+}
+
+.searchHeader {
+  position: fixed;
+  width: 40%;
+  right: 20%;
+  top: 0px;
 }

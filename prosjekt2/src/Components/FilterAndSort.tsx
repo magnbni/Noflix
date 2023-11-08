@@ -1,7 +1,6 @@
 import List from "@mui/material/List";
-
 import ListItem from "@mui/material/ListItem";
-import { FormControlLabel, FormGroup, Slider, Switch } from "@mui/material";
+import { FormControlLabel, Slider, Switch } from "@mui/material";
 import { FilmOptionType, top100Films } from "../types";
 import { useState } from "react";
 
@@ -24,37 +23,6 @@ function findYearLimits(movies: FilmOptionType[]) {
   });
 
   return { lowestYear, highestYear };
-}
-
-function sortMoviesByYear(movies: FilmOptionType[], type: "asc" | "desc") {
-  return movies.slice().sort((a, b) => {
-    if (type === "asc") {
-      return a.year - b.year;
-    } else {
-      return b.year - a.year;
-    }
-  });
-}
-
-function sortMoviesByTitle(movies: FilmOptionType[], type: "asc" | "desc") {
-  return movies.slice().sort((a, b) => {
-    if (type === "asc") {
-      return a.title.localeCompare(b.title);
-    } else {
-      return b.title.localeCompare(a.title);
-    }
-  });
-}
-
-function filterByYear(
-  moviesToFilter: FilmOptionType[],
-  lowerLimit: number,
-  upperLimit: number
-) {
-  const filteredMovies = moviesToFilter.filter(
-    (movie) => movie.year >= lowerLimit && movie.year <= upperLimit
-  );
-  return filteredMovies;
 }
 
 function createMarks(movies: FilmOptionType[]) {
@@ -94,7 +62,6 @@ export default function FilterAndSort() {
   const movies: FilmOptionType[] = top100Films;
   const [sortByYear, setSortByYear] = useState(false);
   const [sortByTitle, setSortByTitle] = useState(false);
-  const [filteredMovies, setFilteredMovies] = useState(movies);
   const [range, setRange] = useState<number[]>([
     findYearLimits(movies).lowestYear!,
     findYearLimits(movies).highestYear!,
@@ -103,18 +70,15 @@ export default function FilterAndSort() {
 
   const updateSortByYear = () => {
     setSortByYear(!sortByYear);
-    setFilteredMovies(sortMoviesByYear(movies, sortByYear ? "asc" : "desc"));
   };
 
   const updateSortByTitle = () => {
     setSortByTitle(!sortByTitle);
-    setFilteredMovies(sortMoviesByTitle(movies, sortByTitle ? "asc" : "desc"));
   };
 
   const updateFilterByYear = (_event: Event, newRange: number | number[]) => {
     const newRangeArray: number[] = newRange as number[];
     setRange([newRangeArray[0], newRangeArray[1]]);
-    setFilteredMovies(filterByYear(movies, newRangeArray[0], newRangeArray[1]));
   };
   return (
     <List>
