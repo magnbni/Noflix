@@ -1,24 +1,12 @@
 import "./Results.css";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import { FormControlLabel, Radio, RadioGroup, Slider, Switch } from "@mui/material";
+import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import NestedModal from "../Components/NestedModal";
 import HeaderAndDrawer from "../Components/HeaderAndDrawer";
 import { gql, useQuery } from "@apollo/client";
 import { FilmOptionType } from "../types";
 import { useState } from "react";
-
-const GET_MOVIES = gql`
-  query {
-    allMovies(first: 100) {
-      title
-      releaseDate
-      overview
-      voteAverage
-      posterPath
-    }
-  }
-`;
 
 const getQuery = (sortOption: string, orderDirection: string) => {
   let sortValue = '';
