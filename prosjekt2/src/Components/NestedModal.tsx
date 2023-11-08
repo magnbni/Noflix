@@ -53,11 +53,15 @@ const style = {
 //   );
 // }
 
+interface NestedModalProps {
+  movie: FilmOptionType;
+}
+
 /*
   This is the main modal used for showing the movies on the results page.
   
 */
-const NestedModal = (movie: FilmOptionType) => {
+const NestedModal: React.FC<NestedModalProps> = ({ movie }) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     setOpen(true);

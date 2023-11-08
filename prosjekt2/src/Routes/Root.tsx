@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "../index.css";
 import ComboBox from "../Components/ComboBox";
 import HeaderAndDrawer from "../Components/HeaderAndDrawer";
-import PreviewMovies from "./PreviewMovies";
+// import PreviewMovies from "./PreviewMovies";
 
 export default function Root() {
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ export default function Root() {
         <h1> Search for a movie</h1>
         <ComboBox onMovieSelect={handleMovieSelect} />
       </div>
-      {PreviewMovies()}
+      {/* {PreviewMovies()} */}
     </div>
   );
 }
