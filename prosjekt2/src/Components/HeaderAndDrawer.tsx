@@ -119,9 +119,9 @@ export default function HeaderAndDrawer() {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <List>
+        {/* <List>
           <FilterAndSort />
-        </List>
+        </List> */}
         <Divider />
       </Drawer>
     </Box>

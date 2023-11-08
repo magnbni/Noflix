@@ -103,13 +103,8 @@ const NestedModal = ({ movie }: { movie: FilmOptionType }) => {
           />
 
           <div>
-            {/* <CardMedia
-              component="img"
-              height="200"
-              image={iguana}
-              alt="green iguana"
-            /> */}
-            <div style={{width: "200px", height: "200px", backgroundImage: "url(https://image.tmdb.org/t/p/original//" + movie.posterPath+")"}}/>
+            
+            <div style={{width: "80%", height: "400px", margin: "auto", backgroundSize: "cover", backgroundImage: "url(https://image.tmdb.org/t/p/original//" + movie.posterPath+")"}}/>
             <h2 style={{ marginBottom: "0px" }}>{movie.title}</h2>
             <p style={{ marginTop: "0px", fontSize: "12px" }}>{movie.releaseDate}</p>
             <p>{movie.overview}</p>
@@ -119,8 +114,6 @@ const NestedModal = ({ movie }: { movie: FilmOptionType }) => {
             <p style={{ marginBottom: "0px" }}>Your rating:</p>
             {Rate(2)}
           </div>
-
-          {/* <ChildModal /> */}
         </Box>
       </Modal>
     </div>
