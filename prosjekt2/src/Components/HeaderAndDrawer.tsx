@@ -6,14 +6,13 @@ import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import HamburgerMenuIcon from "../assets/hamburger-menu.svg";
+import TuningIcon from "../assets/tuning.svg";
 import CloseIcon from "../assets/close.svg";
 import "./HeaderAndDrawer.css";
 import { Link, useNavigate } from "react-router-dom";
 import FilterAndSort from "./FilterAndSort";
 import ComboBox from "./ComboBox";
 import { useState } from "react";
-import "../index.css";
 
 const drawerWidth = 240;
 
@@ -87,15 +86,6 @@ export default function HeaderAndDrawer() {
                 <ComboBox onMovieSelect={handleMovieSelect} />
               </div>
             )}
-
-            <div className="home">
-              <Link to="/">
-                <img
-                  src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMjEgMTN2MTBoLTZ2LTZoLTZ2NmgtNnYtMTBoLTNsMTItMTIgMTIgMTJoLTN6bS0xLTUuOTA3di01LjA5M2gtM3YyLjA5M2wzIDN6Ii8+PC9zdmc+"
-                  alt="Back to Root"
-                />
-              </Link>
-            </div>
             {location.pathname.includes("project2/search/") && (
               <IconButton
                 color="inherit"
@@ -105,7 +95,7 @@ export default function HeaderAndDrawer() {
                 sx={{ ...(open && { display: "none" }) }}
               >
                 <img
-                  src={HamburgerMenuIcon}
+                  src={TuningIcon}
                   alt="Menu"
                   className="hammiIconOpen"
                 />

@@ -29,50 +29,6 @@ h1 {
   line-height: 1.1;
 }
 
-.header {
-  display: flex;
-  position: fixed;
-  background-color: #f1f3f5;
-  align-items: center;
-  top: 0;
-  left: 0;
-  height: 4rem;
-  width: 100%;
-  border: 1px solid #d5dfe6;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  z-index: 1;
-}
-
-.home {
-  position: fixed;
-  right: 3%;
-}
-
-.logoAndTitle {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  text-decoration: none;
-  color: inherit;
-}
-
-.icon {
-  display: flex;
-  margin-top: 7px; /* Adjust the margin to position the icon lower */
-  margin-left: 5px; /* Add margin for spacing */
-}
-
-.headerName {
-  font-family: Copperplate, sans-serif;
-  color: black;
-  font-size: 30px;
-  margin-left: 5px;
-  margin-top: 10px; /* Move the text higher */
-  margin-bottom: 1; /* Remove margin from the bottom */
-}
-
 .searchContainer {
   display: flex;
   flex-direction: column;
@@ -84,11 +40,4 @@ h1 {
   height: 28%;
   object-fit: contain;
   margin-left: 2rem;
-}
-
-.searchHeader {
-  position: fixed;
-  width: 40%;
-  right: 20%;
-  top: 0px;
 }
