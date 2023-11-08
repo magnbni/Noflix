@@ -57,6 +57,28 @@ h1 {
 }
 
 .headerName {
-  font-family: Papyrus, sans-serif;
+  font-family: Copperplate, sans-serif;
+  color: black;
   font-size: 30px;
+  padding-left: 5px;
+  padding-bottom: 13px;
+}
+.searchContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+}
+
+.logo {
+  width: 28%;
+  height: 28%;
+  object-fit: contain;
+  margin-left: 2rem;
+}
+
+.searchHeader {
+  position: fixed;
+  width: 40%;
+  right: 20%;
+  top: 0px;
 }

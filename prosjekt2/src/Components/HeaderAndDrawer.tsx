@@ -10,8 +10,10 @@ import IconButton from "@mui/material/IconButton";
 import HamburgerMenuIcon from "../assets/hamburger-menu.svg";
 import CloseIcon from "../assets/close.svg";
 import "./HeaderAndDrawer.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import FilterAndSort from "./FilterAndSort";
+import ComboBox from "./ComboBox";
+import { useState } from "react";
 
 const drawerWidth = 240;
 
@@ -45,7 +47,9 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 export default function HeaderAndDrawer() {
-  const [open, setOpen] = React.useState(false);
+  const navigate = useNavigate();
+  const [, setSelectedMovie] = useState<string | null>(null);
+  const [open, setOpen] = useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -53,6 +57,14 @@ export default function HeaderAndDrawer() {
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const handleMovieSelect = (selectedOption: string | null) => {
+    if (selectedOption) {
+      setSelectedMovie(selectedOption);
+      navigate(`/search/${selectedOption}`);
+      window.location.reload();
+    }
   };
 
   return (
@@ -67,8 +79,14 @@ export default function HeaderAndDrawer() {
                   style={{ height: 45 }}
                 />
               </Link>
-              <h1 className="headerName"> Noflix</h1>
+              <h1 className="headerName">Noflix</h1>
             </div>
+            {location.pathname !== "/project2" && (
+              <div className="searchHeader">
+                <ComboBox onMovieSelect={handleMovieSelect} />
+              </div>
+            )}
+
             <div className="home">
               <Link to="/">
                 <img
@@ -85,7 +103,11 @@ export default function HeaderAndDrawer() {
                 onClick={handleDrawerOpen}
                 sx={{ ...(open && { display: "none" }) }}
               >
-                <img src={HamburgerMenuIcon} alt="Menu" className="hammiIconOpen" />
+                <img
+                  src={HamburgerMenuIcon}
+                  alt="Menu"
+                  className="hammiIconOpen"
+                />
               </IconButton>
             )}
           </div>
@@ -109,17 +131,17 @@ export default function HeaderAndDrawer() {
             <img src={CloseIcon} alt="Close menu" className="hammiIconClose" />
           </IconButton>
           <div className="home">
-              <Link to="/">
-                <img
-                  src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMjEgMTN2MTBoLTZ2LTZoLTZ2NmgtNnYtMTBoLTNsMTItMTIgMTIgMTJoLTN6bS0xLTUuOTA3di01LjA5M2gtM3YyLjA5M2wzIDN6Ii8+PC9zdmc+"
-                  alt="Back to Root"
-                />
-              </Link>
-            </div>
+            <Link to="/">
+              <img
+                src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMjEgMTN2MTBoLTZ2LTZoLTZ2NmgtNnYtMTBoLTNsMTItMTIgMTIgMTJoLTN6bS0xLTUuOTA3di01LjA5M2gtM3YyLjA5M2wzIDN6Ii8+PC9zdmc+"
+                alt="Back to Root"
+              />
+            </Link>
+          </div>
         </DrawerHeader>
         <Divider />
         <List>
-          <FilterAndSort/>
+          <FilterAndSort />
         </List>
         <Divider />
       </Drawer>
