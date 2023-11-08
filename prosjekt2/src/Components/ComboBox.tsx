@@ -42,7 +42,7 @@ export default function ComboBox({ onMovieSelect }: ComboBoxProps) {
       {...defaultProps}
       id="clear-on-escape"
       renderInput={(params) => (
-        <TextField {...params} label="Movies" variant="standard" />
+        <TextField {...params} label="Search for movie" variant="standard" />
       )}
     />
   );

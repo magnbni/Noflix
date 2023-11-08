@@ -16,7 +16,7 @@ export default function ActionAreaCard(movie: FilmOptionType) {
 
   return (
     // Material-UI Card component with custom styles
-    <Card sx={{ width: 330, heigth: 350 }}>
+    <Card sx={{ width: 300, heigth: 350 }}>
       <CardActionArea>
         <CardMedia
           component="img"

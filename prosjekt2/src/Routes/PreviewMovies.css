@@ -1,0 +1,33 @@
+.previewMovies {
+  display: flex;
+  flex-direction: column;
+  overflow-x: clip;
+  margin-left: -5px;
+}
+
+.movies-container {
+  display: flex;
+  overflow-x: hidden;
+  object-fit: contain;
+}
+
+.movies-container-header {
+  margin-left: 0.5em;
+}
+
+.scrollable-container {
+  width: 98vw;
+  overflow-x: auto;
+  white-space: nowrap;
+  display: flex;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.content {
+  width: 200%;
+}
+
+.scrollable-container::-webkit-scrollbar {
+  display: none;
+}

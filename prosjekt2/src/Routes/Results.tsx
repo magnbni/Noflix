@@ -4,7 +4,8 @@ import ListItem from "@mui/material/ListItem";
 import { FormControlLabel, Radio, RadioGroup, Slider, Switch } from "@mui/material";
 import NestedModal from "../Components/NestedModal";
 import HeaderAndDrawer from "../Components/HeaderAndDrawer";
-import { gql, useQuery } from '@apollo/client';
+import { gql, useQuery } from "@apollo/client";
+import { FilmOptionType } from "../types";
 import { useState } from "react";
 
 const GET_MOVIES = gql`
@@ -86,7 +87,7 @@ export default function Results() {
       </List>
       {(loading || error) && <p>{error ? error.message : 'Loading...'}</p>}
       {data && <div className="row">
-        {data.allMovies.map((movie: any) => (
+        {data.allMovies.map((movie: FilmOptionType) => (
             <div className="card" key={`movie-${movie.title}`}>
               <NestedModal movie={movie}></NestedModal>
             </div>
