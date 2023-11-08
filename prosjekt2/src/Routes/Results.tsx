@@ -2,6 +2,7 @@ import "./Results.css";
 import NestedModal from "../Components/NestedModal";
 import HeaderAndDrawer from "../Components/HeaderAndDrawer";
 import { gql, useQuery } from "@apollo/client";
+import { FilmOptionType } from "../types";
 
 const GET_MOVIES = gql`
   query {
@@ -32,7 +33,7 @@ export default function Results() {
     <div className="results">
       <HeaderAndDrawer />
       <div className="row">
-        {data.allMovies.map((movie: any) => (
+        {data.allMovies.map((movie: FilmOptionType) => (
           <div className="card" key={`movie-${movie.title}`}>
             <NestedModal movie={movie}></NestedModal>
           </div>
