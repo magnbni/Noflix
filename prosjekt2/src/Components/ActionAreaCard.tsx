@@ -29,7 +29,7 @@ export default function ActionAreaCard(movie: FilmOptionType) {
             {truncatedTitle}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {movie.year}
+            {movie.releaseDate}
           </Typography>
         </CardContent>
         {/* Uses the Rate component to provide a rating. Default value is set to 2 stars
