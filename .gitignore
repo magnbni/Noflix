@@ -175,3 +175,7 @@ npm-debug.log
 
 .vscode
 .vscode/*
+
+# local files
+
+**/chunks
