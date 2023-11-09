@@ -30,11 +30,16 @@ export default function Root() {
       <div className="searchContainer">
         <h1> Search for a movie</h1>
         <div>
-          <TextField label="Search" onChange={handleSearchChange}>Search here</TextField>
+          <TextField label="Search" onChange={handleSearchChange}>
+            Search here
+          </TextField>
           <button
             onClick={() => {
               handleSearch(searchValue);
-            }}>Search</button>
+            }}
+          >
+            Search
+          </button>
         </div>
       </div>
       {/* {PreviewMovies()} */}
