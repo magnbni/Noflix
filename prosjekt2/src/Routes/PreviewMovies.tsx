@@ -1,4 +1,4 @@
-import { gql, useQuery } from "@apollo/client";
+import { ApolloError, gql, useQuery } from "@apollo/client";
 import NestedModal from "../Components/NestedModal";
 import { FilmOptionType } from "../types";
 import "./PreviewMovies.css";
@@ -6,6 +6,8 @@ import "./PreviewMovies.css";
 interface category {
   title: string;
   movies: FilmOptionType[];
+  loading: boolean;
+  error: ApolloError | undefined;
 }
 
 const GET_MOVIES_A = gql`
@@ -19,15 +21,48 @@ const GET_MOVIES_A = gql`
     }
   }
 `;
-export default function PreviewMovies() {
-  const { loading, error, data } = useQuery(GET_MOVIES_A);
 
-  if (loading) return "Loading...";
-  if (error) return `Error! ${error.message}`;
-  console.log(data);
+const GET_MOVIES_CHRISTMAS = gql`
+  query {
+    allMovies(sort: RELEASE_DATE_DESC, first: 10, title: "Christmas") {
+      title
+      releaseDate
+      overview
+      voteAverage
+      posterPath
+    }
+  }
+`;
+
+export default function PreviewMovies() {
+  const {
+    loading: loading_a,
+    error: error_a,
+    data: data_a,
+  } = useQuery(GET_MOVIES_A);
+  const {
+    loading: loading_christ,
+    error: error_christ,
+    data: data_christ,
+  } = useQuery(GET_MOVIES_CHRISTMAS);
+
+  if (loading_a || loading_christ) return "Loading...";
+  if (error_a) return `Error! ${error_a.message}`;
+  if (error_christ) return `Error! ${error_christ.message}`;
 
   const categories: category[] = [
-    { title: "Movies containing A in their title", movies: data.allMovies },
+    {
+      title: "Movies containing A in their title",
+      movies: data_a.allMovies,
+      loading: loading_a,
+      error: error_a,
+    },
+    {
+      title: "Christmas movies",
+      movies: data_christ.allMovies,
+      loading: loading_christ,
+      error: error_christ,
+    },
   ];
 
   return (

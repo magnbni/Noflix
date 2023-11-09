@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../index.css";
-// import ComboBox from "../Components/ComboBox";
 import HeaderAndDrawer from "../Components/HeaderAndDrawer";
 import { TextField } from "@mui/material";
-// import PreviewMovies from "./PreviewMovies";
+import PreviewMovies from "./PreviewMovies";
 
 export default function Root() {
   const navigate = useNavigate();
@@ -23,6 +22,13 @@ export default function Root() {
     }
   };
 
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    console.log(event.key);
+    if (event.key === "Enter") {
+      handleSearch(searchValue);
+    }
+  };
+
   return (
     <div className="notbody">
       <HeaderAndDrawer />
@@ -30,19 +36,18 @@ export default function Root() {
       <div className="searchContainer">
         <h1> Search for a movie</h1>
         <div>
-          <TextField label="Search" onChange={handleSearchChange}>
-            Search here
-          </TextField>
+          <TextField onChange={handleSearchChange} onKeyDown={handleKeyPress} />
           <button
             onClick={() => {
               handleSearch(searchValue);
             }}
+            className="searchButton"
           >
             Search
           </button>
         </div>
       </div>
-      {/* {PreviewMovies()} */}
+      <PreviewMovies />
     </div>
   );
 }

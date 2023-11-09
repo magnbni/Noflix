@@ -54,3 +54,7 @@ h1 {
   object-fit: contain;
   margin-left: 2rem;
 }
+
+.searchButton {
+  height: 55px;
+}

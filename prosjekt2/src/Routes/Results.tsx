@@ -8,8 +8,14 @@ import { gql, useQuery } from "@apollo/client";
 import { FilmOptionType } from "../types";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import { Button } from "@mui/base/Button";
 
-const getQuery = (sortOption: string, orderDirection: string, id?: string) => {
+const getQuery = (
+  offset: number,
+  sortOption: string,
+  orderDirection: string,
+  id?: string,
+) => {
   let sortValue = "";
   if (sortOption === "title" && orderDirection === "asc") {
     sortValue = "TITLE_ASC";
@@ -23,7 +29,9 @@ const getQuery = (sortOption: string, orderDirection: string, id?: string) => {
 
   return gql`
     query {
-      allMovies(first: 100, sort: ${sortValue}, title: "${id}") {
+      allMovies(first: 10, offset: ${(
+        10 * offset
+      ).toString()} sort: ${sortValue}, title: "${id}") {
         title
         releaseDate
         overview
@@ -42,9 +50,10 @@ export default function Results() {
 
   const [sortOption, setSortOption] = useState("title");
   const [orderDirection, setOrderDirection] = useState("desc");
+  const [loadedCount, setLoadedCount] = useState(1);
 
   const { loading, error, data } = useQuery(
-    getQuery(sortOption, orderDirection, id),
+    getQuery(loadedCount, sortOption, orderDirection, id),
   );
 
   const updateSort = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,10 +64,13 @@ export default function Results() {
     setOrderDirection(event.target.value);
   };
 
-  // if (loading) return 'Loading...';
-  // if (error) return `Error! ${error.message}`;
+  const handleLoadMore = () => {
+    setLoadedCount(loadedCount + 1);
+  };
 
-  console.log(data);
+  const handleLoadLess = () => {
+    setLoadedCount(loadedCount - 1);
+  };
 
   return (
     <div className="results">
@@ -103,6 +115,20 @@ export default function Results() {
           ))}
         </div>
       )}
+      <Button
+        onClick={() => {
+          handleLoadMore();
+        }}
+      >
+        Load next 10 movies
+      </Button>
+      <Button
+        onClick={() => {
+          handleLoadLess();
+        }}
+      >
+        Load previous 10 movies
+      </Button>
     </div>
   );
 }
