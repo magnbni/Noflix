@@ -46,6 +46,7 @@ h1 {
   display: flex;
   flex-direction: column;
   padding: 2rem;
+  width: auto;
 }
 
 .logo {
@@ -57,4 +58,13 @@ h1 {
 
 .searchButton {
   height: 55px;
+}
+
+.textField {
+  width: auto;
+  height: auto;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
 }

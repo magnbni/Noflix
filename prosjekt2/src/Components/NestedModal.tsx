@@ -108,8 +108,8 @@ const NestedModal: React.FC<NestedModalProps> = ({ movie }) => {
             <div
               style={{
                 margin: "auto",
-                width: "80%",
-                height: "200px",
+                width: "240px",
+                height: "350px",
                 backgroundSize: "cover",
                 backgroundImage:
                   "url(https://image.tmdb.org/t/p/original//" +

@@ -18,8 +18,12 @@ export default function ActionAreaCard(movie: FilmOptionType) {
       <CardActionArea>
         <div
           style={{
-            width: "300px",
-            height: "300px",
+            paddingTop: "20px",
+            margin: "auto",
+            width: "240px",
+            height: "350px",
+            backgroundSize: "cover", // Ensure the entire picture is viewable
+            backgroundPosition: "center", // Center the image
             backgroundImage:
               "url(https://image.tmdb.org/t/p/original//" +
               movie.posterPath +
@@ -34,10 +38,7 @@ export default function ActionAreaCard(movie: FilmOptionType) {
             {movie.releaseDate}
           </Typography>
         </CardContent>
-        {/* Uses the Rate component to provide a rating. Default value is set to 2 stars
-            as of version 1.
-        */}
-        {Rate(2)}
+        {Rate(movie.voteAverage.valueOf() / 2)}
       </CardActionArea>
     </Card>
   );

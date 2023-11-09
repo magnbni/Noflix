@@ -34,9 +34,9 @@ export default function Root() {
       <HeaderAndDrawer />
 
       <div className="searchContainer">
-        <h1> Search for a movie</h1>
+        <h1>Browse</h1>
         <div>
-          <TextField onChange={handleSearchChange} onKeyDown={handleKeyPress} />
+          <TextField onChange={handleSearchChange} onKeyDown={handleKeyPress} className="textField"/>
           <button
             onClick={() => {
               handleSearch(searchValue);
