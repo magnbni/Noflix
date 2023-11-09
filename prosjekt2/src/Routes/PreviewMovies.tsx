@@ -34,21 +34,35 @@ const GET_MOVIES_CHRISTMAS = gql`
   }
 `;
 
-
 export default function PreviewMovies() {
-  const { loading: loading_a, error: error_a, data: data_a } = useQuery(GET_MOVIES_A);
-  const { loading: loading_christ, error: error_christ, data: data_christ } = useQuery(GET_MOVIES_CHRISTMAS);
-
+  const {
+    loading: loading_a,
+    error: error_a,
+    data: data_a,
+  } = useQuery(GET_MOVIES_A);
+  const {
+    loading: loading_christ,
+    error: error_christ,
+    data: data_christ,
+  } = useQuery(GET_MOVIES_CHRISTMAS);
 
   if (loading_a || loading_christ) return "Loading...";
-  if (error_a ) return `Error! ${error_a.message}`;
-  if (error_christ ) return `Error! ${error_christ.message}`;
-
-
+  if (error_a) return `Error! ${error_a.message}`;
+  if (error_christ) return `Error! ${error_christ.message}`;
 
   const categories: category[] = [
-    { title: "Movies containing A in their title", movies: data_a.allMovies, loading: loading_a, error: error_a },
-    { title: "Christmas movies", movies: data_christ.allMovies, loading: loading_christ, error: error_christ },
+    {
+      title: "Movies containing A in their title",
+      movies: data_a.allMovies,
+      loading: loading_a,
+      error: error_a,
+    },
+    {
+      title: "Christmas movies",
+      movies: data_christ.allMovies,
+      loading: loading_christ,
+      error: error_christ,
+    },
   ];
 
   return (

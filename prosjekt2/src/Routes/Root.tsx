@@ -34,7 +34,6 @@ export default function Root() {
     <div className="notbody">
       <HeaderAndDrawer />
 
-
       <div className="searchContainer">
         <h1> Search for a movie</h1>
         <div>
