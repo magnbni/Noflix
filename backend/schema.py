@@ -90,11 +90,12 @@ class Query(graphene.ObjectType):
             query = query.filter(release_date__icontains=release_date)
 
         if skip is not None:
-            query = query[skip:]
-
+            query_skip = query[0:10]
+            if first is not None:
+                query_skip = query_skip[skip:first+skip]
+                return query_skip
         if first is not None:
             query = query[:first]
-        
         return query
     
     
