@@ -128,7 +128,7 @@ const NestedModal: React.FC<NestedModalProps> = ({ movie }) => {
               <div>{ReadOnlyRating(movie.voteAverage.valueOf() / 2)}</div>
             )}
             <p style={{ marginBottom: "0px" }}>Your rating:</p>
-            {Rate(2)}
+            {Rate(movie.voteAverage.valueOf() / 2)}
           </div>
         </Box>
       </Modal>

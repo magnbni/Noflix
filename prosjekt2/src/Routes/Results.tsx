@@ -5,17 +5,12 @@ import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import NestedModal from "../Components/NestedModal";
 import HeaderAndDrawer from "../Components/HeaderAndDrawer";
 import { gql, useQuery } from "@apollo/client";
-import { FilmOptionType } from "../types";
+import { MovieType } from "../types";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Button } from "@mui/base/Button";
 
-const getQuery = (
-  offset: number,
-  sortOption: string,
-  orderDirection: string,
-  id?: string,
-) => {
+const getQuery = (sortOption: string, orderDirection: string, id?: string) => {
   let sortValue = "";
   if (sortOption === "title" && orderDirection === "asc") {
     sortValue = "TITLE_ASC";
@@ -29,9 +24,7 @@ const getQuery = (
 
   return gql`
     query {
-      allMovies(first: 10, offset: ${(
-        10 * offset
-      ).toString()} sort: ${sortValue}, title: "${id}") {
+      allMovies(first: 10, sort: ${sortValue}, title: "${id}") {
         title
         releaseDate
         overview
@@ -53,7 +46,7 @@ export default function Results() {
   const [loadedCount, setLoadedCount] = useState(1);
 
   const { loading, error, data } = useQuery(
-    getQuery(loadedCount, sortOption, orderDirection, id),
+    getQuery(sortOption, orderDirection, id)
   );
 
   const updateSort = (event: React.ChangeEvent<HTMLInputElement>) => {
