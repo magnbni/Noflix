@@ -65,7 +65,7 @@ export default function HeaderAndDrawer() {
     if (searchValue !== "") {
       setSelectedMovie(selectedOption);
       navigate(`/search/${searchValue}`);
-      window.location.reload();
+      // window.location.reload();
     }
   };
 

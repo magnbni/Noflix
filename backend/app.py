@@ -20,4 +20,4 @@ CORS(app)
 app.add_url_rule('/graphql', view_func=GraphQLView.as_view('graphql', schema=schema, graphiql=True, context=UserDict()))
 
 if __name__ == '__main__':
-    app.run(port=4000)
+    app.run(host="0.0.0.0", port=4000)
