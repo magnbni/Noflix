@@ -10,7 +10,12 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Button } from "@mui/base/Button";
 
-const getQuery = (offset: number, sortOption: string, orderDirection: string, id?: string) => {
+const getQuery = (
+  offset: number,
+  sortOption: string,
+  orderDirection: string,
+  id?: string,
+) => {
   let sortValue = "";
   if (sortOption === "title" && orderDirection === "asc") {
     sortValue = "TITLE_ASC";
@@ -24,7 +29,9 @@ const getQuery = (offset: number, sortOption: string, orderDirection: string, id
 
   return gql`
     query {
-      allMovies(first: 10, offset: ${(10*offset).toString()} sort: ${sortValue}, title: "${id}") {
+      allMovies(first: 10, offset: ${(
+        10 * offset
+      ).toString()} sort: ${sortValue}, title: "${id}") {
         title
         releaseDate
         overview
@@ -45,12 +52,9 @@ export default function Results() {
   const [orderDirection, setOrderDirection] = useState("desc");
   const [loadedCount, setLoadedCount] = useState(1);
 
-  const {
-    loading,
-    error,
-    data,
-  } = useQuery(getQuery(loadedCount, sortOption, orderDirection, id));
-
+  const { loading, error, data } = useQuery(
+    getQuery(loadedCount, sortOption, orderDirection, id),
+  );
 
   const updateSort = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSortOption(event.target.value);
@@ -101,9 +105,7 @@ export default function Results() {
           </RadioGroup>
         </ListItem>
       </List>
-      {(loading || error) && (
-        <p>{error ? error.message : "Loading..."}</p>
-      )}
+      {(loading || error) && <p>{error ? error.message : "Loading..."}</p>}
       {data && (
         <div className="row">
           {data.allMovies.map((movie: FilmOptionType) => (
