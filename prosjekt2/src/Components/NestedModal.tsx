@@ -4,7 +4,7 @@ import Modal from "@mui/material/Modal";
 import ActionAreaCard from "./ActionAreaCard";
 import { grey } from "@mui/material/colors";
 import { Rate, ReadOnlyRating } from "./BasicRating";
-import { FilmOptionType } from "../types";
+import { MovieType } from "../types";
 import CloseIcon from "../assets/close.svg";
 
 const style = {
@@ -54,7 +54,7 @@ const style = {
 // }
 
 interface NestedModalProps {
-  movie: FilmOptionType;
+  movie: MovieType;
 }
 
 /*

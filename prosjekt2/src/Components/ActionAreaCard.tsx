@@ -3,12 +3,12 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
 import { Rate } from "./BasicRating";
-import { FilmOptionType } from "../types";
+import { MovieType } from "../types";
 
 /*
   Custom action card used to present each individual movie.
 */
-export default function ActionAreaCard(movie: FilmOptionType) {
+export default function ActionAreaCard(movie: MovieType) {
   const truncatedTitle =
     movie.title.length > 20 ? movie.title.slice(0, 20) + "..." : movie.title;
 

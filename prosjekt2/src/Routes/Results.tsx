@@ -108,7 +108,7 @@ export default function Results() {
       {(loading || error) && <p>{error ? error.message : "Loading..."}</p>}
       {data && (
         <div className="row">
-          {data.allMovies.map((movie: FilmOptionType) => (
+          {data.allMovies.map((movie: MovieType) => (
             <div className="card" key={`movie-${movie.title}`}>
               <NestedModal movie={movie}></NestedModal>
             </div>
