@@ -23,18 +23,29 @@ export default function Root() {
     }
   };
 
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    console.log(event.key);
+    if (event.key === "Enter") {
+      handleSearch(searchValue);
+    }
+  };
+
   return (
     <div className="notbody">
       <HeaderAndDrawer />
 
+
       <div className="searchContainer">
         <h1> Search for a movie</h1>
         <div>
-          <TextField label="Search" onChange={handleSearchChange}>Search here</TextField>
+          <TextField onChange={handleSearchChange} onKeyDown={handleKeyPress} />
           <button
             onClick={() => {
               handleSearch(searchValue);
-            }}>Search</button>
+            }}
+          >
+            Search
+          </button>
         </div>
       </div>
       {/* {PreviewMovies()} */}

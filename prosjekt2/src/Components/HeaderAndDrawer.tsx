@@ -69,6 +69,13 @@ export default function HeaderAndDrawer() {
     }
   };
 
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    console.log(event.key);
+    if (event.key === "Enter") {
+      handleSearch(searchValue);
+    }
+  };
+
   return (
     <Box sx={{ display: "flex" }}>
       <AppBar position="fixed" open={open}>
@@ -84,15 +91,22 @@ export default function HeaderAndDrawer() {
                 <h1 className="headerName">Noflix</h1>
               </Link>
             </div>
-            {location.pathname !== "/project2" && (
-              <div className="searchHeader">
-                <TextField onChange={handleSearchChange} />
-                <button
-                  onClick={() => {
-                    handleSearch(searchValue);
-                  }}>Search</button>
-              </div>
-            )}
+            {location.pathname !== "/project2" &&
+              location.pathname !== "/project2/" && (
+                <div className="searchHeader">
+                  <TextField
+                    onChange={handleSearchChange}
+                    onKeyDown={handleKeyPress}
+                  />
+                  <button
+                    onClick={() => {
+                      handleSearch(searchValue);
+                    }}
+                  >
+                    Search
+                  </button>
+                </div>
+              )}
             {location.pathname.includes("project2/search/") && (
               <IconButton
                 color="inherit"
