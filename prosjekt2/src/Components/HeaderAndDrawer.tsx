@@ -90,7 +90,10 @@ export default function HeaderAndDrawer() {
                 <button
                   onClick={() => {
                     handleSearch(searchValue);
-                  }}>Search</button>
+                  }}
+                >
+                  Search
+                </button>
               </div>
             )}
             {location.pathname.includes("project2/search/") && (
