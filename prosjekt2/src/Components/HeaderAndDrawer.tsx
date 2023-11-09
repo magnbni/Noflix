@@ -102,6 +102,7 @@ export default function HeaderAndDrawer() {
                     onClick={() => {
                       handleSearch(searchValue);
                     }}
+                    className="searchButton"
                   >
                     Search
                   </button>

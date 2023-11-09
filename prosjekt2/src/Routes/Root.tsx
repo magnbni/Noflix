@@ -42,6 +42,7 @@ export default function Root() {
             onClick={() => {
               handleSearch(searchValue);
             }}
+            className="searchButton"
           >
             Search
           </button>
