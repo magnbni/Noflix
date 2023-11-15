@@ -41,30 +41,3 @@ h1 {
   font-size: 230%;
   line-height: 1.1;
 }
-
-.searchContainer {
-  display: flex;
-  flex-direction: column;
-  padding: 2rem;
-  width: auto;
-}
-
-.logo {
-  width: 28%;
-  height: 28%;
-  object-fit: contain;
-  margin-left: 2rem;
-}
-
-.searchButton {
-  height: 55px;
-}
-
-.textField {
-  width: auto;
-  height: auto;
-  font-size: 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
