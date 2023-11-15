@@ -5,6 +5,7 @@ from graphene_mongo import MongoengineConnectionField, MongoengineObjectType
 from mongoengine.queryset.visitor import Q
 from models import Movie as MovieModel
 from models import User as UserModel
+from models import Rating as RatingModel
 
 class Movie(MongoengineObjectType):
     class Meta:
@@ -18,17 +19,26 @@ class Movie(MongoengineObjectType):
         }
         ordering = 'title'
 
+class Rating(MongoengineObjectType):
+    class Meta:
+        name = "Rating"
+        description = "List of ratings for a user"
+        model = RatingModel
+        interfaces = (Node,)
+
 class User(MongoengineObjectType):
     class Meta:
         name = "User"
         description = "A user"
         model = UserModel
         interfaces = (Node,)
+    
+    ratings = graphene.List(Rating)
 
 class AuthenticateUser(graphene.Mutation):
     class Arguments:
-        email = graphene.String()
-        password = graphene.String()
+        email = graphene.String(required=True)
+        password = graphene.String(required=True)
 
     success = graphene.Boolean()
 
@@ -59,6 +69,45 @@ class CreateUser(graphene.Mutation):
         user_model.save()
         return CreateUser(user_model=user_model)
 
+class RatingInput(graphene.InputObjectType):
+    movie_id = graphene.ID(required=True)
+    rating_value = graphene.Int(required=True)
+
+class UpdateUserRatings(graphene.Mutation):
+    class Arguments:
+        user_email = graphene.String(required=True)
+        ratings = graphene.List(RatingInput, required=True)
+
+    success = graphene.Boolean()
+
+    def mutate(self, info, user_email, ratings):
+        try:
+            # Get the user by _ids
+            user = UserModel.objects.get(email=user_email)
+
+            # Create Rating objects and add to user's ratings list
+            for rating_input in ratings:
+                movie_id = rating_input['movie_id']
+            
+                rating_value = rating_input['rating_value']
+
+                # Create a new Rating
+                rating = RatingModel(movie_id=movie_id, rating=rating_value)
+
+                # Add the rating to the user's ratings list
+                # user.ratings.append(rating)
+
+            # Save the updated user
+            user.save()
+
+            success = True
+        except Exception as e:
+            # Print error if something goes wrong
+            print(f"Error updating user ratings: {e}")
+            success = False
+
+        return UpdateUserRatings(success=success)
+
 class SortEnum(graphene.Enum):
     TITLE_ASC = 'title_asc'
     TITLE_DESC = 'title_desc'
@@ -70,9 +119,12 @@ class Query(graphene.ObjectType):
 
     all_users = MongoengineConnectionField(User)
     
-    all_movies = graphene.List(Movie, sort=SortEnum(), first=graphene.Int(), skip=graphene.Int(), title=graphene.String(), release_date=graphene.String())
+    all_movies = graphene.List(Movie, _id=graphene.String(), sort=SortEnum(), first=graphene.Int(), skip=graphene.Int(), title=graphene.String(), release_date=graphene.String())
 
-    def resolve_all_movies(self, info, sort=None, first=None, skip=None, title=None, release_date=None):
+    def resolve_all_movies(self, info, _id=None, sort=None, first=None, skip=None, title=None, release_date=None):
+        if _id is not None:
+            return MovieModel.objects(_id=_id)
+
         query = MovieModel.objects.all()
         if sort == 'title_asc':
             query = query.order_by('title')
@@ -94,7 +146,7 @@ class Query(graphene.ObjectType):
 
         if first is not None:
             query = query[:first]
-        
+
         return query
     
     
@@ -103,5 +155,6 @@ class Mutation(graphene.ObjectType):
     node = Node.Field()
     auth_user = AuthenticateUser.Field()
     user_create = CreateUser.Field()
+    update_user_ratings = UpdateUserRatings.Field()
 
-schema = graphene.Schema(query=Query, mutation=Mutation, types=[Movie, User])
+schema = graphene.Schema(query=Query, mutation=Mutation, types=[Movie, User, Rating])
