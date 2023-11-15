@@ -111,22 +111,27 @@ const NestedModal: React.FC<NestedModalProps> = ({ movie }) => {
                 width: "240px",
                 height: "350px",
                 backgroundSize: "cover",
+                backgroundPosition: "center",
                 backgroundImage:
                   "url(https://image.tmdb.org/t/p/original//" +
                   movie.posterPath +
                   ")",
+                borderRadius: "4px",
+                border: "2px solid #000000",
               }}
             />
             <h2 style={{ marginBottom: "0px" }}>{movie.title}</h2>
-            <p style={{ marginTop: "0px", fontSize: "12px" }}>
-              {movie.releaseDate}
-            </p>
+            <div>
+              <p style={{ marginTop: "0px", fontSize: "12px" }}>
+                {movie.releaseDate}
+              </p>
+
+              {movie.voteAverage >= 1 && movie.voteAverage <= 10
+                ? ReadOnlyRating(movie.voteAverage / 2)
+                : ReadOnlyRating(null)}
+            </div>
             <p>{movie.overview}</p>
             <br />
-            <p style={{ marginBottom: "0px" }}>Movie rating:</p>
-            {movie.voteAverage && (
-              <div>{ReadOnlyRating(movie.voteAverage.valueOf() / 2)}</div>
-            )}
             <p style={{ marginBottom: "0px" }}>Your rating:</p>
             {Rate(movie.voteAverage.valueOf() / 2)}
           </div>
