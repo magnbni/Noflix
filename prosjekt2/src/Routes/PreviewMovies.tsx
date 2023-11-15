@@ -1,11 +1,11 @@
 import { ApolloError, gql, useQuery } from "@apollo/client";
 import NestedModal from "../Components/NestedModal";
-import { FilmOptionType } from "../types";
+import { MovieType } from "../types";
 import "./PreviewMovies.css";
 
 interface category {
   title: string;
-  movies: FilmOptionType[];
+  movies: MovieType[];
   loading: boolean;
   error: ApolloError | undefined;
 }

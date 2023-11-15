@@ -1,7 +1,7 @@
 // import List from "@mui/material/List";
 // import ListItem from "@mui/material/ListItem";
 // import { FormControlLabel, Slider, Switch } from "@mui/material";
-// import { FilmOptionType, top100Films } from "../types";
+// import { MovieType, top100Films } from "../types";
 // import { useState } from "react";
 // import "./FilterAndSort.css";
 
@@ -9,11 +9,11 @@
 //   return `${value}`;
 // }
 
-// function findYearLimits(movies: FilmOptionType[]) {
+// function findYearLimits(movies: MovieType[]) {
 //   let lowestYear: number | null = null;
 //   let highestYear: number | null = null;
 
-//   movies.forEach((movie: FilmOptionType) => {
+//   movies.forEach((movie: MovieType) => {
 //     if (lowestYear === null || parseInt(movie.releaseDate) < lowestYear) {
 //       lowestYear = parseInt(movie.releaseDate);
 //     }
@@ -26,7 +26,7 @@
 //   return { lowestYear, highestYear };
 // }
 
-// function createMarks(movies: FilmOptionType[]) {
+// function createMarks(movies: MovieType[]) {
 //   const lowerBound: number =
 //     findYearLimits(movies).lowestYear != null
 //       ? findYearLimits(movies).lowestYear!
