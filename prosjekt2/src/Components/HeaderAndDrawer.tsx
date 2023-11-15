@@ -98,7 +98,8 @@ export default function HeaderAndDrawer() {
                 size="small"
                 fullWidth
                 sx={{
-                  maxWidth: "350px"}}
+                  maxWidth: "350px",
+                }}
                 onChange={handleSearchChange}
                 onKeyDown={handleKeyPress}
               />

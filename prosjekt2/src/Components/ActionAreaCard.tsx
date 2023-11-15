@@ -61,7 +61,7 @@ export default function ActionAreaCard(movie: MovieType) {
             {date}
           </Typography>
         </CardContent>
-        <div style={{paddingLeft: "13px", paddingBottom: "10px"}}>
+        <div style={{ paddingLeft: "13px", paddingBottom: "10px" }}>
           {movie.voteAverage >= 1 && movie.voteAverage <= 10
             ? ReadOnlyRating(movie.voteAverage / 2)
             : ReadOnlyRating(null)}

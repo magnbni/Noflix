@@ -51,7 +51,7 @@ export default function Results() {
   const [loadedCount, setLoadedCount] = useState(1);
 
   const { loading, error, data } = useQuery(
-    getQuery(sortOption, orderDirection, id)
+    getQuery(sortOption, orderDirection, id),
   );
 
   const updateSort = (event: React.ChangeEvent<HTMLInputElement>) => {
