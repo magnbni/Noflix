@@ -2,13 +2,18 @@ import "./Results.css";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
+import ButtonGroup from "@mui/material/ButtonGroup";
+import Button from "@mui/material/Button";
 import NestedModal from "../Components/NestedModal";
 import HeaderAndDrawer from "../Components/HeaderAndDrawer";
 import { gql, useQuery } from "@apollo/client";
 import { MovieType } from "../types";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { Button } from "@mui/base/Button";
+import leftArrow from "../assets/arrow-left.svg";
+import rightArrow from "../assets/arrow-right.svg";
+import doubleLeftArrow from "../assets/double-arrow-left.svg";
+import doubleRightArrow from "../assets/double-arrow-right.svg";
 
 const getQuery = (sortOption: string, orderDirection: string, id?: string) => {
   let sortValue = "";
@@ -24,7 +29,7 @@ const getQuery = (sortOption: string, orderDirection: string, id?: string) => {
 
   return gql`
     query {
-      allMovies(first: 10, sort: ${sortValue}, title: "${id}") {
+      allMovies(first: 12, sort: ${sortValue}, title: "${id}") {
         title
         releaseDate
         overview
@@ -63,6 +68,14 @@ export default function Results() {
 
   const handleLoadLess = () => {
     setLoadedCount(loadedCount - 1);
+  };
+
+  const handleLoadFirst = () => {
+    setLoadedCount(1);
+  };
+
+  const handleLoadLast = () => {
+    setLoadedCount(999999);
   };
 
   return (
@@ -108,20 +121,43 @@ export default function Results() {
           ))}
         </div>
       )}
-      <Button
-        onClick={() => {
-          handleLoadMore();
-        }}
+      <br />
+      <ButtonGroup
+        disableElevation
+        variant="contained"
+        aria-label="Disabled elevation buttons"
+        className="buttonGroup"
       >
-        Load next 10 movies
-      </Button>
-      <Button
-        onClick={() => {
-          handleLoadLess();
-        }}
-      >
-        Load previous 10 movies
-      </Button>
+        <Button
+          onClick={() => {
+            handleLoadFirst();
+          }}
+        >
+          <img src={doubleLeftArrow} className="loadIcon" />
+        </Button>
+        <Button
+          onClick={() => {
+            handleLoadLess();
+          }}
+        >
+          <img src={leftArrow} className="loadIcon" />
+        </Button>
+        <Button
+          onClick={() => {
+            handleLoadMore();
+          }}
+        >
+          <img src={rightArrow} className="loadIcon" />
+        </Button>
+        <Button
+          onClick={() => {
+            handleLoadLast();
+          }}
+        >
+          <img src={doubleRightArrow} className="loadIcon" />
+        </Button>
+      </ButtonGroup>
+      <br />
     </div>
   );
 }
