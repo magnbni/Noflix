@@ -1,122 +1,120 @@
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-// import { FormControlLabel, Slider, Switch } from "@mui/material";
-import { FormControlLabel, Switch } from "@mui/material";
-// import { MovieType } from "../types";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControl from "@mui/material/FormControl";
+import { FormControlLabel, FormLabel, Slider, Switch } from "@mui/material";
 import "./FilterAndSort.css";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
-import { sortByAsc, sortByTitle } from "../Reducers/SortSlice";
+import { sortBy, sortOrder, filterYear } from "../Reducers/SortSlice";
 
-// function valuetext(value: number) {
-//   return `${value}`;
-// }
+function valuetext(value: number) {
+  return `${value}`;
+}
 
-// function findYearLimits(movies: MovieType[]) {
-//   let lowestYear: number | null = null;
-//   let highestYear: number | null = null;
+function createMarks() {
+  const lowerBound: number = 1900;
+  const upperBound: number = 2025;
+  const marks = [];
+  marks.push({
+    value: lowerBound,
+    label: lowerBound.toString(),
+  });
+  for (
+    let i = lowerBound - (lowerBound % 50);
+    i <= upperBound - (upperBound % 50);
+    i += 50
+  ) {
+    marks.push({
+      value: i,
+      label: i.toString(),
+    });
+  }
 
-//   movies.forEach((movie: MovieType) => {
-//     if (lowestYear === null || parseInt(movie.releaseDate) < lowestYear) {
-//       lowestYear = parseInt(movie.releaseDate);
-//     }
+  marks.push({
+    value: upperBound,
+    label: upperBound.toString(),
+  });
 
-//     if (highestYear === null || parseInt(movie.releaseDate) > highestYear) {
-//       highestYear = parseInt(movie.releaseDate);
-//     }
-//   });
-
-//   return { lowestYear, highestYear };
-// }
-
-// function createMarks(movies: MovieType[]) {
-//   const lowerBound: number =
-//     findYearLimits(movies).lowestYear != null
-//       ? findYearLimits(movies).lowestYear!
-//       : 1900;
-//   const upperBound: number =
-//     findYearLimits(movies).highestYear != null
-//       ? findYearLimits(movies).highestYear!
-//       : new Date().getFullYear();
-//   const marks = [];
-//   marks.push({
-//     value: lowerBound,
-//     label: lowerBound.toString(),
-//   });
-//   for (
-//     let i = lowerBound - (lowerBound % 50);
-//     i <= upperBound - (upperBound % 50);
-//     i += 50
-//   ) {
-//     marks.push({
-//       value: i,
-//       label: i.toString(),
-//     });
-//   }
-
-//   marks.push({
-//     value: upperBound,
-//     label: upperBound.toString(),
-//   });
-
-//   return marks;
-// }
+  return marks;
+}
 
 export default function FilterAndSort() {
   const dispatch = useDispatch();
-  const sortAscState = useSelector(
-    (state: RootState) => state.sort.sortAsc
+  const sortOrderState = useSelector(
+    (state: RootState) => state.sort.sortOrder
   );
-  const sortByTitleState = useSelector(
-    (state: RootState) => state.sort.sortByTitle
+  const filterYearState = useSelector(
+    (state: RootState) => state.sort.filterYear
   );
+  const marks = createMarks();
 
-  const updateSortAsc = () => {
-    dispatch(sortByAsc(!sortAscState));
+  const updateSortOrder = () => {
+    dispatch(sortOrder(sortOrderState == "asc" ? "desc" : "asc"));
   };
 
-  const updateSortByTitle = () => {
-   dispatch(sortByTitle(!sortByTitleState));
+  const updateSortBy = (navn: "" | "title" | "releaseYear" | "rating") => {
+    dispatch(sortBy(navn));
   };
 
-//   const updateFilterByYear = (_event: Event, newRange: number | number[]) => {
-//     const newRangeArray: number[] = newRange as number[];
-//     setRange([newRangeArray[0], newRangeArray[1]]);
-//   };
+  const updateFilterByYear = (_event: Event, newRange: number | number[]) => {
+    const newRangeArray: number[] = newRange as number[];
+    dispatch(filterYear([newRangeArray[0], newRangeArray[1]]));
+  };
 
   return (
     <List className="list">
-      <ListItem key="sortAsc" disablePadding>
-        <FormControlLabel
-          control={
-            <Switch
-              defaultChecked
-              onChange={updateSortAsc}
-              color="default"
-            />
-          }
-          label={sortAscState ? "Ascending" : "Descending"}
-          className="switch"
-        />
-      </ListItem>
-      <ListItem key="sortbytitle" disablePadding>
-        <FormControlLabel
-          control={
-            <Switch
-              defaultChecked
-              onChange={updateSortByTitle}
-              color="default"
-            />
-          }
-          label={sortByTitleState ? "Title" : "Year"}
-
-          className="switch"
-        />
-      </ListItem>
-      {/* <ListItem key="rangeyear">
+      <div style={{ padding: "10px" }}>
+        <ListItem key="sortby" disablePadding>
+          <FormControl>
+            <FormLabel id="demo-radio-buttons-group-label">Sort by</FormLabel>
+            <RadioGroup
+              aria-labelledby="demo-radio-buttons-group-label"
+              name="radio-buttons-group"
+              defaultValue="Default"
+            >
+              <FormControlLabel
+                value="Default"
+                control={<Radio onChange={() => updateSortBy("")} />}
+                label="Default"
+              />
+              <FormControlLabel
+                value="Title"
+                control={<Radio onChange={() => updateSortBy("title")} />}
+                label="Title"
+              />
+              <FormControlLabel
+                value="Year"
+                control={<Radio onChange={() => updateSortBy("releaseYear")} />}
+                label="Year"
+              />
+              <FormControlLabel
+                value="Rating"
+                control={<Radio onChange={() => updateSortBy("rating")} />}
+                label="Rating"
+              />
+            </RadioGroup>
+          </FormControl>
+        </ListItem>
+        <ListItem key="sortAsc" disablePadding>
+          <p style={{ paddingRight: "10px" }}>Descending</p>
+          <FormControlLabel
+            control={
+              <Switch
+                onChange={updateSortOrder}
+                color="default"
+              />
+            }
+            label={"Ascending"}
+            className="switch"
+          />
+        </ListItem>
+      </div>
+      <ListItem key="rangeyear">
         <Slider
           getAriaLabel={() => "Release year range"}
-          value={[range[0], range[1]]}
+          value={[filterYearState[0], filterYearState[1]]}
           onChange={updateFilterByYear}
           valueLabelDisplay="auto"
           getAriaValueText={valuetext}
@@ -126,7 +124,7 @@ export default function FilterAndSort() {
           max={marks[marks.length - 1].value}
           className="slider"
         />
-      </ListItem> */}
+      </ListItem>
     </List>
   );
 }

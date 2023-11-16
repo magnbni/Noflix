@@ -24,6 +24,18 @@ const getQuery = (sortOption: string, orderDirection: string, id?: string) => {
     sortValue = "RELEASE_DATE_ASC";
   } else if (sortOption === "releaseYear" && orderDirection === "desc") {
     sortValue = "RELEASE_DATE_DESC";
+  } else {
+    return gql`
+    query {
+      allMovies(first: 12, title: "${id}") {
+        title
+        releaseDate
+        overview
+        voteAverage
+        posterPath
+      }
+    }
+  `;
   }
 
   return gql`
@@ -45,13 +57,15 @@ const getQuery = (sortOption: string, orderDirection: string, id?: string) => {
 export default function Results() {
   const { id } = useParams<string>();
 
-  const sortAscState = useSelector((state: RootState) => state.sort.sortAsc);
-  const sortByTitleState = useSelector((state: RootState) => state.sort.sortByTitle);
+  const sortOrderState = useSelector(
+    (state: RootState) => state.sort.sortOrder
+  );
+  const sortByState = useSelector((state: RootState) => state.sort.sortBy);
 
   const [loadedCount, setLoadedCount] = useState(1);
 
   const { loading, error, data } = useQuery(
-    getQuery((sortByTitleState ? "title" : "releaseYear"), (sortAscState ? "asc" : "desc"), id),
+    getQuery(sortByState, sortOrderState, id)
   );
 
   const handleLoadMore = () => {

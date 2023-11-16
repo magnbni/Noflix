@@ -1,30 +1,36 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface SortState {
-  sortByTitle: boolean;
-  sortAsc: boolean;
+  sortBy: "" | "title" | "releaseYear" | "rating";
+  sortOrder: "asc" | "desc";
+  filterYear: [number, number];
 }
 
 const initialState: SortState = {
-  sortByTitle: true,
-  sortAsc: true,
+  sortBy: "",
+  sortOrder: "asc",
+  filterYear: [1900, 2025],
 };
 
 export const sortSlice = createSlice({
-  name: 'sortSlice',
+  name: "sortSlice",
   initialState,
   reducers: {
-    sortByAsc: (state, action: PayloadAction<boolean>) => {
-      state.sortAsc = action.payload;
+    sortBy: (
+      state,
+      action: PayloadAction<"" | "title" | "releaseYear" | "rating">
+    ) => {
+      state.sortBy = action.payload;
     },
-    sortByTitle: (state, action: PayloadAction<boolean>) => {
-      state.sortByTitle = action.payload;
+    sortOrder: (state, action: PayloadAction<"asc" | "desc">) => {
+      state.sortOrder = action.payload;
+    },
+    filterYear: (state, action: PayloadAction<[number, number]>) => {
+      state.filterYear = action.payload;
     },
   },
 });
 
-// Export the actions
-export const { sortByAsc, sortByTitle } = sortSlice.actions;
+export const { sortBy, sortOrder, filterYear } = sortSlice.actions;
 
-// Export the reducer
 export default sortSlice.reducer;
