@@ -1,7 +1,4 @@
 import "./Results.css";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
 import NestedModal from "../Components/NestedModal";
@@ -81,36 +78,6 @@ export default function Results() {
   return (
     <div className="results">
       <HeaderAndDrawer />
-      <List className="list">
-        <ListItem key="sortoption" disablePadding>
-          <RadioGroup row defaultValue="title" onChange={updateSort}>
-            <FormControlLabel
-              value="title"
-              control={<Radio color="default" />}
-              label="Sort by Title"
-            />
-            <FormControlLabel
-              value="releaseYear"
-              control={<Radio color="default" />}
-              label="Sort by Release Year"
-            />
-          </RadioGroup>
-        </ListItem>
-        <ListItem key="orderdirection" disablePadding>
-          <RadioGroup row defaultValue="desc" onChange={updateOrderDirection}>
-            <FormControlLabel
-              value="desc"
-              control={<Radio color="default" />}
-              label="Descending"
-            />
-            <FormControlLabel
-              value="asc"
-              control={<Radio color="default" />}
-              label="Ascending"
-            />
-          </RadioGroup>
-        </ListItem>
-      </List>
       {(loading || error) && <p>{error ? error.message : "Loading..."}</p>}
       {data && (
         <div className="row">
