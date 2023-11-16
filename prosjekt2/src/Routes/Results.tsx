@@ -11,6 +11,8 @@ import leftArrow from "../assets/arrow-left.svg";
 import rightArrow from "../assets/arrow-right.svg";
 import doubleLeftArrow from "../assets/double-arrow-left.svg";
 import doubleRightArrow from "../assets/double-arrow-right.svg";
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
 
 const getQuery = (sortOption: string, orderDirection: string, id?: string) => {
   let sortValue = "";
@@ -43,21 +45,14 @@ const getQuery = (sortOption: string, orderDirection: string, id?: string) => {
 export default function Results() {
   const { id } = useParams<string>();
 
-  const [sortOption, setSortOption] = useState("title");
-  const [orderDirection, setOrderDirection] = useState("desc");
+  const sortAscState = useSelector((state: RootState) => state.sort.sortAsc);
+  const sortByTitleState = useSelector((state: RootState) => state.sort.sortByTitle);
+
   const [loadedCount, setLoadedCount] = useState(1);
 
   const { loading, error, data } = useQuery(
-    getQuery(sortOption, orderDirection, id),
+    getQuery((sortByTitleState ? "title" : "releaseYear"), (sortAscState ? "asc" : "desc"), id),
   );
-
-  const updateSort = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSortOption(event.target.value);
-  };
-
-  const updateOrderDirection = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setOrderDirection(event.target.value);
-  };
 
   const handleLoadMore = () => {
     setLoadedCount(loadedCount + 1);
