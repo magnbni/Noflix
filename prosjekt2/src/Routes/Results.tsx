@@ -1,7 +1,4 @@
 import "./Results.css";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
 import NestedModal from "../Components/NestedModal";
@@ -14,6 +11,8 @@ import leftArrow from "../assets/arrow-left.svg";
 import rightArrow from "../assets/arrow-right.svg";
 import doubleLeftArrow from "../assets/double-arrow-left.svg";
 import doubleRightArrow from "../assets/double-arrow-right.svg";
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
 
 const getQuery = (sortOption: string, orderDirection: string, id?: string) => {
   let sortValue = "";
@@ -25,6 +24,18 @@ const getQuery = (sortOption: string, orderDirection: string, id?: string) => {
     sortValue = "RELEASE_DATE_ASC";
   } else if (sortOption === "releaseYear" && orderDirection === "desc") {
     sortValue = "RELEASE_DATE_DESC";
+  } else {
+    return gql`
+    query {
+      allMovies(first: 12, title: "${id}") {
+        title
+        releaseDate
+        overview
+        voteAverage
+        posterPath
+      }
+    }
+  `;
   }
 
   return gql`
@@ -46,21 +57,16 @@ const getQuery = (sortOption: string, orderDirection: string, id?: string) => {
 export default function Results() {
   const { id } = useParams<string>();
 
-  const [sortOption, setSortOption] = useState("title");
-  const [orderDirection, setOrderDirection] = useState("desc");
+  const sortOrderState = useSelector(
+    (state: RootState) => state.sort.sortOrder,
+  );
+  const sortByState = useSelector((state: RootState) => state.sort.sortBy);
+
   const [loadedCount, setLoadedCount] = useState(1);
 
   const { loading, error, data } = useQuery(
-    getQuery(sortOption, orderDirection, id),
+    getQuery(sortByState, sortOrderState, id),
   );
-
-  const updateSort = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSortOption(event.target.value);
-  };
-
-  const updateOrderDirection = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setOrderDirection(event.target.value);
-  };
 
   const handleLoadMore = () => {
     setLoadedCount(loadedCount + 1);
@@ -81,36 +87,6 @@ export default function Results() {
   return (
     <div className="results">
       <HeaderAndDrawer />
-      <List className="list">
-        <ListItem key="sortoption" disablePadding>
-          <RadioGroup row defaultValue="title" onChange={updateSort}>
-            <FormControlLabel
-              value="title"
-              control={<Radio color="default" />}
-              label="Sort by Title"
-            />
-            <FormControlLabel
-              value="releaseYear"
-              control={<Radio color="default" />}
-              label="Sort by Release Year"
-            />
-          </RadioGroup>
-        </ListItem>
-        <ListItem key="orderdirection" disablePadding>
-          <RadioGroup row defaultValue="desc" onChange={updateOrderDirection}>
-            <FormControlLabel
-              value="desc"
-              control={<Radio color="default" />}
-              label="Descending"
-            />
-            <FormControlLabel
-              value="asc"
-              control={<Radio color="default" />}
-              label="Ascending"
-            />
-          </RadioGroup>
-        </ListItem>
-      </List>
       {(loading || error) && <p>{error ? error.message : "Loading..."}</p>}
       {data && (
         <div className="row">

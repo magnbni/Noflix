@@ -11,6 +11,8 @@ import CloseIcon from "../assets/close.svg";
 import "./HeaderAndDrawer.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { List } from "@mui/material";
+import FilterAndSort from "./FilterAndSort";
 
 const drawerWidth = 320;
 
@@ -137,9 +139,9 @@ export default function HeaderAndDrawer() {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        {/* <List>
+        <List>
           <FilterAndSort />
-        </List> */}
+        </List>
         <Divider />
       </Drawer>
     </Box>
