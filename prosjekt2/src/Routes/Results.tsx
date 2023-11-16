@@ -58,14 +58,14 @@ export default function Results() {
   const { id } = useParams<string>();
 
   const sortOrderState = useSelector(
-    (state: RootState) => state.sort.sortOrder
+    (state: RootState) => state.sort.sortOrder,
   );
   const sortByState = useSelector((state: RootState) => state.sort.sortBy);
 
   const [loadedCount, setLoadedCount] = useState(1);
 
   const { loading, error, data } = useQuery(
-    getQuery(sortByState, sortOrderState, id)
+    getQuery(sortByState, sortOrderState, id),
   );
 
   const handleLoadMore = () => {

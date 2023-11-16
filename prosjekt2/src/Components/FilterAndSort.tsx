@@ -43,10 +43,10 @@ function createMarks() {
 export default function FilterAndSort() {
   const dispatch = useDispatch();
   const sortOrderState = useSelector(
-    (state: RootState) => state.sort.sortOrder
+    (state: RootState) => state.sort.sortOrder,
   );
   const filterYearState = useSelector(
-    (state: RootState) => state.sort.filterYear
+    (state: RootState) => state.sort.filterYear,
   );
   const marks = createMarks();
 
@@ -100,12 +100,7 @@ export default function FilterAndSort() {
         <ListItem key="sortAsc" disablePadding>
           <p style={{ paddingRight: "10px" }}>Descending</p>
           <FormControlLabel
-            control={
-              <Switch
-                onChange={updateSortOrder}
-                color="default"
-              />
-            }
+            control={<Switch onChange={updateSortOrder} color="default" />}
             label={"Ascending"}
             className="switch"
           />

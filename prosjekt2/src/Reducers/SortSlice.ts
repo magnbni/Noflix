@@ -18,7 +18,7 @@ export const sortSlice = createSlice({
   reducers: {
     sortBy: (
       state,
-      action: PayloadAction<"" | "title" | "releaseYear" | "rating">
+      action: PayloadAction<"" | "title" | "releaseYear" | "rating">,
     ) => {
       state.sortBy = action.payload;
     },

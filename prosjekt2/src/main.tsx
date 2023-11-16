@@ -5,7 +5,7 @@ import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { Provider } from "react-redux";
-import { store } from '../app/store'
+import { store } from "../app/store";
 
 const client = new ApolloClient({
   uri: "http://it2810-14.idi.ntnu.no:4000/graphql",
