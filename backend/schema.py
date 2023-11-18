@@ -21,19 +21,23 @@ class Movie(MongoengineObjectType):
         }
         ordering = "title"
 
+
 class MovieEdge(graphene.ObjectType):
     cursor = graphene.String()
     node = graphene.Field(Movie)
 
     def resolve_cursor(self, info):
-        return base64.b64encode(str(self.node._id).encode('utf-8')).decode('utf-8')
+        return base64.b64encode(str(self.node._id).encode("utf-8")).decode("utf-8")
+
 
 class PageInfo(graphene.ObjectType):
     has_next_page = graphene.Boolean()
     has_previous_page = graphene.Boolean()
 
+
 def get_total_count_of_movies():
     return MovieModel.objects.count()
+
 
 class MovieConnection(graphene.relay.Connection):
     class Meta:
@@ -45,17 +49,18 @@ class MovieConnection(graphene.relay.Connection):
     def resolve_edges(self, info):
         edges = [MovieEdge(node=movie) for movie in self.iterable]
         return edges
-    
-    def resolve_page_info(self, info):
-        args = info.context['all_movies_args']
-        print(args)
-        first = args.get('first', 0)
-        after = args.get('after')
 
-        start = 0
+    def resolve_page_info(self, info):
+        args = info.context["all_movies_args"]
+        print(args)
+        first = args.get("first", 0)
+        last = args.get("last", 0)
+        before = args.get("before")
+        after = args.get("after")
+
         last_movie_id = None
         if after is not None:
-            last_movie_id = ObjectId(base64.b64decode(after).decode('utf-8'))
+            last_movie_id = ObjectId(base64.b64decode(after).decode("utf-8"))
 
         total_count = get_total_count_of_movies()
 
@@ -65,10 +70,21 @@ class MovieConnection(graphene.relay.Connection):
             has_next_page = remaining_movies.count() > first
         else:
             has_next_page = total_count > first
-        
-        has_previous_page = last_movie_id is not None
 
-        return PageInfo(has_next_page=has_next_page, has_previous_page=has_previous_page)
+        has_previous_page = False
+        if before:
+            before_id = ObjectId(base64.b64decode(before).decode("utf-8"))
+            # Check if there are any movies before this ID
+            has_previous_page = MovieModel.objects(_id__lt=before_id).count() > 0
+        elif after:
+            # If 'after' is provided but not 'before', check if there are movies before 'after'
+            after_id = ObjectId(base64.b64decode(after).decode("utf-8"))
+            has_previous_page = MovieModel.objects(_id__lt=after_id).count() > 0
+
+        return PageInfo(
+            has_next_page=has_next_page, has_previous_page=has_previous_page
+        )
+
 
 class User(MongoengineObjectType):
     class Meta:
@@ -132,24 +148,26 @@ class Query(graphene.ObjectType):
         MovieConnection,
         sort=SortEnum(),
         first=graphene.Int(),
+        last=graphene.Int(),
         title=graphene.String(),
         release_date=graphene.String(),
-        cursor=graphene.String(),
+        after=graphene.String(),
+        before=graphene.String(),
     )
 
-    def resolve_all_movies(
-        self, info, **args
-    ):
+    def resolve_all_movies(self, info, **args):
         query = MovieModel.objects.all()
-        
-        info.context['all_movies_args'] = args
 
-        sort= args.get('sort')
-        title = args.get('title')
-        release_date = args.get('release_date')
-        offset = args.get('offset')
-        first = args.get('first')
-        after = args.get('after')
+        info.context["all_movies_args"] = args
+
+        sort = args.get("sort")
+        title = args.get("title")
+        release_date = args.get("release_date")
+        offset = args.get("offset")
+        first = args.get("first")
+        last = args.get("last")
+        before = args.get("before")
+        after = args.get("after")
 
         if sort == "title_asc":
             query = query.order_by("title")
@@ -172,20 +190,31 @@ class Query(graphene.ObjectType):
                 query_skip = query_skip[offset : first + offset]
                 return query_skip
         
-        if after is not None:
-            after = base64.b64decode(after).decode('utf-8')
-            query = query.filter(_id__gt=ObjectId(after))
+        if after:
+            after_id = ObjectId(base64.b64decode(after).decode("utf-8"))
+            query = query.filter(_id__gt=after_id)
+            
+        if before:
+            before_id = ObjectId(base64.b64decode(before).decode("utf-8"))
+            query = query.filter(_id__lt=before_id)
+
         if first is not None:
-            query = query[:first]
+            query = query.limit(first)
+        elif last is not None:
+            query = query.order_by('-_id').limit(last).reverse()
+                
+
         return query
+
 
 class Mutation(graphene.ObjectType):
     node = Node.Field()
     auth_user = AuthenticateUser.Field()
     user_create = CreateUser.Field()
 
+
 if __name__ == "__main__":
     id = ObjectId("654b65d6671ff470fcdd7bfe")
-    print(base64.b64encode(str(id).encode('utf-8')).decode('utf-8'))
+    print(base64.b64encode(str(id).encode("utf-8")).decode("utf-8"))
 
 schema = graphene.Schema(query=Query, mutation=Mutation, types=[Movie, User])
