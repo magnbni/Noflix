@@ -169,6 +169,11 @@ class Query(graphene.ObjectType):
         before = args.get("before")
         after = args.get("after")
 
+        if first is not None and last is not None:
+            raise Exception("Cannot use 'first' and 'last' together in the same query.")
+        if before is not None and after is not None:
+            raise Exception("Cannot use 'before' and 'after' together in the same query.")
+
         if sort == "title_asc":
             query = query.order_by("title")
         elif sort == "title_desc":
