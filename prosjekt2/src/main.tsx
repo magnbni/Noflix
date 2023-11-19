@@ -8,7 +8,8 @@ import { Provider } from "react-redux";
 import { store } from "../app/store";
 
 const client = new ApolloClient({
-  uri: "http://it2810-14.idi.ntnu.no:4000/graphql",
+  // uri: "http://it2810-14.idi.ntnu.no:4000/graphql", // For deployment
+  uri: "http://localhost:4000/graphql", // For local development
   cache: new InMemoryCache(),
 });
 
@@ -21,5 +22,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         </Provider>
       </ApolloProvider>
     </BrowserRouter>
-  </React.StrictMode>,
+  </React.StrictMode>
 );
