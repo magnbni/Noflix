@@ -7,7 +7,17 @@ from graphene_mongo import MongoengineConnectionField, MongoengineObjectType
 from bson import ObjectId
 from models import Movie as MovieModel
 from models import User as UserModel
+from models import Director as DirectorModel
+from models import Genre as GenreModel
 
+# Need to define the embeddeddocuments so graphene recognizes them
+class GenreType(MongoengineObjectType):
+    class Meta:
+        model = GenreModel
+
+class DirectorType(MongoengineObjectType):
+    class Meta:
+        model = DirectorModel
 
 class Movie(MongoengineObjectType):
     class Meta:
