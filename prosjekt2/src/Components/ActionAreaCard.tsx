@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
 import { ReadOnlyRating } from "./BasicRating";
 import { MovieType } from "../types";
+import React from "react";
 
 /*
   Custom action card used to present each individual movie.
@@ -44,7 +45,7 @@ export default function ActionAreaCard(movie: MovieType) {
             style={{
               margin: "auto",
               width: "240px",
-              height: "350px",
+              height: "354px",
               backgroundSize: "cover",
               backgroundPosition: "center",
               borderRadius: "4px",
