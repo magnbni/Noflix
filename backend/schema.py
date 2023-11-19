@@ -12,11 +12,14 @@ from models import Director as DirectorModel
 from models import Genre as GenreModel
 
 # Need to define the embeddeddocuments so graphene recognizes them
-class GenreType(MongoengineObjectType):
+class Genre(MongoengineObjectType):
     class Meta:
+        name = "Genre"
+        description = "A genre"
         model = GenreModel
+        interfaces = (Node,)
 
-class DirectorType(MongoengineObjectType):
+class Director(MongoengineObjectType):
     class Meta:
         model = DirectorModel
 
@@ -209,6 +212,8 @@ class Query(graphene.ObjectType):
     node = Node.Field()
 
     all_users = MongoengineConnectionField(User)
+
+    all_genres = MongoengineConnectionField(Genre)
 
     all_movies = graphene.relay.ConnectionField(
         MovieConnection,
