@@ -1,6 +1,6 @@
 import { ApolloError, gql, useQuery } from "@apollo/client";
 import NestedModal from "../Components/NestedModal";
-import { MovieType } from "../types";
+import { MovieEdge, MovieType } from "../types";
 import "./PreviewMovies.css";
 
 interface category {
@@ -12,24 +12,38 @@ interface category {
 
 const GET_MOVIES_A = gql`
   query {
-    allMovies(sort: RELEASE_DATE_DESC, first: 10, title: "A") {
-      title
-      releaseDate
-      overview
-      voteAverage
-      posterPath
+    allMovies(sort: RELEASE_DATE_DESC, first: 12, title: "A") {
+      edges {
+        node {
+          title
+          releaseDate
+          genres {
+            name
+          }
+          overview
+          voteAverage
+          posterPath
+        }
+      }
     }
   }
 `;
 
 const GET_MOVIES_CHRISTMAS = gql`
   query {
-    allMovies(sort: RELEASE_DATE_DESC, first: 10, title: "Christmas") {
-      title
-      releaseDate
-      overview
-      voteAverage
-      posterPath
+    allMovies(sort: RELEASE_DATE_DESC, first: 12, title: "Christmas") {
+      edges {
+        node {
+          title
+          releaseDate
+          genres {
+            name
+          }
+          overview
+          voteAverage
+          posterPath
+        }
+      }
     }
   }
 `;
@@ -53,13 +67,13 @@ export default function PreviewMovies() {
   const categories: category[] = [
     {
       title: "Movies containing A in their title",
-      movies: data_a.allMovies,
+      movies: data_a.allMovies.edges.map((edge: MovieEdge) => edge.node),
       loading: loading_a,
       error: error_a,
     },
     {
       title: "Christmas movies",
-      movies: data_christ.allMovies,
+      movies: data_christ.allMovies.edges.map((edge: MovieEdge) => edge.node),
       loading: loading_christ,
       error: error_christ,
     },
@@ -72,8 +86,8 @@ export default function PreviewMovies() {
           <h3 className="movies-container-header">{category.title}</h3>
           <div className="movies-container">
             <div className="scrollable-container">
-              {category.movies.map((movie) => (
-                <div className="card" key={`movie-${movie.title}`}>
+              {category.movies.map((movie, index) => (
+                <div className="card" key={`movie-${movie.title || index}`}>
                   <NestedModal movie={movie} />
                 </div>
               ))}

@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import NestedModal from "../Components/NestedModal";
 import HeaderAndDrawer from "../Components/HeaderAndDrawer";
 import { gql, useQuery } from "@apollo/client";
-import { MovieType } from "../types";
+import { MovieEdge, MovieType } from "../types";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import leftArrow from "../assets/arrow-left.svg";
@@ -28,11 +28,16 @@ const getQuery = (sortOption: string, orderDirection: string, id?: string) => {
     return gql`
     query {
       allMovies(first: 12, title: "${id}") {
-        title
-        releaseDate
-        overview
-        voteAverage
-        posterPath
+        edges { 
+        	node {
+            title
+            releaseDate
+            genres {name}
+            overview
+            voteAverage
+            posterPath
+          }
+        }
       }
     }
   `;
@@ -41,11 +46,16 @@ const getQuery = (sortOption: string, orderDirection: string, id?: string) => {
   return gql`
     query {
       allMovies(first: 12, sort: ${sortValue}, title: "${id}") {
-        title
-        releaseDate
-        overview
-        voteAverage
-        posterPath
+        edges { 
+        	node {
+            title
+            releaseDate
+            genres {name}
+            overview
+            voteAverage
+            posterPath
+          }
+        }
       }
     }
   `;
@@ -58,14 +68,18 @@ export default function Results() {
   const { id } = useParams<string>();
 
   const sortOrderState = useSelector(
-    (state: RootState) => state.sort.sortOrder,
+    (state: RootState) => state.sort.sortOrder
   );
   const sortByState = useSelector((state: RootState) => state.sort.sortBy);
 
   const [loadedCount, setLoadedCount] = useState(1);
 
   const { loading, error, data } = useQuery(
-    getQuery(sortByState, sortOrderState, id),
+    getQuery(sortByState, sortOrderState, id)
+  );
+
+  const movies: MovieType[] = data?.allMovies.edges.map(
+    (edge: MovieEdge) => edge.node
   );
 
   const handleLoadMore = () => {
@@ -87,11 +101,11 @@ export default function Results() {
   return (
     <div className="results">
       <HeaderAndDrawer />
-      <h2>Search results for: "{id?.toUpperCase()}"</h2>
+      <h2>Search results for: "{id}"</h2>
       {(loading || error) && <p>{error ? error.message : "Loading..."}</p>}
       {data && (
         <div className="row">
-          {data.allMovies.map((movie: MovieType) => (
+          {movies.map((movie: MovieType) => (
             <div className="card" key={`movie-${movie.title}`}>
               <NestedModal movie={movie}></NestedModal>
             </div>
