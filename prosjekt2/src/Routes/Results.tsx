@@ -64,7 +64,7 @@ export default function Results() {
   const { id } = useParams<string>();
 
   const sortOrderState = useSelector(
-    (state: RootState) => state.sort.sortOrder
+    (state: RootState) => state.sort.sortOrder,
   );
 
   const sortByState = useSelector((state: RootState) => state.sort.sortBy);
@@ -84,8 +84,8 @@ export default function Results() {
   const [lastItemCursor, setLastItemCursor] = useState(null);
 
   if (!loading && !error) {
-    let newFirstItemCursor = data.allMovies.edges[0].cursor;
-    let newLastItemCursor =
+    const newFirstItemCursor = data.allMovies.edges[0].cursor;
+    const newLastItemCursor =
       data.allMovies.edges[data.allMovies.edges.length - 1].cursor;
     if (newFirstItemCursor !== firstItemCursor) {
       setFirstItemCursor(newFirstItemCursor);

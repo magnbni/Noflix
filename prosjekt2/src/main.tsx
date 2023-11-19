@@ -7,10 +7,10 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { Provider } from "react-redux";
 import { store } from "../app/store";
 
-let uri = "http://it2810-14.idi.ntnu.no:4000/graphql"
+let uri = "http://it2810-14.idi.ntnu.no:4000/graphql";
 
-if (import.meta.env.MODE === 'development') {
-  uri = "http://localhost:4000/graphql"
+if (import.meta.env.MODE === "development") {
+  uri = "http://localhost:4000/graphql";
 }
 
 const client = new ApolloClient({
