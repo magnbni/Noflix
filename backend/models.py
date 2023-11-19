@@ -6,7 +6,13 @@ from mongoengine.fields import ReferenceField, EmbeddedDocumentField, ObjectIdFi
 
 load_dotenv()
 
-class Genre(EmbeddedDocument):
+class Genre(Document):
+    meta = {"collection": os.getenv("MONGO_COLLECTION_GENRES")}
+    _id = StringField()
+    id = IntField()
+    name = StringField()
+
+class EmbeddedGenre(EmbeddedDocument):
     id = IntField()
     name = StringField()
 
@@ -30,7 +36,7 @@ class Movie(Document):
     backdrop_path = StringField()
     belongs_to_collection = StringField()
     budget = IntField()
-    genres = EmbeddedDocumentListField(Genre)
+    genres = EmbeddedDocumentListField(EmbeddedGenre)
     homepage = StringField()
     imdb_id = StringField()
     original_language = StringField()
