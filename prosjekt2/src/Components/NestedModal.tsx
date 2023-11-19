@@ -72,21 +72,36 @@ const NestedModal: React.FC<NestedModalProps> = ({ movie }) => {
           />
 
           <div>
-            <div
-              style={{
-                margin: "auto",
-                width: "240px",
-                height: "350px",
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundImage:
-                  "url(https://image.tmdb.org/t/p/original//" +
-                  movie.posterPath +
-                  ")",
-                borderRadius: "4px",
-                border: "2px solid #000000",
-              }}
-            />
+            {movie.posterPath ? (
+              <div
+                style={{
+                  margin: "auto",
+                  width: "240px",
+                  height: "350px",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  backgroundImage:
+                    "url(https://image.tmdb.org/t/p/original//" +
+                    movie.posterPath +
+                    ")",
+                  borderRadius: "4px",
+                  border: "2px solid #000000",
+                }}
+              />
+            ) : (
+              <div
+                style={{
+                  margin: "auto",
+                  width: "240px",
+                  height: "350px",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  borderRadius: "4px",
+                  backgroundImage:
+                    "url(https://lascrucesfilmfest.com/wp-content/uploads/2018/01/no-poster-available.jpg)",
+                }}
+              ></div>
+            )}
             <h2 style={{ marginBottom: "0px" }}>{movie.title}</h2>
             <div>
               <p style={{ marginTop: "0px", fontSize: "12px" }}>
@@ -99,7 +114,7 @@ const NestedModal: React.FC<NestedModalProps> = ({ movie }) => {
             </div>
             <p>{movie.overview}</p>
             <br />
-            <p style={{ marginBottom: "0px" }}>Your rating:</p>
+            <p style={{ marginBottom: "0px" }}>Set your rating:</p>
             {Rate(movie.voteAverage.valueOf() / 2)}
           </div>
         </Box>
