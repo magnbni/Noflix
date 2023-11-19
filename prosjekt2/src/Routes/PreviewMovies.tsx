@@ -49,7 +49,6 @@ const MOVIES_QUERY = gql`
   }
 `;
 
-
 export default function PreviewMovies() {
   const sortbyTitle = "title_desc";
   const sortbyDate = "release_date_desc";
@@ -66,35 +65,52 @@ export default function PreviewMovies() {
     },
   });
 
-  const { loading: loadHorror, error: errorHorror, data: dataHorror } = useQuery(MOVIES_QUERY, {
+  const {
+    loading: loadHorror,
+    error: errorHorror,
+    data: dataHorror,
+  } = useQuery(MOVIES_QUERY, {
     variables: {
       first: 20,
       genre: "Horror",
     },
   });
 
-  const { loading: loadAction, error: errorAction, data: dataAction } = useQuery(MOVIES_QUERY, {
+  const {
+    loading: loadAction,
+    error: errorAction,
+    data: dataAction,
+  } = useQuery(MOVIES_QUERY, {
     variables: {
       first: 20,
       genre: "Action",
     },
   });
 
-  const { loading: loadRomance, error: errorRomance, data: dataRomance } = useQuery(MOVIES_QUERY, {
+  const {
+    loading: loadRomance,
+    error: errorRomance,
+    data: dataRomance,
+  } = useQuery(MOVIES_QUERY, {
     variables: {
       first: 20,
       genre: "Romance",
     },
   });
 
-  const { loading: loadNewest, error: errorNewest, data: dataNewest } = useQuery(MOVIES_QUERY, {
+  const {
+    loading: loadNewest,
+    error: errorNewest,
+    data: dataNewest,
+  } = useQuery(MOVIES_QUERY, {
     variables: {
       first: 20,
       sort: sortbyDate,
     },
   });
 
-  if (loadHorror || loading_christ || loadAction || loadRomance || loadNewest) return "Loading...";
+  if (loadHorror || loading_christ || loadAction || loadRomance || loadNewest)
+    return "Loading...";
   if (errorHorror) return `Error! ${errorHorror.message}`;
   if (error_christ) return `Error! ${error_christ.message}`;
   if (errorAction) return `Error! ${errorAction.message}`;
