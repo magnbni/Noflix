@@ -1,5 +1,4 @@
 import base64
-import math
 import graphene
 import bcrypt
 from graphene.relay import Node
@@ -11,14 +10,17 @@ from models import Rating as RatingModel
 from models import Director as DirectorModel
 from models import Genre as GenreModel
 
+
 # Need to define the embeddeddocuments so graphene recognizes them
 class GenreType(MongoengineObjectType):
     class Meta:
         model = GenreModel
 
+
 class DirectorType(MongoengineObjectType):
     class Meta:
         model = DirectorModel
+
 
 class Movie(MongoengineObjectType):
     class Meta:
@@ -63,7 +65,6 @@ class MovieConnection(graphene.relay.Connection):
 
     def resolve_page_info(self, info):
         args = info.context["all_movies_args"]
-        print(args)
         first = args.get("first", 0)
         last = args.get("last", 0)
         before = args.get("before")
@@ -104,6 +105,7 @@ class Rating(MongoengineObjectType):
         model = RatingModel
         interfaces = (Node,)
 
+
 class Rating(MongoengineObjectType):
     class Meta:
         name = "Rating"
@@ -111,13 +113,14 @@ class Rating(MongoengineObjectType):
         model = RatingModel
         interfaces = (Node,)
 
+
 class User(MongoengineObjectType):
     class Meta:
         name = "User"
         description = "A user"
         model = UserModel
         interfaces = (Node,)
-    
+
     ratings = graphene.List(Rating)
 
 
@@ -158,9 +161,11 @@ class CreateUser(graphene.Mutation):
         user_model.save()
         return CreateUser(user_model=user_model)
 
+
 class RatingInput(graphene.InputObjectType):
     movie_id = graphene.String(required=True)
     rating_value = graphene.Int(required=True)
+
 
 class UpdateUserRatings(graphene.Mutation):
     class Arguments:
@@ -176,9 +181,9 @@ class UpdateUserRatings(graphene.Mutation):
 
             # Create Rating objects and add to user's ratings list
             for rating_input in ratings:
-                movie_id = rating_input['movie_id']
-            
-                rating_value = rating_input['rating_value']
+                movie_id = rating_input["movie_id"]
+
+                rating_value = rating_input["rating_value"]
 
                 # Create a new Rating
                 rating = RatingModel(movie_id=movie_id, rating=rating_value)
@@ -219,6 +224,8 @@ class Query(graphene.ObjectType):
         release_date=graphene.String(),
         after=graphene.String(),
         before=graphene.String(),
+        start_year=graphene.Int(),
+        end_year=graphene.Int(),
     )
 
     def resolve_all_movies(self, info, **args):
@@ -228,16 +235,19 @@ class Query(graphene.ObjectType):
 
         sort = args.get("sort")
         title = args.get("title")
-        release_date = args.get("release_date")
         first = args.get("first")
         last = args.get("last")
         before = args.get("before")
         after = args.get("after")
+        start_year = args.get("start_year")
+        end_year = args.get("end_year")
 
         if first is not None and last is not None:
             raise Exception("Cannot use 'first' and 'last' together in the same query.")
         if before is not None and after is not None:
-            raise Exception("Cannot use 'before' and 'after' together in the same query.")
+            raise Exception(
+                "Cannot use 'before' and 'after' together in the same query."
+            )
 
         if sort == "title_asc":
             query = query.order_by("title")
@@ -251,13 +261,17 @@ class Query(graphene.ObjectType):
         if title is not None:
             query = query.filter(title__icontains=title)
 
-        if release_date is not None:
-            query = query.filter(release_date__icontains=release_date)
-        
+        if start_year is not None and end_year is not None:
+            start_date = f"{start_year}-01-01"
+            end_date = f"{end_year}-12-31"
+            query = query.filter(
+                release_date__gte=start_date, release_date__lte=end_date
+            )
+
         if after:
             after_id = ObjectId(base64.b64decode(after).decode("utf-8"))
             query = query.filter(_id__gt=after_id)
-            
+
         if before:
             before_id = ObjectId(base64.b64decode(before).decode("utf-8"))
             query = query.filter(_id__lt=before_id)
@@ -265,8 +279,7 @@ class Query(graphene.ObjectType):
         if first is not None:
             query = query.limit(first)
         elif last is not None:
-            query = query.order_by('_id').limit(last)
-                
+            query = query.order_by("_id").limit(last)
 
         return query
 
