@@ -4,51 +4,57 @@ import Button from "@mui/material/Button";
 import NestedModal from "../Components/NestedModal";
 import HeaderAndDrawer from "../Components/HeaderAndDrawer";
 import { gql, useQuery } from "@apollo/client";
-import { MovieType } from "../types";
+import { MovieEdge } from "../types";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import leftArrow from "../assets/arrow-left.svg";
 import rightArrow from "../assets/arrow-right.svg";
-import doubleLeftArrow from "../assets/double-arrow-left.svg";
-import doubleRightArrow from "../assets/double-arrow-right.svg";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 
-const getQuery = (sortOption: string, orderDirection: string, id?: string) => {
-  let sortValue = "";
-  if (sortOption === "title" && orderDirection === "asc") {
-    sortValue = "TITLE_ASC";
-  } else if (sortOption === "title" && orderDirection === "desc") {
-    sortValue = "TITLE_DESC";
-  } else if (sortOption === "releaseYear" && orderDirection === "asc") {
-    sortValue = "RELEASE_DATE_ASC";
-  } else if (sortOption === "releaseYear" && orderDirection === "desc") {
-    sortValue = "RELEASE_DATE_DESC";
-  } else {
-    return gql`
-    query {
-      allMovies(first: 12, title: "${id}") {
-        title
-        releaseDate
-        overview
-        voteAverage
-        posterPath
+const MOVIES_QUERY = gql`
+  query allMovies(
+    $first: Int
+    $last: Int
+    $before: String
+    $after: String
+    $title: String
+    $sort: String
+  ) {
+    allMovies(
+      first: $first
+      last: $last
+      before: $before
+      after: $after
+      title: $title
+      sort: $sort
+    ) {
+      edges {
+        node {
+          title
+          releaseDate
+          voteAverage
+          posterPath
+          overview
+        }
+        cursor
+      }
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
       }
     }
-  `;
   }
+`;
 
-  return gql`
-    query {
-      allMovies(first: 12, sort: ${sortValue}, title: "${id}") {
-        title
-        releaseDate
-        overview
-        voteAverage
-        posterPath
-      }
-    }
-  `;
+const getSortValue = (sortOption: string, orderDirection: string) => {
+  let sortBy = "title";
+  if (sortOption && sortOption !== "") {
+    sortBy = sortOption.toLowerCase();
+  }
+  const sortOrder = orderDirection.toLowerCase();
+
+  return `${sortBy}_${sortOrder}`;
 };
 
 /* 
@@ -60,29 +66,40 @@ export default function Results() {
   const sortOrderState = useSelector(
     (state: RootState) => state.sort.sortOrder,
   );
+
   const sortByState = useSelector((state: RootState) => state.sort.sortBy);
 
-  const [loadedCount, setLoadedCount] = useState(1);
+  const [hasNextPage, setHasNextPage] = useState(true);
+  const [hasPreviousPage, setHasPreviousPage] = useState(false);
 
-  const { loading, error, data } = useQuery(
-    getQuery(sortByState, sortOrderState, id),
-  );
+  const { loading, error, data, fetchMore } = useQuery(MOVIES_QUERY, {
+    variables: {
+      first: 12,
+      sort: getSortValue(sortByState, sortOrderState),
+      title: id,
+    },
+  });
 
-  const handleLoadMore = () => {
-    setLoadedCount(loadedCount + 1);
-  };
+  const [firstItemCursor, setFirstItemCursor] = useState(null);
+  const [lastItemCursor, setLastItemCursor] = useState(null);
 
-  const handleLoadLess = () => {
-    setLoadedCount(loadedCount - 1);
-  };
-
-  const handleLoadFirst = () => {
-    setLoadedCount(1);
-  };
-
-  const handleLoadLast = () => {
-    setLoadedCount(999999);
-  };
+  if (!loading && !error) {
+    const newFirstItemCursor = data.allMovies.edges[0].cursor;
+    const newLastItemCursor =
+      data.allMovies.edges[data.allMovies.edges.length - 1].cursor;
+    if (newFirstItemCursor !== firstItemCursor) {
+      setFirstItemCursor(newFirstItemCursor);
+    }
+    if (newLastItemCursor !== lastItemCursor) {
+      setLastItemCursor(newLastItemCursor);
+    }
+    if (data.allMovies.pageInfo.hasNextPage !== hasNextPage) {
+      setHasNextPage(data.allMovies.pageInfo.hasNextPage);
+    }
+    if (data.allMovies.pageInfo.hasPreviousPage !== hasPreviousPage) {
+      setHasPreviousPage(data.allMovies.pageInfo.hasPreviousPage);
+    }
+  }
 
   return (
     <div className="results">
@@ -91,47 +108,62 @@ export default function Results() {
       {(loading || error) && <p>{error ? error.message : "Loading..."}</p>}
       {data && (
         <div className="row">
-          {data.allMovies.map((movie: MovieType) => (
-            <div className="card" key={`movie-${movie.title}`}>
-              <NestedModal movie={movie}></NestedModal>
+          {data.allMovies.edges.map((edge: MovieEdge) => (
+            <div className="card" key={`movie-${edge.node.title}`}>
+              <NestedModal movie={edge.node}></NestedModal>
             </div>
           ))}
         </div>
       )}
       <br />
       <ButtonGroup
-        disableElevation
         variant="contained"
-        aria-label="Disabled elevation buttons"
+        aria-label="Elevation buttons"
         className="buttonGroup"
       >
         <Button
+          disabled={!hasPreviousPage}
           onClick={() => {
-            handleLoadFirst();
-          }}
-        >
-          <img src={doubleLeftArrow} className="loadIcon" />
-        </Button>
-        <Button
-          onClick={() => {
-            handleLoadLess();
+            if (hasPreviousPage) {
+              fetchMore({
+                variables: {
+                  first: undefined,
+                  last: 12,
+                  before: firstItemCursor,
+                  after: undefined,
+                },
+                updateQuery: (prev, { fetchMoreResult }) => {
+                  if (!fetchMoreResult) return prev;
+                  console.log(fetchMoreResult);
+                  return fetchMoreResult;
+                },
+              });
+            }
           }}
         >
           <img src={leftArrow} className="loadIcon" />
         </Button>
         <Button
+          disabled={!hasNextPage}
           onClick={() => {
-            handleLoadMore();
+            if (hasNextPage) {
+              fetchMore({
+                variables: {
+                  first: 12,
+                  last: undefined,
+                  before: undefined,
+                  after: lastItemCursor,
+                },
+                updateQuery: (prev, { fetchMoreResult }) => {
+                  if (!fetchMoreResult) return prev;
+                  console.log(fetchMoreResult);
+                  return fetchMoreResult;
+                },
+              });
+            }
           }}
         >
           <img src={rightArrow} className="loadIcon" />
-        </Button>
-        <Button
-          onClick={() => {
-            handleLoadLast();
-          }}
-        >
-          <img src={doubleRightArrow} className="loadIcon" />
         </Button>
       </ButtonGroup>
       <br />

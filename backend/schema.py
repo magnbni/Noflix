@@ -212,7 +212,7 @@ class Query(graphene.ObjectType):
 
     all_movies = graphene.relay.ConnectionField(
         MovieConnection,
-        sort=SortEnum(),
+        sort=graphene.String(),
         first=graphene.Int(),
         last=graphene.Int(),
         title=graphene.String(),
@@ -229,7 +229,6 @@ class Query(graphene.ObjectType):
         sort = args.get("sort")
         title = args.get("title")
         release_date = args.get("release_date")
-        offset = args.get("offset")
         first = args.get("first")
         last = args.get("last")
         before = args.get("before")
@@ -254,12 +253,6 @@ class Query(graphene.ObjectType):
 
         if release_date is not None:
             query = query.filter(release_date__icontains=release_date)
-
-        if offset is not None:
-            query_skip = query[offset:]
-            if first is not None:
-                query_skip = query_skip[offset : first + offset]
-                return query_skip
         
         if after:
             after_id = ObjectId(base64.b64decode(after).decode("utf-8"))
@@ -272,7 +265,7 @@ class Query(graphene.ObjectType):
         if first is not None:
             query = query.limit(first)
         elif last is not None:
-            query = query.order_by('-_id').limit(last).reverse()
+            query = query.order_by('_id').limit(last)
                 
 
         return query
