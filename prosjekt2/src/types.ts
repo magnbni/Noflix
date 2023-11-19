@@ -6,16 +6,16 @@ export type MovieEdge = {
 export interface MovieType {
   title: string;
   releaseDate: string;
-  genres: GenreType[];
   overview: string;
   voteAverage: number;
   posterPath: string;
 }
 
-export interface GenreType {
-  name: string;
+export interface GenreEdge {
+  node: GenreType;
 }
 
-export interface MovieEdge {
-  node: MovieType[];
+export interface GenreType {
+  name: string;
+  id: string;
 }

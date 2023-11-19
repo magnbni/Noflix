@@ -5,7 +5,7 @@ import NestedModal from "../Components/NestedModal";
 import HeaderAndDrawer from "../Components/HeaderAndDrawer";
 import { gql, useQuery } from "@apollo/client";
 import { MovieEdge } from "../types";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import leftArrow from "../assets/arrow-left.svg";
 import rightArrow from "../assets/arrow-right.svg";
@@ -22,6 +22,7 @@ const MOVIES_QUERY = gql`
     $sort: String
     $startYear: Int
     $endYear: Int
+    $genre: String
   ) {
     allMovies(
       first: $first
@@ -32,6 +33,7 @@ const MOVIES_QUERY = gql`
       sort: $sort
       startYear: $startYear
       endYear: $endYear
+      genre: $genre
     ) {
       edges {
         node {
@@ -77,6 +79,10 @@ export default function Results() {
     (state: RootState) => state.sort.filterYear,
   );
 
+  const genreState = useSelector(
+    (state: RootState) => state.sort.filterByGenre,
+  );
+
   const [hasNextPage, setHasNextPage] = useState(true);
   const [hasPreviousPage, setHasPreviousPage] = useState(false);
 
@@ -87,6 +93,7 @@ export default function Results() {
       title: id,
       startYear: filterYearState[0],
       endYear: filterYearState[1],
+      genre: genreState,
     },
   });
 
@@ -155,7 +162,6 @@ export default function Results() {
                 },
                 updateQuery: (prev, { fetchMoreResult }) => {
                   if (!fetchMoreResult) return prev;
-                  console.log(fetchMoreResult);
                   return fetchMoreResult;
                 },
               });
@@ -177,7 +183,6 @@ export default function Results() {
                 },
                 updateQuery: (prev, { fetchMoreResult }) => {
                   if (!fetchMoreResult) return prev;
-                  console.log(fetchMoreResult);
                   return fetchMoreResult;
                 },
               });

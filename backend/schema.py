@@ -12,12 +12,14 @@ from models import Genre as GenreModel
 
 
 # Need to define the embeddeddocuments so graphene recognizes them
-class GenreType(MongoengineObjectType):
+class Genre(MongoengineObjectType):
     class Meta:
+        name = "Genre"
+        description = "A genre"
         model = GenreModel
+        interfaces = (Node,)
 
-
-class DirectorType(MongoengineObjectType):
+class Director(MongoengineObjectType):
     class Meta:
         model = DirectorModel
 
@@ -215,15 +217,17 @@ class Query(graphene.ObjectType):
 
     all_users = MongoengineConnectionField(User)
 
+    all_genres = MongoengineConnectionField(Genre)
+
     all_movies = graphene.relay.ConnectionField(
         MovieConnection,
-        sort=graphene.String(),
         first=graphene.Int(),
         last=graphene.Int(),
-        title=graphene.String(),
-        release_date=graphene.String(),
-        after=graphene.String(),
         before=graphene.String(),
+        after=graphene.String(),
+        sort=graphene.String(),
+        title=graphene.String(),
+        genre=graphene.String(),
         start_year=graphene.Int(),
         end_year=graphene.Int(),
     )
@@ -235,10 +239,14 @@ class Query(graphene.ObjectType):
 
         sort = args.get("sort")
         title = args.get("title")
+        release_date = args.get("release_date")
         first = args.get("first")
         last = args.get("last")
         before = args.get("before")
         after = args.get("after")
+        sort = args.get("sort")
+        title = args.get("title")
+        genre = args.get("genre")
         start_year = args.get("start_year")
         end_year = args.get("end_year")
 
@@ -268,6 +276,10 @@ class Query(graphene.ObjectType):
                 release_date__gte=start_date, release_date__lte=end_date
             )
 
+        
+        if genre is not None:
+            query = query.filter(genres__name__icontains=genre)
+        
         if after:
             after_id = ObjectId(base64.b64decode(after).decode("utf-8"))
             query = query.filter(_id__gt=after_id)
