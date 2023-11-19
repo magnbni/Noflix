@@ -1,10 +1,27 @@
 import os
 from dotenv import load_dotenv
 from mongoengine import Document, EmbeddedDocument
-from mongoengine.fields import StringField, IntField, ListField, BooleanField
-from mongoengine.fields import ReferenceField, EmbeddedDocumentField, ObjectIdField
+from mongoengine.fields import StringField, IntField, ListField, BooleanField, FloatField
+from mongoengine.fields import ReferenceField, EmbeddedDocumentField, ObjectIdField, EmbeddedDocumentListField
 
 load_dotenv()
+
+class Genre(EmbeddedDocument):
+    id = IntField()
+    name = StringField()
+
+class Director(EmbeddedDocument):
+    adult = BooleanField()
+    gender = IntField()
+    id = IntField()
+    known_for_department = StringField()
+    name = StringField()
+    original_name = StringField()
+    popularity = FloatField()
+    department = StringField()
+    job = StringField()
+    profile_path = StringField()
+    credit_id = StringField()
 
 class Movie(Document):
     meta = {"collection": os.getenv("MONGO_COLLECTION_MOVIES")}
@@ -13,7 +30,7 @@ class Movie(Document):
     backdrop_path = StringField()
     belongs_to_collection = StringField()
     budget = IntField()
-    genres = ListField()
+    genres = EmbeddedDocumentListField(Genre)
     homepage = StringField()
     imdb_id = StringField()
     original_language = StringField()
@@ -33,7 +50,12 @@ class Movie(Document):
     video = BooleanField()
     vote_average = IntField()
     vote_count = IntField()
-    directors = ListField()
+    directors = EmbeddedDocumentListField(Director)
+
+class Rating(EmbeddedDocument):
+    movie_id = StringField(required=True)
+    rating = IntField(required=True)
+
 
 class Rating(EmbeddedDocument):
     movie_id = StringField(required=True)
