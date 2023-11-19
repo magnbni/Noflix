@@ -5,7 +5,7 @@ import NestedModal from "../Components/NestedModal";
 import HeaderAndDrawer from "../Components/HeaderAndDrawer";
 import { gql, useQuery } from "@apollo/client";
 import { MovieEdge } from "../types";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import leftArrow from "../assets/arrow-left.svg";
 import rightArrow from "../assets/arrow-right.svg";
@@ -20,6 +20,8 @@ const MOVIES_QUERY = gql`
     $after: String
     $title: String
     $sort: String
+    $startYear: Int
+    $endYear: Int
   ) {
     allMovies(
       first: $first
@@ -28,6 +30,8 @@ const MOVIES_QUERY = gql`
       after: $after
       title: $title
       sort: $sort
+      startYear: $startYear
+      endYear: $endYear
     ) {
       edges {
         node {
@@ -69,16 +73,33 @@ export default function Results() {
 
   const sortByState = useSelector((state: RootState) => state.sort.sortBy);
 
+  const filterYearState = useSelector(
+    (state: RootState) => state.sort.filterYear,
+  );
+
   const [hasNextPage, setHasNextPage] = useState(true);
   const [hasPreviousPage, setHasPreviousPage] = useState(false);
 
-  const { loading, error, data, fetchMore } = useQuery(MOVIES_QUERY, {
+  const { loading, error, data, fetchMore, refetch } = useQuery(MOVIES_QUERY, {
     variables: {
       first: 12,
       sort: getSortValue(sortByState, sortOrderState),
       title: id,
+      startYear: filterYearState[0],
+      endYear: filterYearState[1],
     },
   });
+
+  useEffect(() => {
+    refetch({
+      first: 12,
+      sort: getSortValue(sortByState, sortOrderState),
+      title: id,
+      startYear: filterYearState[0],
+      endYear: filterYearState[1],
+    });
+  }),
+    [filterYearState, refetch, sortByState, sortOrderState, id];
 
   const [firstItemCursor, setFirstItemCursor] = useState(null);
   const [lastItemCursor, setLastItemCursor] = useState(null);
