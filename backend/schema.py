@@ -149,7 +149,7 @@ class CreateUser(graphene.Mutation):
         return CreateUser(user_model=user_model)
 
 class RatingInput(graphene.InputObjectType):
-    movie_id = graphene.ID(required=True)
+    movie_id = graphene.String(required=True)
     rating_value = graphene.Int(required=True)
 
 class UpdateUserRatings(graphene.Mutation):

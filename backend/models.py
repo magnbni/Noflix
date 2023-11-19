@@ -8,7 +8,7 @@ load_dotenv()
 
 class Movie(Document):
     meta = {"collection": os.getenv("MONGO_COLLECTION_MOVIES")}
-    _id = ObjectIdField(unique=True)
+    _id = StringField()
     adult = BooleanField()
     backdrop_path = StringField()
     belongs_to_collection = StringField()
@@ -42,7 +42,7 @@ class Rating(EmbeddedDocument):
 
 class User(Document):
     meta = {"collection": os.getenv("MONGO_COLLECTION_USERS")}
-    _id = ObjectIdField()
+    _id = StringField()
     email = StringField(unique=True)
     password = StringField()
     ratings = ListField(EmbeddedDocumentField(Rating))
