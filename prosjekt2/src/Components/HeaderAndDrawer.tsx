@@ -5,12 +5,14 @@ import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
+import TextField from "@mui/material/TextField";
 import TuningIcon from "../assets/tuning.svg";
 import CloseIcon from "../assets/close.svg";
 import "./HeaderAndDrawer.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { TextField } from "@mui/material";
+import { List } from "@mui/material";
+import FilterAndSort from "./FilterAndSort";
 
 const drawerWidth = 320;
 
@@ -70,7 +72,6 @@ export default function HeaderAndDrawer() {
   };
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    console.log(event.key);
     if (event.key === "Enter") {
       handleSearch(searchValue);
     }
@@ -91,23 +92,20 @@ export default function HeaderAndDrawer() {
                 <h1 className="headerName">Noflix</h1>
               </Link>
             </div>
-            {location.pathname !== "/project2" &&
-              location.pathname !== "/project2/" && (
-                <div className="searchHeader">
-                  <TextField
-                    onChange={handleSearchChange}
-                    onKeyDown={handleKeyPress}
-                  />
-                  <button
-                    onClick={() => {
-                      handleSearch(searchValue);
-                    }}
-                    className="searchButton"
-                  >
-                    Search
-                  </button>
-                </div>
-              )}
+            <div className="searchHeader">
+              <TextField
+                id="outlined-basic"
+                label="Search"
+                variant="outlined"
+                size="small"
+                fullWidth
+                sx={{
+                  maxWidth: "350px",
+                }}
+                onChange={handleSearchChange}
+                onKeyDown={handleKeyPress}
+              />
+            </div>
             {location.pathname.includes("project2/search/") && (
               <IconButton
                 color="inherit"
@@ -141,9 +139,9 @@ export default function HeaderAndDrawer() {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        {/* <List>
+        <List>
           <FilterAndSort />
-        </List> */}
+        </List>
         <Divider />
       </Drawer>
     </Box>

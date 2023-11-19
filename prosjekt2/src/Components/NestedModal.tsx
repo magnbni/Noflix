@@ -4,7 +4,7 @@ import Modal from "@mui/material/Modal";
 import ActionAreaCard from "./ActionAreaCard";
 import { grey } from "@mui/material/colors";
 import { Rate, ReadOnlyRating } from "./BasicRating";
-import { FilmOptionType } from "../types";
+import { MovieType } from "../types";
 import CloseIcon from "../assets/close.svg";
 
 const style = {
@@ -21,45 +21,12 @@ const style = {
   pb: 3,
 };
 
-// This code may be used in future versions of the application, and is thus left as is for now.
-
-// function ChildModal() {
-//   const [open, setOpen] = React.useState(false);
-//   const handleOpen = () => {
-//     setOpen(true);
-//   };
-//   const handleClose = () => {
-//     setOpen(false);
-//   };
-
-//   return (
-//     <React.Fragment>
-//       <Button onClick={handleOpen}>Open Child Modal</Button>
-//       <Modal
-//         open={open}
-//         onClose={handleClose}
-//         aria-labelledby="child-modal-title"
-//         aria-describedby="child-modal-description"
-//       >
-//         <Box sx={{ ...style, width: 200 }}>
-//           <h2 id="child-modal-title">Text in a child modal</h2>
-//           <p id="child-modal-description">
-//             Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-//           </p>
-//           <Button onClick={handleClose}>Close Child Modal</Button>
-//         </Box>
-//       </Modal>
-//     </React.Fragment>
-//   );
-// }
-
 interface NestedModalProps {
-  movie: FilmOptionType;
+  movie: MovieType;
 }
 
 /*
   This is the main modal used for showing the movies on the results page.
-  
 */
 const NestedModal: React.FC<NestedModalProps> = ({ movie }) => {
   const [open, setOpen] = React.useState(false);
@@ -108,27 +75,32 @@ const NestedModal: React.FC<NestedModalProps> = ({ movie }) => {
             <div
               style={{
                 margin: "auto",
-                width: "80%",
-                height: "200px",
+                width: "240px",
+                height: "350px",
                 backgroundSize: "cover",
+                backgroundPosition: "center",
                 backgroundImage:
                   "url(https://image.tmdb.org/t/p/original//" +
                   movie.posterPath +
                   ")",
+                borderRadius: "4px",
+                border: "2px solid #000000",
               }}
             />
             <h2 style={{ marginBottom: "0px" }}>{movie.title}</h2>
-            <p style={{ marginTop: "0px", fontSize: "12px" }}>
-              {movie.releaseDate}
-            </p>
+            <div>
+              <p style={{ marginTop: "0px", fontSize: "12px" }}>
+                {movie.releaseDate}
+              </p>
+
+              {movie.voteAverage >= 1 && movie.voteAverage <= 10
+                ? ReadOnlyRating(movie.voteAverage / 2)
+                : ReadOnlyRating(null)}
+            </div>
             <p>{movie.overview}</p>
             <br />
-            <p style={{ marginBottom: "0px" }}>Movie rating:</p>
-            {movie.voteAverage && (
-              <div>{ReadOnlyRating(movie.voteAverage.valueOf() / 2)}</div>
-            )}
             <p style={{ marginBottom: "0px" }}>Your rating:</p>
-            {Rate(2)}
+            {Rate(movie.voteAverage.valueOf() / 2)}
           </div>
         </Box>
       </Modal>
