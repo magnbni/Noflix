@@ -104,6 +104,7 @@ export default function Results() {
   return (
     <div className="results">
       <HeaderAndDrawer />
+      <h2>Search results for: "{id?.toUpperCase()}"</h2>
       {(loading || error) && <p>{error ? error.message : "Loading..."}</p>}
       {data && (
         <div className="row">
