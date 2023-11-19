@@ -4,12 +4,14 @@ export interface SortState {
   sortBy: "" | "title" | "releaseYear" | "rating";
   sortOrder: "asc" | "desc";
   filterYear: [number, number];
+  filterByGenre: string;
 }
 
 const initialState: SortState = {
   sortBy: "",
   sortOrder: "asc",
   filterYear: [1900, 2025],
+  filterByGenre: "",
 };
 
 export const sortSlice = createSlice({
@@ -28,9 +30,13 @@ export const sortSlice = createSlice({
     filterYear: (state, action: PayloadAction<[number, number]>) => {
       state.filterYear = action.payload;
     },
+    filterByGenre: (state, action: PayloadAction<string>) => {
+      state.filterByGenre = action.payload;
+    },
   },
 });
 
-export const { sortBy, sortOrder, filterYear } = sortSlice.actions;
+export const { sortBy, sortOrder, filterYear, filterByGenre } =
+  sortSlice.actions;
 
 export default sortSlice.reducer;
