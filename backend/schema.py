@@ -212,13 +212,13 @@ class Query(graphene.ObjectType):
 
     all_movies = graphene.relay.ConnectionField(
         MovieConnection,
-        sort=graphene.String(),
         first=graphene.Int(),
         last=graphene.Int(),
-        title=graphene.String(),
-        release_date=graphene.String(),
-        after=graphene.String(),
         before=graphene.String(),
+        after=graphene.String(),
+        sort=graphene.String(),
+        title=graphene.String(),
+        genre=graphene.String(),
     )
 
     def resolve_all_movies(self, info, **args):
@@ -226,13 +226,13 @@ class Query(graphene.ObjectType):
 
         info.context["all_movies_args"] = args
 
-        sort = args.get("sort")
-        title = args.get("title")
-        release_date = args.get("release_date")
         first = args.get("first")
         last = args.get("last")
         before = args.get("before")
         after = args.get("after")
+        sort = args.get("sort")
+        title = args.get("title")
+        genre = args.get("genre")
 
         if first is not None and last is not None:
             raise Exception("Cannot use 'first' and 'last' together in the same query.")
@@ -250,9 +250,9 @@ class Query(graphene.ObjectType):
 
         if title is not None:
             query = query.filter(title__icontains=title)
-
-        if release_date is not None:
-            query = query.filter(release_date__icontains=release_date)
+        
+        if genre is not None:
+            query = query.filter(genres__name__icontains=genre)
         
         if after:
             after_id = ObjectId(base64.b64decode(after).decode("utf-8"))
