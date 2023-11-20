@@ -70,17 +70,17 @@ export default function Results() {
   const { id } = useParams<string>();
 
   const sortOrderState = useSelector(
-    (state: RootState) => state.sort.sortOrder,
+    (state: RootState) => state.sort.sortOrder
   );
 
   const sortByState = useSelector((state: RootState) => state.sort.sortBy);
 
   const filterYearState = useSelector(
-    (state: RootState) => state.sort.filterYear,
+    (state: RootState) => state.sort.filterYear
   );
 
   const genreState = useSelector(
-    (state: RootState) => state.sort.filterByGenre,
+    (state: RootState) => state.sort.filterByGenre
   );
 
   const [hasNextPage, setHasNextPage] = useState(true);
@@ -107,26 +107,36 @@ export default function Results() {
     });
   }),
     [filterYearState, refetch, sortByState, sortOrderState, id];
-
   const [firstItemCursor, setFirstItemCursor] = useState(null);
   const [lastItemCursor, setLastItemCursor] = useState(null);
+  
+  try {
+    if (!loading && !error) {
+      const newFirstItemCursor = data.allMovies.edges[0].cursor;
+      const newLastItemCursor =
+        data.allMovies.edges[data.allMovies.edges.length - 1].cursor;
+      if (newFirstItemCursor !== firstItemCursor) {
+        setFirstItemCursor(newFirstItemCursor);
+      }
+      if (newLastItemCursor !== lastItemCursor) {
+        setLastItemCursor(newLastItemCursor);
+      }
+      if (data.allMovies.pageInfo.hasNextPage !== hasNextPage) {
+        setHasNextPage(data.allMovies.pageInfo.hasNextPage);
+      }
+      if (data.allMovies.pageInfo.hasPreviousPage !== hasPreviousPage) {
+        setHasPreviousPage(data.allMovies.pageInfo.hasPreviousPage);
+      }
+    }
+  } catch (error) {
+    return (
+      <>
+        <HeaderAndDrawer />
+        <h2>Search results for: "{id}"</h2>
 
-  if (!loading && !error) {
-    const newFirstItemCursor = data.allMovies.edges[0].cursor;
-    const newLastItemCursor =
-      data.allMovies.edges[data.allMovies.edges.length - 1].cursor;
-    if (newFirstItemCursor !== firstItemCursor) {
-      setFirstItemCursor(newFirstItemCursor);
-    }
-    if (newLastItemCursor !== lastItemCursor) {
-      setLastItemCursor(newLastItemCursor);
-    }
-    if (data.allMovies.pageInfo.hasNextPage !== hasNextPage) {
-      setHasNextPage(data.allMovies.pageInfo.hasNextPage);
-    }
-    if (data.allMovies.pageInfo.hasPreviousPage !== hasPreviousPage) {
-      setHasPreviousPage(data.allMovies.pageInfo.hasPreviousPage);
-    }
+        <p>You managed to find a search with 0.0000 hits :(</p>
+      </>
+    );
   }
 
   return (
