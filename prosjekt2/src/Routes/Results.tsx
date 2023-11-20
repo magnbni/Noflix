@@ -5,7 +5,7 @@ import NestedModal from "../Components/NestedModal";
 import HeaderAndDrawer from "../Components/HeaderAndDrawer";
 import { gql, useQuery } from "@apollo/client";
 import { MovieEdge } from "../types";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import leftArrow from "../assets/arrow-left.svg";
 import rightArrow from "../assets/arrow-right.svg";
@@ -132,7 +132,7 @@ export default function Results() {
   return (
     <div className="results">
       <HeaderAndDrawer />
-      <h2>Search results for: "{id?.toUpperCase()}"</h2>
+      <h2>Search results for: "{id}"</h2>
       {(loading || error) && <p>{error ? error.message : "Loading..."}</p>}
       {data && (
         <div className="row">
@@ -162,7 +162,6 @@ export default function Results() {
                 },
                 updateQuery: (prev, { fetchMoreResult }) => {
                   if (!fetchMoreResult) return prev;
-                  console.log(fetchMoreResult);
                   return fetchMoreResult;
                 },
               });
@@ -184,7 +183,6 @@ export default function Results() {
                 },
                 updateQuery: (prev, { fetchMoreResult }) => {
                   if (!fetchMoreResult) return prev;
-                  console.log(fetchMoreResult);
                   return fetchMoreResult;
                 },
               });
