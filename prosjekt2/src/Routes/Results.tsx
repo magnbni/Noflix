@@ -70,17 +70,17 @@ export default function Results() {
   const { id } = useParams<string>();
 
   const sortOrderState = useSelector(
-    (state: RootState) => state.sort.sortOrder
+    (state: RootState) => state.sort.sortOrder,
   );
 
   const sortByState = useSelector((state: RootState) => state.sort.sortBy);
 
   const filterYearState = useSelector(
-    (state: RootState) => state.sort.filterYear
+    (state: RootState) => state.sort.filterYear,
   );
 
   const genreState = useSelector(
-    (state: RootState) => state.sort.filterByGenre
+    (state: RootState) => state.sort.filterByGenre,
   );
 
   const [hasNextPage, setHasNextPage] = useState(true);
@@ -109,7 +109,7 @@ export default function Results() {
     [filterYearState, refetch, sortByState, sortOrderState, id];
   const [firstItemCursor, setFirstItemCursor] = useState(null);
   const [lastItemCursor, setLastItemCursor] = useState(null);
-  
+
   try {
     if (!loading && !error) {
       const newFirstItemCursor = data.allMovies.edges[0].cursor;
