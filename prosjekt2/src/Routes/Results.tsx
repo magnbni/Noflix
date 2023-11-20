@@ -130,12 +130,12 @@ export default function Results() {
     }
   } catch (error) {
     return (
-      <>
+      <div className="nohits">
         <HeaderAndDrawer />
         <h2>Search results for: "{id}"</h2>
 
         <p>You managed to find a search with 0.0000 hits :(</p>
-      </>
+      </div>
     );
   }
 
