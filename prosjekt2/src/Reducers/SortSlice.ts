@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface SortState {
-  sortBy: "" | "title" | "releaseYear" | "rating";
+  sortBy: "" | "title" | "release_date" | "rating";
   sortOrder: "asc" | "desc";
   filterYear: [number, number];
   filterByGenre: string;
@@ -20,7 +20,7 @@ export const sortSlice = createSlice({
   reducers: {
     sortBy: (
       state,
-      action: PayloadAction<"" | "title" | "releaseYear" | "rating">,
+      action: PayloadAction<"" | "title" | "release_date" | "rating">,
     ) => {
       state.sortBy = action.payload;
     },
