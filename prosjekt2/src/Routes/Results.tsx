@@ -107,26 +107,36 @@ export default function Results() {
     });
   }),
     [filterYearState, refetch, sortByState, sortOrderState, id];
-
   const [firstItemCursor, setFirstItemCursor] = useState(null);
   const [lastItemCursor, setLastItemCursor] = useState(null);
 
-  if (!loading && !error) {
-    const newFirstItemCursor = data.allMovies.edges[0].cursor;
-    const newLastItemCursor =
-      data.allMovies.edges[data.allMovies.edges.length - 1].cursor;
-    if (newFirstItemCursor !== firstItemCursor) {
-      setFirstItemCursor(newFirstItemCursor);
+  try {
+    if (!loading && !error) {
+      const newFirstItemCursor = data.allMovies.edges[0].cursor;
+      const newLastItemCursor =
+        data.allMovies.edges[data.allMovies.edges.length - 1].cursor;
+      if (newFirstItemCursor !== firstItemCursor) {
+        setFirstItemCursor(newFirstItemCursor);
+      }
+      if (newLastItemCursor !== lastItemCursor) {
+        setLastItemCursor(newLastItemCursor);
+      }
+      if (data.allMovies.pageInfo.hasNextPage !== hasNextPage) {
+        setHasNextPage(data.allMovies.pageInfo.hasNextPage);
+      }
+      if (data.allMovies.pageInfo.hasPreviousPage !== hasPreviousPage) {
+        setHasPreviousPage(data.allMovies.pageInfo.hasPreviousPage);
+      }
     }
-    if (newLastItemCursor !== lastItemCursor) {
-      setLastItemCursor(newLastItemCursor);
-    }
-    if (data.allMovies.pageInfo.hasNextPage !== hasNextPage) {
-      setHasNextPage(data.allMovies.pageInfo.hasNextPage);
-    }
-    if (data.allMovies.pageInfo.hasPreviousPage !== hasPreviousPage) {
-      setHasPreviousPage(data.allMovies.pageInfo.hasPreviousPage);
-    }
+  } catch (error) {
+    return (
+      <div className="nohits">
+        <HeaderAndDrawer />
+        <h2>Search results for: "{id}"</h2>
+
+        <p>You managed to find a search with 0.0000 hits :(</p>
+      </div>
+    );
   }
 
   return (
