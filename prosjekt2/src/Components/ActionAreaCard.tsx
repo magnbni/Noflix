@@ -1,29 +1,35 @@
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import { CardActionArea } from "@mui/material";
+import { CardActionArea, Skeleton } from "@mui/material";
 import { ReadOnlyRating } from "./BasicRating";
 import { MovieType } from "../types";
 
 /*
   Custom action card used to present each individual movie.
 */
-export default function ActionAreaCard(movie: MovieType) {
-  const truncatedTitle =
-    movie.title.length > 19 ? movie.title.slice(0, 19) + "..." : movie.title;
-  const date =
+export default function ActionAreaCard(movie: MovieType | undefined) {
+  const truncatedTitle = movie
+    ? movie.title.length > 19
+      ? movie.title.slice(0, 19) + "..."
+      : movie.title
+    : "";
+  const date = movie ? (
     movie.releaseDate.length >= 9 ? (
       new Date(movie.releaseDate).toLocaleDateString("en-GB")
     ) : (
       <br />
-    );
+    )
+  ) : (
+    ""
+  );
 
   return (
     // Material-UI Card component with custom styles
     <Card sx={{ width: 300, heigth: 350 }}>
       <CardActionArea>
         <br />
-        {movie.posterPath ? (
+        {movie && (
           <div
             style={{
               margin: "auto",
@@ -39,33 +45,39 @@ export default function ActionAreaCard(movie: MovieType) {
               border: "2px solid #000000",
             }}
           />
-        ) : (
-          <div
+        )}
+        {!movie && (
+          <Skeleton
+            variant="rectangular"
+            width={240}
+            height={350}
             style={{
               margin: "auto",
-              width: "240px",
-              height: "354px",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
               borderRadius: "4px",
-              backgroundImage:
-                "url(https://lascrucesfilmfest.com/wp-content/uploads/2018/01/no-poster-available.jpg)",
+              border: "2px solid #000000",
             }}
-          ></div>
+          />
         )}
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            {truncatedTitle}
+            {truncatedTitle === "" ? <Skeleton /> : truncatedTitle}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {date}
+            {date === "" ? <Skeleton /> : date}
           </Typography>
         </CardContent>
-        <div style={{ paddingLeft: "13px", paddingBottom: "10px" }}>
-          {movie.voteAverage >= 1 && movie.voteAverage <= 10
-            ? ReadOnlyRating(movie.voteAverage / 2)
-            : ReadOnlyRating(null)}
-        </div>
+        {movie && (
+          <div style={{ paddingLeft: "13px", paddingBottom: "10px" }}>
+            {movie.voteAverage >= 1 && movie.voteAverage <= 10
+              ? ReadOnlyRating(movie.voteAverage / 2)
+              : ReadOnlyRating(null)}
+          </div>
+        )}
+        {!movie && (
+          <div style={{ paddingLeft: "13px", paddingBottom: "10px" }}>
+            <Skeleton variant="rectangular" width={100} height={27} />
+          </div>
+        )}
       </CardActionArea>
     </Card>
   );

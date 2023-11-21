@@ -9,15 +9,15 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import leftArrow from "../assets/arrow-left.svg";
 import rightArrow from "../assets/arrow-right.svg";
+import doubleLeftArrow from "../assets/double-arrow-left.svg";
+import doubleRightArrow from "../assets/double-arrow-right.svg";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 
 const MOVIES_QUERY = gql`
   query allMovies(
-    $first: Int
-    $last: Int
-    $before: String
-    $after: String
+    $page: Int
+    $perPage: Int
     $title: String
     $sort: String
     $startYear: Int
@@ -25,10 +25,8 @@ const MOVIES_QUERY = gql`
     $genre: String
   ) {
     allMovies(
-      first: $first
-      last: $last
-      before: $before
-      after: $after
+      page: $page
+      perPage: $perPage
       title: $title
       sort: $sort
       startYear: $startYear
@@ -43,23 +41,25 @@ const MOVIES_QUERY = gql`
           posterPath
           overview
         }
-        cursor
       }
       pageInfo {
         hasNextPage
         hasPreviousPage
       }
+      totalPages
     }
   }
 `;
 
 const getSortValue = (sortOption: string, orderDirection: string) => {
-  let sortBy = "title";
-  if (sortOption && sortOption !== "") {
-    sortBy = sortOption.toLowerCase();
-  }
+  const sortBy = sortOption.toLowerCase();
   const sortOrder = orderDirection.toLowerCase();
-
+  if (!["title", "release_date", "rating"].includes(sortBy)) {
+    return "";
+  }
+  if (!["asc", "desc"].includes(sortOrder)) {
+    return "";
+  }
   return `${sortBy}_${sortOrder}`;
 };
 
@@ -68,6 +68,8 @@ const getSortValue = (sortOption: string, orderDirection: string) => {
 */
 export default function Results() {
   const { id } = useParams<string>();
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   const sortOrderState = useSelector(
     (state: RootState) => state.sort.sortOrder,
@@ -83,12 +85,10 @@ export default function Results() {
     (state: RootState) => state.sort.filterByGenre,
   );
 
-  const [hasNextPage, setHasNextPage] = useState(true);
-  const [hasPreviousPage, setHasPreviousPage] = useState(false);
-
-  const { loading, error, data, fetchMore, refetch } = useQuery(MOVIES_QUERY, {
+  const { loading, error, data } = useQuery(MOVIES_QUERY, {
     variables: {
-      first: 12,
+      page: page,
+      per_page: 12,
       sort: getSortValue(sortByState, sortOrderState),
       title: id,
       startYear: filterYearState[0],
@@ -98,52 +98,28 @@ export default function Results() {
   });
 
   useEffect(() => {
-    refetch({
-      first: 12,
-      sort: getSortValue(sortByState, sortOrderState),
-      title: id,
-      startYear: filterYearState[0],
-      endYear: filterYearState[1],
-    });
-  }),
-    [filterYearState, refetch, sortByState, sortOrderState, id];
-  const [firstItemCursor, setFirstItemCursor] = useState(null);
-  const [lastItemCursor, setLastItemCursor] = useState(null);
-
-  try {
-    if (!loading && !error) {
-      const newFirstItemCursor = data.allMovies.edges[0].cursor;
-      const newLastItemCursor =
-        data.allMovies.edges[data.allMovies.edges.length - 1].cursor;
-      if (newFirstItemCursor !== firstItemCursor) {
-        setFirstItemCursor(newFirstItemCursor);
-      }
-      if (newLastItemCursor !== lastItemCursor) {
-        setLastItemCursor(newLastItemCursor);
-      }
-      if (data.allMovies.pageInfo.hasNextPage !== hasNextPage) {
-        setHasNextPage(data.allMovies.pageInfo.hasNextPage);
-      }
-      if (data.allMovies.pageInfo.hasPreviousPage !== hasPreviousPage) {
-        setHasPreviousPage(data.allMovies.pageInfo.hasPreviousPage);
-      }
+    if (data) {
+      setTotalPages(data.allMovies.totalPages);
     }
-  } catch (error) {
-    return (
-      <div className="nohits">
-        <HeaderAndDrawer />
-        <h2>Search results for: "{id}"</h2>
-
-        <p>You managed to find a search with 0.0000 hits :(</p>
-      </div>
-    );
-  }
+  }, [data]);
 
   return (
     <div className="results">
       <HeaderAndDrawer />
       <h2>Search results for: "{id}"</h2>
-      {(loading || error) && <p>{error ? error.message : "Loading..."}</p>}
+      {
+        // if loading, map an array of length 12 of undefined to the NestedModal component
+        loading && (
+          <div className="row">
+            {[...Array(12)].map((_, i) => (
+              <div className="card" key={`movie-${i}`}>
+                <NestedModal movie={undefined}></NestedModal>
+              </div>
+            ))}
+          </div>
+        )
+      }
+      {error && error.message}
       {data && (
         <div className="row">
           {data.allMovies.edges.map((edge: MovieEdge) => (
@@ -160,46 +136,47 @@ export default function Results() {
         className="buttonGroup"
       >
         <Button
-          disabled={!hasPreviousPage}
+          disabled={data ? !data.allMovies.pageInfo.hasPreviousPage : true}
           onClick={() => {
-            if (hasPreviousPage) {
-              fetchMore({
-                variables: {
-                  first: undefined,
-                  last: 12,
-                  before: firstItemCursor,
-                  after: undefined,
-                },
-                updateQuery: (prev, { fetchMoreResult }) => {
-                  if (!fetchMoreResult) return prev;
-                  return fetchMoreResult;
-                },
-              });
+            if (data.allMovies.pageInfo.hasPreviousPage) {
+              setPage(1);
+            }
+          }}
+        >
+          <img src={doubleLeftArrow} className="loadIcon" />
+        </Button>
+        <Button
+          disabled={data ? !data.allMovies.pageInfo.hasPreviousPage : true}
+          onClick={() => {
+            if (data.allMovies.pageInfo.hasPreviousPage) {
+              setPage(page - 1);
             }
           }}
         >
           <img src={leftArrow} className="loadIcon" />
         </Button>
+        <Button disabled className="pageCounterButton">
+          {page} of {totalPages}
+        </Button>
         <Button
-          disabled={!hasNextPage}
+          disabled={data ? !data.allMovies.pageInfo.hasNextPage : true}
           onClick={() => {
-            if (hasNextPage) {
-              fetchMore({
-                variables: {
-                  first: 12,
-                  last: undefined,
-                  before: undefined,
-                  after: lastItemCursor,
-                },
-                updateQuery: (prev, { fetchMoreResult }) => {
-                  if (!fetchMoreResult) return prev;
-                  return fetchMoreResult;
-                },
-              });
+            if (data.allMovies.pageInfo.hasNextPage) {
+              setPage(page + 1);
             }
           }}
         >
           <img src={rightArrow} className="loadIcon" />
+        </Button>
+        <Button
+          disabled={data ? !data.allMovies.pageInfo.hasNextPage : true}
+          onClick={() => {
+            if (data.allMovies.pageInfo.hasNextPage) {
+              setPage(data.allMovies.totalPages);
+            }
+          }}
+        >
+          <img src={doubleRightArrow} className="loadIcon" />
         </Button>
       </ButtonGroup>
       <br />
