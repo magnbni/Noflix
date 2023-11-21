@@ -266,32 +266,25 @@ def decode_cursor(cursor):
     return json.loads(json_data)
 
 
-def apply_cursor_to_query(query, cursor, sort_order):
+def apply_cursor_to_query(query, cursor, sort_order, is_before=False):
     cursor_data = decode_cursor(cursor)
+    id_condition = Q(_id__lt=ObjectId(cursor_data['id'])) if is_before else Q(_id__gt=ObjectId(cursor_data['id']))
 
     if sort_order == "title_asc":
-        return query.filter(
-            Q(title__gt=cursor_data['title']) |
-            (Q(title=cursor_data['title']) & Q(_id__gt=ObjectId(cursor_data['id'])))
-        )
+        title_condition = Q(title__lt=cursor_data['title']) if is_before else Q(title__gt=cursor_data['title'])
+        return query.filter(title_condition | (Q(title=cursor_data['title']) & id_condition))
     elif sort_order == "title_desc":
-        return query.filter(
-            Q(title__lt=cursor_data['title']) |
-            (Q(title=cursor_data['title']) & Q(_id__lt=ObjectId(cursor_data['id'])))
-        )
+        title_condition = Q(title__gt=cursor_data['title']) if is_before else Q(title__lt=cursor_data['title'])
+        return query.filter(title_condition | (Q(title=cursor_data['title']) & id_condition))
     elif sort_order == "release_date_asc":
-        return query.filter(
-            Q(release_date__gt=cursor_data['release_date']) |
-            (Q(release_date=cursor_data['release_date']) & Q(_id__gt=ObjectId(cursor_data['id'])))
-        )
+        date_condition = Q(release_date__lt=cursor_data['release_date']) if is_before else Q(release_date__gt=cursor_data['release_date'])
+        return query.filter(date_condition | (Q(release_date=cursor_data['release_date']) & id_condition))
     elif sort_order == "release_date_desc":
-        return query.filter(
-            Q(release_date__lt=cursor_data['release_date']) |
-            (Q(release_date=cursor_data['release_date']) & Q(_id__lt=ObjectId(cursor_data['id'])))
-        )
+        date_condition = Q(release_date__gt=cursor_data['release_date']) if is_before else Q(release_date__lt=cursor_data['release_date'])
+        return query.filter(date_condition | (Q(release_date=cursor_data['release_date']) & id_condition))
     else:
         # Default to sorting by _id
-        return query.filter(_id__gt=ObjectId(cursor_data['id']))
+        return query.filter(id_condition)
 
 
 class Query(graphene.ObjectType):
@@ -346,21 +339,28 @@ class Query(graphene.ObjectType):
             )
 
         if after:
-            # after_id = ObjectId(base64.b64decode(after).decode("utf-8"))
-            # query = query.filter(_id__gt=after_id)
             query = apply_cursor_to_query(query, after, sort)
 
         if before:
-            # before_id = ObjectId(base64.b64decode(before).decode("utf-8"))
-            # query = query.filter(_id__lt=before_id)
-            query = apply_cursor_to_query(query, before, sort)
+            query = apply_cursor_to_query(query, before, sort, is_before=True)
 
         if first is not None:
             query = query.limit(first)
         elif last is not None:
-            total = query.count()
-            offset = max(0, total - last)
-            query = query.order_by("_id")[offset:]
+            # Reverse the sort order for 'last' items retrieval
+            if sort and 'desc' in sort:
+                sort = sort.replace('desc', 'asc')
+            elif sort and 'asc' in sort:
+                sort = sort.replace('asc', 'desc')
+            else:
+                # If no sort order is specified, default to descending '_id'
+                sort = '-_id'
+
+            query = query.order_by(sort).limit(last)
+            
+            # If we reversed the sort order to fetch the last items, we need to reverse the result set
+            if before:
+                query = list(query)[::-1]
 
         return query
 
