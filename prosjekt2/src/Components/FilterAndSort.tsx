@@ -71,13 +71,13 @@ const GENRES_QUERY = gql`
 export default function FilterAndSort() {
   const dispatch = useDispatch();
   const sortOrderState = useSelector(
-    (state: RootState) => state.sort.sortOrder,
+    (state: RootState) => state.sort.sortOrder
   );
   const filterYearState = useSelector(
-    (state: RootState) => state.sort.filterYear,
+    (state: RootState) => state.sort.filterYear
   );
   const genreState = useSelector(
-    (state: RootState) => state.sort.filterByGenre,
+    (state: RootState) => state.sort.filterByGenre
   );
   const marks = createMarks();
 
@@ -85,7 +85,7 @@ export default function FilterAndSort() {
     dispatch(sortOrder(sortOrderState == "asc" ? "desc" : "asc"));
   };
 
-  const updateSortBy = (navn: "" | "title" | "releaseYear" | "rating") => {
+  const updateSortBy = (navn: "" | "title" | "release_date" | "rating") => {
     dispatch(sortBy(navn));
   };
 
@@ -123,7 +123,9 @@ export default function FilterAndSort() {
               />
               <FormControlLabel
                 value="Year"
-                control={<Radio onChange={() => updateSortBy("releaseYear")} />}
+                control={
+                  <Radio onChange={() => updateSortBy("release_date")} />
+                }
                 label="Year"
               />
               <FormControlLabel
