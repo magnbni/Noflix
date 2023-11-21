@@ -71,13 +71,13 @@ const GENRES_QUERY = gql`
 export default function FilterAndSort() {
   const dispatch = useDispatch();
   const sortOrderState = useSelector(
-    (state: RootState) => state.sort.sortOrder
+    (state: RootState) => state.sort.sortOrder,
   );
   const filterYearState = useSelector(
-    (state: RootState) => state.sort.filterYear
+    (state: RootState) => state.sort.filterYear,
   );
   const genreState = useSelector(
-    (state: RootState) => state.sort.filterByGenre
+    (state: RootState) => state.sort.filterByGenre,
   );
   const marks = createMarks();
 
