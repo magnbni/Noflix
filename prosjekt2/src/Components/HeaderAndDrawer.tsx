@@ -117,6 +117,7 @@ export default function HeaderAndDrawer() {
                 fullWidth
                 onChange={handleSearchChange}
                 onKeyDown={handleKeyPress}
+                autoComplete='off'
               />
             </div>
           )}
