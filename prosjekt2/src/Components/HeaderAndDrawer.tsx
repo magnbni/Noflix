@@ -1,30 +1,30 @@
-import { styled } from "@mui/material/styles"
-import Box from "@mui/material/Box"
-import Drawer from "@mui/material/Drawer"
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar"
-import Toolbar from "@mui/material/Toolbar"
-import Divider from "@mui/material/Divider"
-import IconButton from "@mui/material/IconButton"
-import TextField from "@mui/material/TextField"
-import TuningIcon from "../assets/tuning.svg"
-import CloseIcon from "../assets/close.svg"
-import Login from "../assets/login.svg"
-import Logout from "../assets/logout.svg"
+import { styled } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import TextField from "@mui/material/TextField";
+import TuningIcon from "../assets/tuning.svg";
+import CloseIcon from "../assets/close.svg";
+import Login from "../assets/login.svg";
+import Logout from "../assets/logout.svg";
 
-import "./HeaderAndDrawer.css"
-import { Link, useLocation, useNavigate } from "react-router-dom"
-import { useEffect, useState } from "react"
-import { List } from "@mui/material"
-import FilterAndSort from "./FilterAndSort"
-import { RootState } from "../../app/store"
-import { useDispatch, useSelector } from "react-redux"
-import { authUser } from "../Reducers/UserSlice"
-import { Avatar } from "@mui/material"
+import "./HeaderAndDrawer.css";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { List } from "@mui/material";
+import FilterAndSort from "./FilterAndSort";
+import { RootState } from "../../app/store";
+import { useDispatch, useSelector } from "react-redux";
+import { authUser } from "../Reducers/UserSlice";
+import { Avatar } from "@mui/material";
 
-const drawerWidth = 320
+const drawerWidth = 320;
 
 interface AppBarProps extends MuiAppBarProps {
-  open?: boolean
+  open?: boolean;
 }
 
 const AppBar = styled(MuiAppBar, {
@@ -42,7 +42,7 @@ const AppBar = styled(MuiAppBar, {
     }),
     marginRight: drawerWidth,
   }),
-}))
+}));
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -50,97 +50,97 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 1),
   ...theme.mixins.toolbar,
   justifyContent: "flex-start",
-}))
+}));
 
 export default function HeaderAndDrawer() {
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
-  const location = useLocation()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const location = useLocation();
 
-  const [searchValue, setSearchValue] = useState<string>("")
-  const [, setSelectedMovie] = useState<string | null>(null)
-  const [open, setOpen] = useState(false)
-  const authUserState = useSelector((state: RootState) => state.user.authUser)
+  const [searchValue, setSearchValue] = useState<string>("");
+  const [, setSelectedMovie] = useState<string | null>(null);
+  const [open, setOpen] = useState(false);
+  const authUserState = useSelector((state: RootState) => state.user.authUser);
 
   const handleDrawerOpen = () => {
-    setOpen(true)
-  }
+    setOpen(true);
+  };
 
   const handleDrawerClose = () => {
-    setOpen(false)
-  }
+    setOpen(false);
+  };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(event.target.value)
-  }
+    setSearchValue(event.target.value);
+  };
 
   const handleSearch = (selectedOption: string | null) => {
     if (searchValue !== "") {
-      setSelectedMovie(selectedOption)
-      navigate(`/search/${searchValue}`)
-      window.location.reload()
+      setSelectedMovie(selectedOption);
+      navigate(`/search/${searchValue}`);
+      window.location.reload();
     }
-  }
+  };
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
-      handleSearch(searchValue)
+      handleSearch(searchValue);
     }
-  }
+  };
 
   const handleLogout = () => {
-    dispatch(authUser(false))
-  }
+    dispatch(authUser(false));
+  };
 
   const handleLogIn = () => {
-    navigate("/login")
-  }
+    navigate("/login");
+  };
 
   useEffect(() => {
-    console.log(authUserState)
-  }, [])
+    console.log(authUserState);
+  }, []);
 
   return (
     <Box sx={{ display: "flex" }}>
-      <AppBar position='fixed' open={open}>
+      <AppBar position="fixed" open={open}>
         <Toolbar>
-          <div className='header'>
-            <div className='icon'>
-              <Link to='/' className='logoAndTitle'>
+          <div className="header">
+            <div className="icon">
+              <Link to="/" className="logoAndTitle">
                 <img
-                  src='https://upload.wikimedia.org/wikipedia/commons/3/3f/Film_reel.svg'
+                  src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Film_reel.svg"
                   style={{ height: 45 }}
-                  className='icon'
+                  className="icon"
                 />
-                <h1 className='headerName'>Noflix</h1>
+                <h1 className="headerName">Noflix</h1>
               </Link>
             </div>
             {!location.pathname.includes("login") && (
-              <div className='searchHeader' style={{ maxWidth: "350px" }}>
+              <div className="searchHeader" style={{ maxWidth: "350px" }}>
                 <TextField
-                  id='outlined-basic'
-                  label='Search'
-                  variant='outlined'
-                  size='small'
+                  id="outlined-basic"
+                  label="Search"
+                  variant="outlined"
+                  size="small"
                   fullWidth
                   onChange={handleSearchChange}
                   onKeyDown={handleKeyPress}
                 />
                 {/* Fix styling lol */}
-              <Avatar alt='Remy Sharp'>
-                <button onClick={handleLogIn}>U</button>
-              </Avatar>
-            </div>
+                <Avatar alt="Remy Sharp">
+                  <button onClick={handleLogIn}>U</button>
+                </Avatar>
+              </div>
             )}
             {location.pathname.includes("search") && (
               <IconButton
-                color='inherit'
-                aria-label='open drawer'
-                edge='end'
+                color="inherit"
+                aria-label="open drawer"
+                edge="end"
                 onClick={handleDrawerOpen}
                 sx={{ ...(open && { display: "none" }) }}
               >
-                <img src={TuningIcon} alt='Menu' className='hammiIconOpen' />
+                <img src={TuningIcon} alt="Menu" className="hammiIconOpen" />
               </IconButton>
             )}
             {!location.pathname.includes("login") && (
@@ -180,13 +180,13 @@ export default function HeaderAndDrawer() {
             width: drawerWidth,
           },
         }}
-        variant='persistent'
-        anchor='right'
+        variant="persistent"
+        anchor="right"
         open={open}
       >
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
-            <img src={CloseIcon} alt='Close menu' className='hammiIconClose' />
+            <img src={CloseIcon} alt="Close menu" className="hammiIconClose" />
           </IconButton>
         </DrawerHeader>
         <Divider />
@@ -196,5 +196,5 @@ export default function HeaderAndDrawer() {
         <Divider />
       </Drawer>
     </Box>
-  )
+  );
 }

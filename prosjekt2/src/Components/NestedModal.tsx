@@ -6,6 +6,8 @@ import { grey } from "@mui/material/colors";
 import { Rate, ReadOnlyRating } from "./BasicRating";
 import { MovieType } from "../types";
 import CloseIcon from "../assets/close.svg";
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
 
 const style = {
   position: "absolute" as const,
@@ -30,6 +32,9 @@ interface NestedModalProps {
 */
 const NestedModal: React.FC<NestedModalProps> = ({ movie }) => {
   const [open, setOpen] = React.useState(false);
+
+  const authUser = useSelector((state: RootState) => state.user.authUser);
+
   const handleOpen = () => {
     setOpen(true);
   };
@@ -114,8 +119,11 @@ const NestedModal: React.FC<NestedModalProps> = ({ movie }) => {
             </div>
             <p>{movie.overview}</p>
             <br />
-            <p style={{ marginBottom: "0px" }}>Set your rating:</p>
-            {Rate(movie.voteAverage.valueOf() / 2)}
+            {authUser && (
+              <>
+                <p style={{ marginBottom: "0px" }}>Set your rating:</p>
+              </>
+            )}
           </div>
         </Box>
       </Modal>
