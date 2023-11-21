@@ -77,9 +77,6 @@ export default function Results() {
     (state: RootState) => state.sort.filterYear,
   );
 
-  const [hasNextPage, setHasNextPage] = useState(true);
-  const [hasPreviousPage, setHasPreviousPage] = useState(false);
-
   const { loading, error, data, fetchMore, refetch } = useQuery(MOVIES_QUERY, {
     variables: {
       first: 12,
@@ -88,38 +85,23 @@ export default function Results() {
       startYear: filterYearState[0],
       endYear: filterYearState[1],
     },
+
   });
 
-  useEffect(() => {
-    refetch({
-      first: 12,
-      sort: getSortValue(sortByState, sortOrderState),
-      title: id,
-      startYear: filterYearState[0],
-      endYear: filterYearState[1],
-    });
-  }),
-    [filterYearState, refetch, sortByState, sortOrderState, id];
-
-  const [firstItemCursor, setFirstItemCursor] = useState(null);
-  const [lastItemCursor, setLastItemCursor] = useState(null);
+  // useEffect(() => {
+  //   refetch({
+  //     first: 12,
+  //     sort: getSortValue(sortByState, sortOrderState),
+  //     title: id,
+  //     startYear: filterYearState[0],
+  //     endYear: filterYearState[1],
+  //   });
+  // }),
+  // [id, refetch];
 
   if (!loading && !error) {
-    const newFirstItemCursor = data.allMovies.edges[0].cursor;
-    const newLastItemCursor =
-      data.allMovies.edges[data.allMovies.edges.length - 1].cursor;
-    if (newFirstItemCursor !== firstItemCursor) {
-      setFirstItemCursor(newFirstItemCursor);
-    }
-    if (newLastItemCursor !== lastItemCursor) {
-      setLastItemCursor(newLastItemCursor);
-    }
-    if (data.allMovies.pageInfo.hasNextPage !== hasNextPage) {
-      setHasNextPage(data.allMovies.pageInfo.hasNextPage);
-    }
-    if (data.allMovies.pageInfo.hasPreviousPage !== hasPreviousPage) {
-      setHasPreviousPage(data.allMovies.pageInfo.hasPreviousPage);
-    }
+    console.log("prev: " + data.allMovies.pageInfo.hasPreviousPage);
+    console.log("next: " + data.allMovies.pageInfo.hasNextPage);
   }
 
   return (
@@ -143,19 +125,18 @@ export default function Results() {
         className="buttonGroup"
       >
         <Button
-          disabled={!hasPreviousPage}
+          disabled={data ? !data.allMovies.pageInfo.hasPreviousPage: true}
           onClick={() => {
-            if (hasPreviousPage) {
+            if (data.allMovies.pageInfo.hasPreviousPage) {
               fetchMore({
                 variables: {
                   first: undefined,
                   last: 12,
-                  before: firstItemCursor,
+                  before: data.allMovies.edges[0].cursor,
                   after: undefined,
                 },
                 updateQuery: (prev, { fetchMoreResult }) => {
                   if (!fetchMoreResult) return prev;
-                  console.log(fetchMoreResult);
                   return fetchMoreResult;
                 },
               });
@@ -165,19 +146,18 @@ export default function Results() {
           <img src={leftArrow} className="loadIcon" />
         </Button>
         <Button
-          disabled={!hasNextPage}
+          disabled={data ? !data.allMovies.pageInfo.hasNextPage : true}
           onClick={() => {
-            if (hasNextPage) {
+            if (data.allMovies.pageInfo.hasNextPage) {
               fetchMore({
                 variables: {
                   first: 12,
                   last: undefined,
                   before: undefined,
-                  after: lastItemCursor,
+                  after: data.allMovies.edges[11].cursor,
                 },
                 updateQuery: (prev, { fetchMoreResult }) => {
                   if (!fetchMoreResult) return prev;
-                  console.log(fetchMoreResult);
                   return fetchMoreResult;
                 },
               });
