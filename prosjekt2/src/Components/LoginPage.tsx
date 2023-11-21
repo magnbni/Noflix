@@ -41,6 +41,10 @@ export default function LoginPage() {
   const [valid, setValid] = useState(true);
   const authUserState = useSelector((state: RootState) => state.user.authUser);
 
+  if (authUserState) {
+    console.log("Epicly logged in");
+  }
+
   const [authUserMutation] = useMutation(AUTH_USER_MUTATION);
   const [createUserMutation] = useMutation(CREATE_USER_MUTATION);
   const [emailString, setEmail] = useState<string>("");

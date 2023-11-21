@@ -13,7 +13,7 @@ import Logout from "../assets/logout.svg";
 
 import "./HeaderAndDrawer.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { List } from "@mui/material";
 import FilterAndSort from "./FilterAndSort";
 import { RootState } from "../../app/store";
@@ -95,10 +95,6 @@ export default function HeaderAndDrawer() {
   const handleLogIn = () => {
     navigate("/login");
   };
-
-  useEffect(() => {
-    console.log(authUserState);
-  }, []);
 
   return (
     <Box sx={{ display: "flex" }}>
