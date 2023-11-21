@@ -5,7 +5,7 @@ import NestedModal from "../Components/NestedModal";
 import HeaderAndDrawer from "../Components/HeaderAndDrawer";
 import { gql, useQuery } from "@apollo/client";
 import { MovieEdge } from "../types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import leftArrow from "../assets/arrow-left.svg";
 import rightArrow from "../assets/arrow-right.svg";
@@ -52,7 +52,7 @@ const MOVIES_QUERY = gql`
 const getSortValue = (sortOption: string, orderDirection: string) => {
   const sortBy = sortOption.toLowerCase();
   const sortOrder = orderDirection.toLowerCase();
-  if (!["title", "releaseYear"].includes(sortBy)) {
+  if (!["title", "release_date", "rating"].includes(sortBy)) {
     return "";
   }
   if (!["asc", "desc"].includes(sortOrder)) {
@@ -93,11 +93,6 @@ export default function Results() {
       genre: genreState,
     },
   });
-
-  if (!loading && !error) {
-    console.log("prev: " + data.allMovies.pageInfo.hasPreviousPage);
-    console.log("next: " + data.allMovies.pageInfo.hasNextPage);
-  }
 
   return (
     <div className="results">

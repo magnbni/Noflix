@@ -196,6 +196,10 @@ def sort_query(query, sort):
         return query.order_by("release_date", "_id")
     elif sort == "release_date_desc":
         return query.order_by("-release_date", "_id")
+    elif sort == "rating_asc":
+        return query.order_by("vote_average", "_id")
+    elif sort == "rating_desc":
+        return query.order_by("-vote_average", "_id")
     else:
         # Default sort by _id
         return query.order_by("_id")
@@ -211,7 +215,7 @@ class Query(graphene.ObjectType):
     all_movies = graphene.relay.ConnectionField(
         MovieConnection,
         page=graphene.Int(default_value=1),
-        per_page=graphene.Int(default_value=10),
+        per_page=graphene.Int(default_value=12),
         sort=graphene.String(),
         start_year=graphene.Int(),
         end_year=graphene.Int(),
