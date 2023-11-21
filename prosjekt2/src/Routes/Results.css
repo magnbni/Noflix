@@ -79,3 +79,8 @@
   top: 90px;
   left: 36px;
 }
+
+.pageCounterButton {
+  color: black !important;
+  background-color: #1976d2 !important;
+}

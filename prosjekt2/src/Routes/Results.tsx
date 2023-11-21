@@ -143,7 +143,7 @@ export default function Results() {
         >
           <img src={leftArrow} className="loadIcon" />
         </Button>
-        <Button disabled style={{ color: "#000000" }}>
+        <Button disabled className="pageCounterButton">
           {page} of {totalPages}
         </Button>
         <Button
