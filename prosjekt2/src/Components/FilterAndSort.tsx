@@ -3,11 +3,26 @@ import ListItem from "@mui/material/ListItem";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControl from "@mui/material/FormControl";
-import { FormControlLabel, FormLabel, Slider, Switch } from "@mui/material";
+import {
+  FormControlLabel,
+  FormLabel,
+  InputLabel,
+  MenuItem,
+  Select,
+  Slider,
+  Switch,
+} from "@mui/material";
 import "./FilterAndSort.css";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
-import { sortBy, sortOrder, filterYear } from "../Reducers/SortSlice";
+import {
+  sortBy,
+  sortOrder,
+  filterYear,
+  filterByGenre,
+} from "../Reducers/SortSlice";
+import { gql, useQuery } from "@apollo/client";
+import { GenreEdge } from "../types";
 
 function valuetext(value: number) {
   return `${value}`;
@@ -40,6 +55,19 @@ function createMarks() {
   return marks;
 }
 
+const GENRES_QUERY = gql`
+  query allGenres {
+    allGenres {
+      edges {
+        node {
+          name
+          id
+        }
+      }
+    }
+  }
+`;
+
 export default function FilterAndSort() {
   const dispatch = useDispatch();
   const sortOrderState = useSelector(
@@ -48,13 +76,16 @@ export default function FilterAndSort() {
   const filterYearState = useSelector(
     (state: RootState) => state.sort.filterYear,
   );
+  const genreState = useSelector(
+    (state: RootState) => state.sort.filterByGenre,
+  );
   const marks = createMarks();
 
   const updateSortOrder = () => {
     dispatch(sortOrder(sortOrderState == "asc" ? "desc" : "asc"));
   };
 
-  const updateSortBy = (navn: "" | "title" | "releaseYear" | "rating") => {
+  const updateSortBy = (navn: "" | "title" | "release_date" | "rating") => {
     dispatch(sortBy(navn));
   };
 
@@ -62,6 +93,12 @@ export default function FilterAndSort() {
     const newRangeArray: number[] = newRange as number[];
     dispatch(filterYear([newRangeArray[0], newRangeArray[1]]));
   };
+
+  const updateGenre = (newGenre: string) => {
+    dispatch(filterByGenre(newGenre));
+  };
+
+  const { loading, error, data } = useQuery(GENRES_QUERY);
 
   return (
     <List className="list">
@@ -86,7 +123,9 @@ export default function FilterAndSort() {
               />
               <FormControlLabel
                 value="Year"
-                control={<Radio onChange={() => updateSortBy("releaseYear")} />}
+                control={
+                  <Radio onChange={() => updateSortBy("release_date")} />
+                }
                 label="Year"
               />
               <FormControlLabel
@@ -119,6 +158,26 @@ export default function FilterAndSort() {
           max={marks[marks.length - 1].value}
           className="slider"
         />
+      </ListItem>
+      <ListItem key="genre">
+        <FormControl fullWidth>
+          <InputLabel>Genre</InputLabel>
+          <Select
+            label="Genre"
+            onChange={(event) => updateGenre(event.target.value as string)}
+            value={genreState}
+          >
+            <MenuItem value={"All"}>All</MenuItem>
+            {!loading &&
+              !error &&
+              data &&
+              data.allGenres.edges.map((edge: GenreEdge) => (
+                <MenuItem value={edge.node.name} key={edge.node.id}>
+                  {edge.node.name}
+                </MenuItem>
+              ))}
+          </Select>
+        </FormControl>
       </ListItem>
     </List>
   );

@@ -69,3 +69,12 @@
 .buttonGroup {
   opacity: 0.8;
 }
+
+.nohits {
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  position: absolute;
+  top: 90px;
+  left: 36px;
+}

@@ -10,3 +10,12 @@ export interface MovieType {
   voteAverage: number;
   posterPath: string;
 }
+
+export interface GenreEdge {
+  node: GenreType;
+}
+
+export interface GenreType {
+  name: string;
+  id: string;
+}

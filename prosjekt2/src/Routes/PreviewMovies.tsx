@@ -1,69 +1,145 @@
-import { ApolloError, gql, useQuery } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 import NestedModal from "../Components/NestedModal";
-import { MovieType } from "../types";
+import { MovieEdge, MovieType } from "../types";
 import "./PreviewMovies.css";
 
 interface category {
   title: string;
   movies: MovieType[];
-  loading: boolean;
-  error: ApolloError | undefined;
 }
 
-const GET_MOVIES_A = gql`
-  query {
-    allMovies(sort: RELEASE_DATE_DESC, first: 10, title: "A") {
-      title
-      releaseDate
-      overview
-      voteAverage
-      posterPath
-    }
-  }
-`;
-
-const GET_MOVIES_CHRISTMAS = gql`
-  query {
-    allMovies(sort: RELEASE_DATE_DESC, first: 10, title: "Christmas") {
-      title
-      releaseDate
-      overview
-      voteAverage
-      posterPath
+const MOVIES_QUERY = gql`
+  query allMovies(
+    $first: Int
+    $last: Int
+    $before: String
+    $after: String
+    $title: String
+    $sort: String
+    $startYear: Int
+    $endYear: Int
+    $genre: String
+  ) {
+    allMovies(
+      first: $first
+      last: $last
+      before: $before
+      after: $after
+      title: $title
+      sort: $sort
+      startYear: $startYear
+      endYear: $endYear
+      genre: $genre
+    ) {
+      edges {
+        node {
+          title
+          releaseDate
+          voteAverage
+          posterPath
+          overview
+        }
+        cursor
+      }
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
     }
   }
 `;
 
 export default function PreviewMovies() {
-  const {
-    loading: loading_a,
-    error: error_a,
-    data: data_a,
-  } = useQuery(GET_MOVIES_A);
+  const sortbyTitle = "title_desc";
+  const sortbyDate = "release_date_desc";
+
   const {
     loading: loading_christ,
     error: error_christ,
     data: data_christ,
-  } = useQuery(GET_MOVIES_CHRISTMAS);
+  } = useQuery(MOVIES_QUERY, {
+    variables: {
+      first: 20,
+      sort: sortbyTitle,
+      title: "christmas",
+    },
+  });
 
-  if (loading_a || loading_christ) return "Loading...";
-  if (error_a) return `Error! ${error_a.message}`;
+  const {
+    loading: loadHorror,
+    error: errorHorror,
+    data: dataHorror,
+  } = useQuery(MOVIES_QUERY, {
+    variables: {
+      first: 20,
+      genre: "Horror",
+    },
+  });
+
+  const {
+    loading: loadAction,
+    error: errorAction,
+    data: dataAction,
+  } = useQuery(MOVIES_QUERY, {
+    variables: {
+      first: 20,
+      genre: "Action",
+    },
+  });
+
+  const {
+    loading: loadRomance,
+    error: errorRomance,
+    data: dataRomance,
+  } = useQuery(MOVIES_QUERY, {
+    variables: {
+      first: 20,
+      genre: "Romance",
+    },
+  });
+
+  const {
+    loading: loadNewest,
+    error: errorNewest,
+    data: dataNewest,
+  } = useQuery(MOVIES_QUERY, {
+    variables: {
+      first: 20,
+      sort: sortbyDate,
+    },
+  });
+
+  if (loadHorror || loading_christ || loadAction || loadRomance || loadNewest)
+    return "Loading...";
+  if (errorHorror) return `Error! ${errorHorror.message}`;
   if (error_christ) return `Error! ${error_christ.message}`;
+  if (errorAction) return `Error! ${errorAction.message}`;
+  if (errorNewest) return `Error! ${errorNewest.message}`;
+  if (errorRomance) return `Error! ${errorRomance.message}`;
 
   const categories: category[] = [
     {
-      title: "Movies containing A in their title",
-      movies: data_a.allMovies,
-      loading: loading_a,
-      error: error_a,
+      title: "Horror movies",
+      movies: dataHorror.allMovies.edges.map((edge: MovieEdge) => edge.node),
     },
     {
       title: "Christmas movies",
-      movies: data_christ.allMovies,
-      loading: loading_christ,
-      error: error_christ,
+      movies: data_christ.allMovies.edges.map((edge: MovieEdge) => edge.node),
+    },
+    {
+      title: "Newest movies",
+      movies: dataNewest.allMovies.edges.map((edge: MovieEdge) => edge.node),
+    },
+    {
+      title: "Romance movies",
+      movies: dataRomance.allMovies.edges.map((edge: MovieEdge) => edge.node),
+    },
+    {
+      title: "Action movies",
+      movies: dataAction.allMovies.edges.map((edge: MovieEdge) => edge.node),
     },
   ];
+  console.log(categories[0].movies);
 
   return (
     <div className="previewMovies">
@@ -72,8 +148,8 @@ export default function PreviewMovies() {
           <h3 className="movies-container-header">{category.title}</h3>
           <div className="movies-container">
             <div className="scrollable-container">
-              {category.movies.map((movie) => (
-                <div className="card" key={`movie-${movie.title}`}>
+              {category.movies.map((movie, index) => (
+                <div className="card" key={`movie-${movie.title || index}`}>
                   <NestedModal movie={movie} />
                 </div>
               ))}
