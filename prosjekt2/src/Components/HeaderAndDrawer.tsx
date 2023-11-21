@@ -19,7 +19,6 @@ import FilterAndSort from "./FilterAndSort";
 import { RootState } from "../../app/store";
 import { useDispatch, useSelector } from "react-redux";
 import { authUser } from "../Reducers/UserSlice";
-import { Avatar } from "@mui/material";
 
 const drawerWidth = 320;
 
@@ -99,35 +98,29 @@ export default function HeaderAndDrawer() {
   return (
     <Box sx={{ display: "flex" }}>
       <AppBar position="fixed" open={open}>
-        <Toolbar>
-          <div className="header">
-            <div className="icon">
-              <Link to="/" className="logoAndTitle">
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Film_reel.svg"
-                  style={{ height: 45 }}
-                  className="icon"
-                />
-                <h1 className="headerName">Noflix</h1>
-              </Link>
+        <Toolbar className="header">
+          <Link to="/" className="logoAndTitle">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Film_reel.svg"
+              style={{ height: 45 }}
+              className="icon"
+            />
+            <h1 className="headerName">Noflix</h1>
+          </Link>
+          {!location.pathname.includes("login") && (
+            <div className="searchHeader" style={{ maxWidth: "350px" }}>
+              <TextField
+                id="outlined-basic"
+                label="Search"
+                variant="outlined"
+                size="small"
+                fullWidth
+                onChange={handleSearchChange}
+                onKeyDown={handleKeyPress}
+              />
             </div>
-            {!location.pathname.includes("login") && (
-              <div className="searchHeader" style={{ maxWidth: "350px" }}>
-                <TextField
-                  id="outlined-basic"
-                  label="Search"
-                  variant="outlined"
-                  size="small"
-                  fullWidth
-                  onChange={handleSearchChange}
-                  onKeyDown={handleKeyPress}
-                />
-                {/* Fix styling lol */}
-                <Avatar alt="Remy Sharp">
-                  <button onClick={handleLogIn}>U</button>
-                </Avatar>
-              </div>
-            )}
+          )}
+          <div className="buttonContainer">
             {location.pathname.includes("search") && (
               <IconButton
                 color="inherit"
