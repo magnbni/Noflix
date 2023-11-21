@@ -117,6 +117,14 @@ class User(MongoengineObjectType):
 
     ratings = graphene.List(Rating)
 
+    rated_movies = graphene.List(Movie)
+
+    def resolve_rated_movies(self, info):
+        movie_ids = [ObjectId(rating.movie_id) for rating in self.ratings]
+
+        return MovieModel.objects.filter(_id__in=movie_ids)
+
+
 
 class AuthenticateUser(graphene.Mutation):
     class Arguments:
