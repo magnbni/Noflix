@@ -85,7 +85,7 @@ export default function FilterAndSort() {
     dispatch(sortOrder(sortOrderState == "asc" ? "desc" : "asc"));
   };
 
-  const updateSortBy = (navn: "" | "title" | "releaseYear" | "rating") => {
+  const updateSortBy = (navn: "" | "title" | "release_date" | "rating") => {
     dispatch(sortBy(navn));
   };
 
@@ -123,7 +123,9 @@ export default function FilterAndSort() {
               />
               <FormControlLabel
                 value="Year"
-                control={<Radio onChange={() => updateSortBy("releaseYear")} />}
+                control={
+                  <Radio onChange={() => updateSortBy("release_date")} />
+                }
                 label="Year"
               />
               <FormControlLabel
