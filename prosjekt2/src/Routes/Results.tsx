@@ -101,13 +101,25 @@ export default function Results() {
     if (data) {
       setTotalPages(data.allMovies.totalPages);
     }
-  }, [data.allMovies.totalPages]);
+  }, [data]);
 
   return (
     <div className="results">
       <HeaderAndDrawer />
       <h2>Search results for: "{id}"</h2>
-      {(loading || error) && <p>{error ? error.message : "Loading..."}</p>}
+      {
+        // if loading, map an array of length 12 of undefined to the NestedModal component
+        loading && (
+          <div className="row">
+            {[...Array(12)].map((_, i) => (
+              <div className="card" key={`movie-${i}`}>
+                <NestedModal movie={undefined}></NestedModal>
+              </div>
+            ))}
+          </div>
+        )
+      }
+      {error && error.message}
       {data && (
         <div className="row">
           {data.allMovies.edges.map((edge: MovieEdge) => (
