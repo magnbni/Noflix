@@ -5,18 +5,17 @@ import NestedModal from "../Components/NestedModal";
 import HeaderAndDrawer from "../Components/HeaderAndDrawer";
 import { gql, useQuery } from "@apollo/client";
 import { MovieEdge } from "../types";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import leftArrow from "../assets/arrow-left.svg";
 import rightArrow from "../assets/arrow-right.svg";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
-import { sort } from "semver";
 
 const MOVIES_QUERY = gql`
   query allMovies(
-    $page: Int,
-    $perPage: Int,
+    $page: Int
+    $perPage: Int
     $title: String
     $sort: String
     $startYear: Int
@@ -93,7 +92,6 @@ export default function Results() {
       endYear: filterYearState[1],
       genre: genreState,
     },
-
   });
 
   if (!loading && !error) {
@@ -122,7 +120,7 @@ export default function Results() {
         className="buttonGroup"
       >
         <Button
-          disabled={data ? !data.allMovies.pageInfo.hasPreviousPage: true}
+          disabled={data ? !data.allMovies.pageInfo.hasPreviousPage : true}
           onClick={() => {
             if (data.allMovies.pageInfo.hasPreviousPage) {
               setPage(page - 1);
