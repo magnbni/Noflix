@@ -6,6 +6,7 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import HeaderAndDrawer from "./HeaderAndDrawer";
 
 // Copied from https://github.com/mui/material-ui/blob/v5.14.17/docs/data/material/getting-started/templates/sign-in/SignIn.tsx
 
@@ -21,6 +22,7 @@ export default function LoginPage() {
 
   return (
     <Container component="main" maxWidth="xs">
+      <HeaderAndDrawer />
       <CssBaseline />
       <Box
         sx={{
