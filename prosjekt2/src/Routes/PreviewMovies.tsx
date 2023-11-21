@@ -10,10 +10,7 @@ interface category {
 
 const MOVIES_QUERY = gql`
   query allMovies(
-    $first: Int
-    $last: Int
-    $before: String
-    $after: String
+    $perPage: Int
     $title: String
     $sort: String
     $startYear: Int
@@ -21,10 +18,7 @@ const MOVIES_QUERY = gql`
     $genre: String
   ) {
     allMovies(
-      first: $first
-      last: $last
-      before: $before
-      after: $after
+      perPage: $perPage
       title: $title
       sort: $sort
       startYear: $startYear
@@ -39,7 +33,6 @@ const MOVIES_QUERY = gql`
           posterPath
           overview
         }
-        cursor
       }
       pageInfo {
         hasNextPage
@@ -59,7 +52,7 @@ export default function PreviewMovies() {
     data: data_christ,
   } = useQuery(MOVIES_QUERY, {
     variables: {
-      first: 20,
+      per_page: 20,
       sort: sortbyTitle,
       title: "christmas",
     },
@@ -71,7 +64,7 @@ export default function PreviewMovies() {
     data: dataHorror,
   } = useQuery(MOVIES_QUERY, {
     variables: {
-      first: 20,
+      per_page: 20,
       genre: "Horror",
     },
   });
@@ -82,7 +75,7 @@ export default function PreviewMovies() {
     data: dataAction,
   } = useQuery(MOVIES_QUERY, {
     variables: {
-      first: 20,
+      per_page: 20,
       genre: "Action",
     },
   });
@@ -93,7 +86,7 @@ export default function PreviewMovies() {
     data: dataRomance,
   } = useQuery(MOVIES_QUERY, {
     variables: {
-      first: 20,
+      per_page: 20,
       genre: "Romance",
     },
   });
@@ -104,7 +97,7 @@ export default function PreviewMovies() {
     data: dataNewest,
   } = useQuery(MOVIES_QUERY, {
     variables: {
-      first: 20,
+      per_page: 20,
       sort: sortbyDate,
     },
   });
