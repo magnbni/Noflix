@@ -30,7 +30,6 @@ interface NestedModalProps {
 */
 const NestedModal: React.FC<NestedModalProps> = ({ movie }) => {
   const [open, setOpen] = React.useState(false);
-
   const handleOpen = () => {
     setOpen(true);
   };
@@ -115,11 +114,8 @@ const NestedModal: React.FC<NestedModalProps> = ({ movie }) => {
             </div>
             <p>{movie.overview}</p>
             <br />
-            {/*authUser && (
-              <>
-                <p style={{ marginBottom: "0px" }}>Set your rating:</p>
-              </>
-            )*/}
+            <p style={{ marginBottom: "0px" }}>Set your rating:</p>
+            {Rate(movie.voteAverage.valueOf() / 2)}
           </div>
         </Box>
       </Modal>
