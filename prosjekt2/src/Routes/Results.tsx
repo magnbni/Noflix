@@ -101,7 +101,7 @@ export default function Results() {
     if (data) {
       setTotalPages(data.allMovies.totalPages);
     }
-  });
+  }, [data.allMovies.totalPages]);
 
   return (
     <div className="results">
