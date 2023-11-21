@@ -108,14 +108,6 @@ class Rating(MongoengineObjectType):
         interfaces = (Node,)
 
 
-class Rating(MongoengineObjectType):
-    class Meta:
-        name = "Rating"
-        description = "List of ratings for a user"
-        model = RatingModel
-        interfaces = (Node,)
-
-
 class User(MongoengineObjectType):
     class Meta:
         name = "User"
@@ -124,6 +116,14 @@ class User(MongoengineObjectType):
         interfaces = (Node,)
 
     ratings = graphene.List(Rating)
+
+    rated_movies = graphene.List(Movie)
+
+    def resolve_rated_movies(self, info):
+        movie_ids = [ObjectId(rating.movie_id) for rating in self.ratings]
+
+        return MovieModel.objects.filter(_id__in=movie_ids)
+
 
 
 class AuthenticateUser(graphene.Mutation):
@@ -175,7 +175,8 @@ class UpdateUserRatings(graphene.Mutation):
         ratings = graphene.List(RatingInput, required=True)
 
     success = graphene.Boolean()
-
+    
+    # Make back into String, Int saving as list so we can just use that
     def mutate(self, info, user_email, ratings):
         try:
             # Get the user by _ids
@@ -184,18 +185,14 @@ class UpdateUserRatings(graphene.Mutation):
             # Create Rating objects and add to user's ratings list
             for rating_input in ratings:
                 movie_id = rating_input["movie_id"]
-
+                # This will throw exception, so technically do not need the if-statement
+                if not MovieModel.objects.get(_id=ObjectId(movie_id)):
+                    success = False
                 rating_value = rating_input["rating_value"]
-
-                # Create a new Rating
-                rating = RatingModel(movie_id=movie_id, rating=rating_value)
-
-                # Add the rating to the user's ratings list
-                # user.ratings.append(rating)
-
-            # Save the updated user
-            user.save()
-
+                rating = RatingModel(movie_id=movie_id, rating_value=rating_value)
+                user.ratings.append(rating)
+                # UserModel.objects.get(email=user_email).update(push_all_ratings=rating)
+            user.save(validate=False)
             success = True
         except Exception as e:
             # Print error if something goes wrong
