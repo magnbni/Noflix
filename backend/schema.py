@@ -1,4 +1,5 @@
 import base64
+import json
 import graphene
 import bcrypt
 from graphene.relay import Node
@@ -9,6 +10,7 @@ from models import User as UserModel
 from models import Rating as RatingModel
 from models import Director as DirectorModel
 from models import Genre as GenreModel
+from mongoengine import Q
 
 
 # Need to define the embeddeddocuments so graphene recognizes them
@@ -38,20 +40,13 @@ class Movie(MongoengineObjectType):
 
 
 class MovieEdge(graphene.ObjectType):
-    cursor = graphene.String()
     node = graphene.Field(Movie)
-
-    def resolve_cursor(self, info):
-        return base64.b64encode(str(self.node._id).encode("utf-8")).decode("utf-8")
 
 
 class PageInfo(graphene.ObjectType):
     has_next_page = graphene.Boolean()
     has_previous_page = graphene.Boolean()
-
-
-def get_total_count_of_movies():
-    return MovieModel.objects.count()
+    total_pages = graphene.Int()
 
 
 class MovieConnection(graphene.relay.Connection):
@@ -60,6 +55,7 @@ class MovieConnection(graphene.relay.Connection):
 
     edges = graphene.List(MovieEdge)
     page_info = graphene.Field(PageInfo)
+    total_pages = graphene.Int()
 
     def resolve_edges(self, info):
         edges = [MovieEdge(node=movie) for movie in self.iterable]
@@ -67,37 +63,18 @@ class MovieConnection(graphene.relay.Connection):
 
     def resolve_page_info(self, info):
         args = info.context["all_movies_args"]
-        first = args.get("first", 0)
-        last = args.get("last", 0)
-        before = args.get("before")
-        after = args.get("after")
-
-        last_movie_id = None
-        if after is not None:
-            last_movie_id = ObjectId(base64.b64decode(after).decode("utf-8"))
-
-        total_count = get_total_count_of_movies()
-
-        has_next_page = False
-        if last_movie_id is not None:
-            remaining_movies = MovieModel.objects.filter(_id__gt=last_movie_id)
-            has_next_page = remaining_movies.count() > first
-        else:
-            has_next_page = total_count > first
-
-        has_previous_page = False
-        if before:
-            before_id = ObjectId(base64.b64decode(before).decode("utf-8"))
-            # Check if there are any movies before this ID
-            has_previous_page = MovieModel.objects(_id__lt=before_id).count() > 0
-        elif after:
-            # If 'after' is provided but not 'before', check if there are movies before 'after'
-            after_id = ObjectId(base64.b64decode(after).decode("utf-8"))
-            has_previous_page = MovieModel.objects(_id__lt=after_id).count() > 0
+        has_next_page = args["has_next_page"]
+        has_previous_page = args["has_previous_page"]
 
         return PageInfo(
-            has_next_page=has_next_page, has_previous_page=has_previous_page
+            has_next_page=has_next_page,
+            has_previous_page=has_previous_page,
         )
+
+    def resolve_total_pages(self, info):
+        args = info.context["all_movies_args"]
+        total_pages = args["total_pages"]
+        return total_pages
 
 
 class Rating(MongoengineObjectType):
@@ -124,6 +101,14 @@ class User(MongoengineObjectType):
         interfaces = (Node,)
 
     ratings = graphene.List(Rating)
+
+    rated_movies = graphene.List(Movie)
+
+    def resolve_rated_movies(self, info):
+        movie_ids = [ObjectId(rating.movie_id) for rating in self.ratings]
+
+        return MovieModel.objects.filter(_id__in=movie_ids)
+
 
 
 class AuthenticateUser(graphene.Mutation):
@@ -175,7 +160,8 @@ class UpdateUserRatings(graphene.Mutation):
         ratings = graphene.List(RatingInput, required=True)
 
     success = graphene.Boolean()
-
+    
+    # Make back into String, Int saving as list so we can just use that
     def mutate(self, info, user_email, ratings):
         try:
             # Get the user by _ids
@@ -184,18 +170,14 @@ class UpdateUserRatings(graphene.Mutation):
             # Create Rating objects and add to user's ratings list
             for rating_input in ratings:
                 movie_id = rating_input["movie_id"]
-
+                # This will throw exception, so technically do not need the if-statement
+                if not MovieModel.objects.get(_id=ObjectId(movie_id)):
+                    success = False
                 rating_value = rating_input["rating_value"]
-
-                # Create a new Rating
-                rating = RatingModel(movie_id=movie_id, rating=rating_value)
-
-                # Add the rating to the user's ratings list
-                # user.ratings.append(rating)
-
-            # Save the updated user
-            user.save()
-
+                rating = RatingModel(movie_id=movie_id, rating_value=rating_value)
+                user.ratings.append(rating)
+                # UserModel.objects.get(email=user_email).update(push_all_ratings=rating)
+            user.save(validate=False)
             success = True
         except Exception as e:
             # Print error if something goes wrong
@@ -205,11 +187,22 @@ class UpdateUserRatings(graphene.Mutation):
         return UpdateUserRatings(success=success)
 
 
-class SortEnum(graphene.Enum):
-    TITLE_ASC = "title_asc"
-    TITLE_DESC = "title_desc"
-    RELEASE_DATE_ASC = "release_date_asc"
-    RELEASE_DATE_DESC = "release_date_desc"
+def sort_query(query, sort):
+    if sort == "title_asc":
+        return query.order_by("title", "_id")
+    elif sort == "title_desc":
+        return query.order_by("-title", "_id")
+    elif sort == "release_date_asc":
+        return query.order_by("release_date", "_id")
+    elif sort == "release_date_desc":
+        return query.order_by("-release_date", "_id")
+    elif sort == "rating_asc":
+        return query.order_by("vote_average", "_id")
+    elif sort == "rating_desc":
+        return query.order_by("-vote_average", "_id")
+    else:
+        # Default sort by _id
+        return query.order_by("_id")
 
 
 class Query(graphene.ObjectType):
@@ -221,77 +214,68 @@ class Query(graphene.ObjectType):
 
     all_movies = graphene.relay.ConnectionField(
         MovieConnection,
-        first=graphene.Int(),
-        last=graphene.Int(),
-        before=graphene.String(),
-        after=graphene.String(),
+        page=graphene.Int(default_value=1),
+        per_page=graphene.Int(default_value=12),
         sort=graphene.String(),
-        title=graphene.String(),
-        genre=graphene.String(),
         start_year=graphene.Int(),
         end_year=graphene.Int(),
+        title=graphene.String(),
+        genre=graphene.String(),
     )
 
-    def resolve_all_movies(self, info, **args):
+    def resolve_all_movies(
+        self,
+        info,
+        page,
+        per_page,
+        sort=None,
+        start_year=None,
+        end_year=None,
+        title=None,
+        genre=None,
+    ):
+        # Calculate offset
+        offset = (page - 1) * per_page
+
+        # Start with the base query
         query = MovieModel.objects.all()
+        # Apply title-based filtering
 
-        info.context["all_movies_args"] = args
-
-        sort = args.get("sort")
-        title = args.get("title")
-        release_date = args.get("release_date")
-        first = args.get("first")
-        last = args.get("last")
-        before = args.get("before")
-        after = args.get("after")
-        sort = args.get("sort")
-        title = args.get("title")
-        genre = args.get("genre")
-        start_year = args.get("start_year")
-        end_year = args.get("end_year")
-
-        if first is not None and last is not None:
-            raise Exception("Cannot use 'first' and 'last' together in the same query.")
-        if before is not None and after is not None:
-            raise Exception(
-                "Cannot use 'before' and 'after' together in the same query."
-            )
-
-        if sort == "title_asc":
-            query = query.order_by("title")
-        elif sort == "title_desc":
-            query = query.order_by("-title")
-        elif sort == "release_date_asc":
-            query = query.order_by("release_date")
-        elif sort == "release_date_desc":
-            query = query.order_by("-release_date")
-
-        if title is not None:
+        if title:
             query = query.filter(title__icontains=title)
+        
+        # Apply genre-based filtering
+        if genre:
+            query = query.filter(genres__name=genre)
 
-        if start_year is not None and end_year is not None:
-            start_date = f"{start_year}-01-01"
-            end_date = f"{end_year}-12-31"
+        # Apply year-based filtering
+        if start_year and end_year:
             query = query.filter(
-                release_date__gte=start_date, release_date__lte=end_date
+                release_date__gte=f"{start_year}-01-01",
+                release_date__lte=f"{end_year}-12-31",
             )
 
-        
-        if genre is not None:
-            query = query.filter(genres__name__icontains=genre)
-        
-        if after:
-            after_id = ObjectId(base64.b64decode(after).decode("utf-8"))
-            query = query.filter(_id__gt=after_id)
+        # Apply sorting
+        if sort:
+            query = sort_query(query, sort)
 
-        if before:
-            before_id = ObjectId(base64.b64decode(before).decode("utf-8"))
-            query = query.filter(_id__lt=before_id)
+        # Fetch total count before applying limit and offset
+        total_count = query.count()
 
-        if first is not None:
-            query = query.limit(first)
-        elif last is not None:
-            query = query.order_by("_id").limit(last)
+        # Apply limit and offset for pagination
+        query = query.skip(offset).limit(per_page)
+
+        # Determine hasNextPage and hasPreviousPage
+        has_next_page = offset + per_page < total_count
+        has_previous_page = page > 1
+        total_pages = (total_count + per_page - 1) // per_page
+
+        # Store the arguments in the context for later use
+        info.context["all_movies_args"] = {
+            "has_next_page": has_next_page,
+            "has_previous_page": has_previous_page,
+            "total_pages": total_pages,
+        }
 
         return query
 
@@ -303,8 +287,11 @@ class Mutation(graphene.ObjectType):
     update_user_ratings = UpdateUserRatings.Field()
 
 
+# For debugging purposes
 if __name__ == "__main__":
     id = ObjectId("654b65d6671ff470fcdd7bfe")
     print(base64.b64encode(str(id).encode("utf-8")).decode("utf-8"))
+    encoded_id = "NjU0YjY1YWY2NzFmZjQ3MGZjZGQyYjY3"
+    print(base64.b64decode(encoded_id).decode("utf-8"))
 
 schema = graphene.Schema(query=Query, mutation=Mutation, types=[Movie, User])

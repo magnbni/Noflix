@@ -10,10 +10,7 @@ interface category {
 
 const MOVIES_QUERY = gql`
   query allMovies(
-    $first: Int
-    $last: Int
-    $before: String
-    $after: String
+    $perPage: Int
     $title: String
     $sort: String
     $startYear: Int
@@ -21,10 +18,7 @@ const MOVIES_QUERY = gql`
     $genre: String
   ) {
     allMovies(
-      first: $first
-      last: $last
-      before: $before
-      after: $after
+      perPage: $perPage
       title: $title
       sort: $sort
       startYear: $startYear
@@ -39,7 +33,6 @@ const MOVIES_QUERY = gql`
           posterPath
           overview
         }
-        cursor
       }
       pageInfo {
         hasNextPage
@@ -53,90 +46,86 @@ export default function PreviewMovies() {
   const sortbyTitle = "title_desc";
   const sortbyDate = "release_date_desc";
 
-  const {
-    loading: loading_christ,
-    error: error_christ,
-    data: data_christ,
-  } = useQuery(MOVIES_QUERY, {
+  const { error: error_christ, data: data_christ } = useQuery(MOVIES_QUERY, {
     variables: {
-      first: 20,
+      per_page: 20,
       sort: sortbyTitle,
       title: "christmas",
     },
   });
 
-  const {
-    loading: loadHorror,
-    error: errorHorror,
-    data: dataHorror,
-  } = useQuery(MOVIES_QUERY, {
+  const { error: errorHorror, data: dataHorror } = useQuery(MOVIES_QUERY, {
     variables: {
-      first: 20,
+      per_page: 20,
       genre: "Horror",
     },
   });
 
-  const {
-    loading: loadAction,
-    error: errorAction,
-    data: dataAction,
-  } = useQuery(MOVIES_QUERY, {
+  const { error: errorAction, data: dataAction } = useQuery(MOVIES_QUERY, {
     variables: {
-      first: 20,
+      per_page: 20,
       genre: "Action",
     },
   });
 
-  const {
-    loading: loadRomance,
-    error: errorRomance,
-    data: dataRomance,
-  } = useQuery(MOVIES_QUERY, {
+  const { error: errorRomance, data: dataRomance } = useQuery(MOVIES_QUERY, {
     variables: {
-      first: 20,
+      per_page: 20,
       genre: "Romance",
     },
   });
 
-  const {
-    loading: loadNewest,
-    error: errorNewest,
-    data: dataNewest,
-  } = useQuery(MOVIES_QUERY, {
+  const { error: errorNewest, data: dataNewest } = useQuery(MOVIES_QUERY, {
     variables: {
-      first: 20,
+      per_page: 20,
       sort: sortbyDate,
     },
   });
 
-  if (loadHorror || loading_christ || loadAction || loadRomance || loadNewest)
-    return "Loading...";
   if (errorHorror) return `Error! ${errorHorror.message}`;
   if (error_christ) return `Error! ${error_christ.message}`;
   if (errorAction) return `Error! ${errorAction.message}`;
   if (errorNewest) return `Error! ${errorNewest.message}`;
   if (errorRomance) return `Error! ${errorRomance.message}`;
 
+  const createArrayOfUndefined = (length: number) => {
+    const array: undefined[] = [];
+    for (let i = 0; i < length; i++) {
+      array.push(undefined);
+    }
+    return array;
+  };
+
   const categories: category[] = [
     {
       title: "Horror movies",
-      movies: dataHorror.allMovies.edges.map((edge: MovieEdge) => edge.node),
+      movies: dataHorror
+        ? dataHorror.allMovies.edges.map((edge: MovieEdge) => edge.node)
+        : createArrayOfUndefined(20),
     },
     {
       title: "Christmas movies",
-      movies: data_christ.allMovies.edges.map((edge: MovieEdge) => edge.node),
+      movies: data_christ
+        ? data_christ.allMovies.edges.map((edge: MovieEdge) => edge.node)
+        : createArrayOfUndefined(20),
     },
     {
       title: "Newest movies",
-      movies: dataNewest.allMovies.edges.map((edge: MovieEdge) => edge.node),
+      movies: dataNewest
+        ? dataNewest.allMovies.edges.map((edge: MovieEdge) => edge.node)
+        : createArrayOfUndefined(20),
     },
     {
       title: "Romance movies",
-      movies: dataRomance.allMovies.edges.map((edge: MovieEdge) => edge.node),
+      movies: dataRomance
+        ? dataRomance.allMovies.edges.map((edge: MovieEdge) => edge.node)
+        : createArrayOfUndefined(20),
     },
     {
       title: "Action movies",
-      movies: dataAction.allMovies.edges.map((edge: MovieEdge) => edge.node),
+      movies: dataAction
+        ? dataAction.allMovies.edges.map((edge: MovieEdge) => edge.node)
+        : createArrayOfUndefined(20),
     },
   ];
   console.log(categories[0].movies);
@@ -149,7 +138,10 @@ export default function PreviewMovies() {
           <div className="movies-container">
             <div className="scrollable-container">
               {category.movies.map((movie, index) => (
-                <div className="card" key={`movie-${movie.title || index}`}>
+                <div
+                  className="card"
+                  key={`movie-${movie ? movie.title : index}`}
+                >
                   <NestedModal movie={movie} />
                 </div>
               ))}

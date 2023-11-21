@@ -59,18 +59,13 @@ class Movie(Document):
     directors = EmbeddedDocumentListField(Director)
 
 class Rating(EmbeddedDocument):
+    # Make into StringField again
     movie_id = StringField(required=True)
-    rating = IntField(required=True)
-
-
-class Rating(EmbeddedDocument):
-    movie_id = StringField(required=True)
-    rating = IntField(required=True)
-
+    rating_value = IntField(required=True)
 
 class User(Document):
     meta = {"collection": os.getenv("MONGO_COLLECTION_USERS")}
     _id = StringField()
     email = StringField(unique=True)
     password = StringField()
-    ratings = ListField(EmbeddedDocumentField(Rating))
+    ratings = EmbeddedDocumentListField(Rating)

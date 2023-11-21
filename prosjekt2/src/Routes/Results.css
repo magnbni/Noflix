@@ -68,4 +68,19 @@
 
 .buttonGroup {
   opacity: 0.8;
+  margin: auto;
+}
+
+.nohits {
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  position: absolute;
+  top: 90px;
+  left: 36px;
+}
+
+.pageCounterButton {
+  color: black !important;
+  background-color: #1976d2 !important;
 }
