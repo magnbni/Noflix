@@ -140,6 +140,7 @@ export default function Results() {
           onClick={() => {
             if (data.allMovies.pageInfo.hasPreviousPage) {
               setPage(1);
+              window.scrollTo(0, 0)
             }
           }}
         >
@@ -150,6 +151,7 @@ export default function Results() {
           onClick={() => {
             if (data.allMovies.pageInfo.hasPreviousPage) {
               setPage(page - 1);
+              window.scrollTo(0, 0)
             }
           }}
         >
@@ -163,6 +165,7 @@ export default function Results() {
           onClick={() => {
             if (data.allMovies.pageInfo.hasNextPage) {
               setPage(page + 1);
+              window.scrollTo(0, 0)
             }
           }}
         >
@@ -173,6 +176,7 @@ export default function Results() {
           onClick={() => {
             if (data.allMovies.pageInfo.hasNextPage) {
               setPage(data.allMovies.totalPages);
+              window.scrollTo(0, 0)
             }
           }}
         >
