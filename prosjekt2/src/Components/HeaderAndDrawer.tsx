@@ -1,26 +1,25 @@
-import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import TextField from "@mui/material/TextField";
-import TuningIcon from "../assets/tuning.svg";
-import CloseIcon from "../assets/close.svg";
-import Login from "../assets/login.svg";
-import Logout from "../assets/logout.svg";
+import { styled } from "@mui/material/styles"
+import Box from "@mui/material/Box"
+import Drawer from "@mui/material/Drawer"
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar"
+import Toolbar from "@mui/material/Toolbar"
+import Divider from "@mui/material/Divider"
+import IconButton from "@mui/material/IconButton"
+import TextField from "@mui/material/TextField"
+import TuningIcon from "../assets/tuning.svg"
+import CloseIcon from "../assets/close.svg"
+import Login from "../assets/login.svg"
+import Logout from "../assets/logout.svg"
 
-import "./HeaderAndDrawer.css";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { List } from "@mui/material";
-import FilterAndSort from "./FilterAndSort";
-import { RootState } from "../../app/store";
-import { useDispatch, useSelector } from "react-redux";
-import { authUser } from "../Reducers/UserSlice";
+import "./HeaderAndDrawer.css"
+import { Link, useLocation, useNavigate } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { List } from "@mui/material"
+import FilterAndSort from "./FilterAndSort"
+import { RootState } from "../../app/store"
+import { useDispatch, useSelector } from "react-redux"
+import { authUser } from "../Reducers/UserSlice"
 import { Avatar } from "@mui/material"
-
 
 const drawerWidth = 320
 
@@ -54,14 +53,14 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }))
 
 export default function HeaderAndDrawer() {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const location = useLocation();
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const location = useLocation()
 
-  const [searchValue, setSearchValue] = useState<string>("");
-  const [, setSelectedMovie] = useState<string | null>(null);
-  const [open, setOpen] = useState(false);
-  const authUserState = useSelector((state: RootState) => state.user.authUser);
+  const [searchValue, setSearchValue] = useState<string>("")
+  const [, setSelectedMovie] = useState<string | null>(null)
+  const [open, setOpen] = useState(false)
+  const authUserState = useSelector((state: RootState) => state.user.authUser)
 
   const handleDrawerOpen = () => {
     setOpen(true)
@@ -87,15 +86,19 @@ export default function HeaderAndDrawer() {
     if (event.key === "Enter") {
       handleSearch(searchValue)
     }
-  };
+  }
 
   const handleLogout = () => {
-    dispatch(authUser(false));
-  };
+    dispatch(authUser(false))
+  }
 
   const handleLogIn = () => {
-    navigate("/login");
-  };
+    navigate("/login")
+  }
+
+  useEffect(() => {
+    console.log(authUserState)
+  }, [])
 
   return (
     <Box sx={{ display: "flex" }}>

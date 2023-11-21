@@ -38,11 +38,21 @@ export default function LoginPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [valid, setValid] = useState(true)
+  const authUserState = useSelector((state: RootState) => state.user.authUser)
 
   const [authUserMutation] = useMutation(AUTH_USER_MUTATION)
   const [createUserMutation] = useMutation(CREATE_USER_MUTATION)
-  const [emailString, setEmail] = useState<string>()
-  const [passwordString, setPassword] = useState<string>()
+  const [emailString, setEmail] = useState<string>("")
+  const [passwordString, setPassword] = useState<string>("")
+
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value)
+  }
+
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value)
+  }
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
@@ -81,6 +91,8 @@ export default function LoginPage() {
         data.userCreate.userModel.password
       ) {
         setValid(true)
+        dispatch(authUser(true))
+        dispatch(email(emailString))
         navigate("/")
       }
     } catch (error) {
@@ -90,7 +102,7 @@ export default function LoginPage() {
   }
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component='main' maxWidth='xs'>
       <HeaderAndDrawer />
       <CssBaseline />
       <Box
@@ -120,6 +132,7 @@ export default function LoginPage() {
             label='Email Address'
             name='email'
             autoComplete='email'
+            onChange={handleEmailChange}
             autoFocus
           />
           <TextField
@@ -130,6 +143,7 @@ export default function LoginPage() {
             label='Password'
             type='password'
             id='password'
+            onChange={handlePasswordChange}
             autoComplete='current-password'
           />
           {/* <FormControlLabel
@@ -146,11 +160,11 @@ export default function LoginPage() {
           </Button>
           {!valid && (
             <>
-              <h1>I am going to drop the N-word because that is wrong lol.</h1>
-              <h2>
-                Not already a user?{" "}
+              <h3>Something went wrong. Try again.</h3>
+              <h3>
+                Not already a user?{/*Kill yourself.*/}{" "}
                 <button onClick={handleSignIn}>SIGN IN</button>
-              </h2>
+              </h3>{" "}
             </>
           )}
         </Box>
