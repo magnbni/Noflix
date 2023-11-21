@@ -11,23 +11,20 @@ import leftArrow from "../assets/arrow-left.svg";
 import rightArrow from "../assets/arrow-right.svg";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
+import { sort } from "semver";
 
 const MOVIES_QUERY = gql`
   query allMovies(
-    $first: Int
-    $last: Int
-    $before: String
-    $after: String
+    $page: Int,
+    $perPage: Int,
     $title: String
     $sort: String
     $startYear: Int
     $endYear: Int
   ) {
     allMovies(
-      first: $first
-      last: $last
-      before: $before
-      after: $after
+      page: $page
+      perPage: $perPage
       title: $title
       sort: $sort
       startYear: $startYear
@@ -41,23 +38,25 @@ const MOVIES_QUERY = gql`
           posterPath
           overview
         }
-        cursor
       }
       pageInfo {
         hasNextPage
         hasPreviousPage
       }
+      totalPages
     }
   }
 `;
 
 const getSortValue = (sortOption: string, orderDirection: string) => {
-  let sortBy = "title";
-  if (sortOption && sortOption !== "") {
-    sortBy = sortOption.toLowerCase();
-  }
+  const sortBy = sortOption.toLowerCase();
   const sortOrder = orderDirection.toLowerCase();
-
+  if (!["title", "releaseYear"].includes(sortBy)) {
+    return "";
+  }
+  if (!["asc", "desc"].includes(sortOrder)) {
+    return "";
+  }
   return `${sortBy}_${sortOrder}`;
 };
 
@@ -66,6 +65,7 @@ const getSortValue = (sortOption: string, orderDirection: string) => {
 */
 export default function Results() {
   const { id } = useParams<string>();
+  const [page, setPage] = useState(1);
 
   const sortOrderState = useSelector(
     (state: RootState) => state.sort.sortOrder,
@@ -77,9 +77,10 @@ export default function Results() {
     (state: RootState) => state.sort.filterYear,
   );
 
-  const { loading, error, data, fetchMore, refetch } = useQuery(MOVIES_QUERY, {
+  const { loading, error, data } = useQuery(MOVIES_QUERY, {
     variables: {
-      first: 12,
+      page: page,
+      per_page: 12,
       sort: getSortValue(sortByState, sortOrderState),
       title: id,
       startYear: filterYearState[0],
@@ -87,17 +88,6 @@ export default function Results() {
     },
 
   });
-
-  // useEffect(() => {
-  //   refetch({
-  //     first: 12,
-  //     sort: getSortValue(sortByState, sortOrderState),
-  //     title: id,
-  //     startYear: filterYearState[0],
-  //     endYear: filterYearState[1],
-  //   });
-  // }),
-  // [id, refetch];
 
   if (!loading && !error) {
     console.log("prev: " + data.allMovies.pageInfo.hasPreviousPage);
@@ -128,18 +118,7 @@ export default function Results() {
           disabled={data ? !data.allMovies.pageInfo.hasPreviousPage: true}
           onClick={() => {
             if (data.allMovies.pageInfo.hasPreviousPage) {
-              fetchMore({
-                variables: {
-                  first: undefined,
-                  last: 12,
-                  before: data.allMovies.edges[0].cursor,
-                  after: undefined,
-                },
-                updateQuery: (prev, { fetchMoreResult }) => {
-                  if (!fetchMoreResult) return prev;
-                  return fetchMoreResult;
-                },
-              });
+              setPage(page - 1);
             }
           }}
         >
@@ -149,18 +128,7 @@ export default function Results() {
           disabled={data ? !data.allMovies.pageInfo.hasNextPage : true}
           onClick={() => {
             if (data.allMovies.pageInfo.hasNextPage) {
-              fetchMore({
-                variables: {
-                  first: 12,
-                  last: undefined,
-                  before: undefined,
-                  after: data.allMovies.edges[11].cursor,
-                },
-                updateQuery: (prev, { fetchMoreResult }) => {
-                  if (!fetchMoreResult) return prev;
-                  return fetchMoreResult;
-                },
-              });
+              setPage(page + 1);
             }
           }}
         >

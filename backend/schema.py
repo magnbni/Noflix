@@ -68,6 +68,7 @@ class MovieConnection(graphene.relay.Connection):
             has_next_page=has_next_page,
             has_previous_page=has_previous_page,
         )
+
     def resolve_total_pages(self, info):
         args = info.context["all_movies_args"]
         total_pages = args["total_pages"]
@@ -205,16 +206,28 @@ class Query(graphene.ObjectType):
         sort=graphene.String(),
         start_year=graphene.Int(),
         end_year=graphene.Int(),
+        title=graphene.String(),
     )
 
     def resolve_all_movies(
-        self, info, page, per_page, sort=None, start_year=None, end_year=None
+        self,
+        info,
+        page,
+        per_page,
+        sort=None,
+        start_year=None,
+        end_year=None,
+        title=None,
     ):
         # Calculate offset
         offset = (page - 1) * per_page
 
         # Start with the base query
-        query = MovieModel.objects
+        query = MovieModel.objects.all()
+        # Apply title-based filtering
+
+        if title:
+            query = query.filter(title__icontains=title)
 
         # Apply year-based filtering
         if start_year and end_year:
