@@ -6,6 +6,7 @@ import TextField from "@mui/material/TextField"
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 import Container from "@mui/material/Container"
+import HeaderAndDrawer from "./HeaderAndDrawer";
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { gql, useMutation } from "@apollo/client"
@@ -88,15 +89,9 @@ export default function LoginPage() {
     }
   }
 
-  const handleBack = () => {
-    navigate("/")
-  }
-
   return (
-    <Container component='main' maxWidth='xs'>
-      <Button onClick={handleBack} variant='contained'>
-        Go back
-      </Button>
+    <Container component="main" maxWidth="xs">
+      <HeaderAndDrawer />
       <CssBaseline />
       <Box
         sx={{

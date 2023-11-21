@@ -1,19 +1,26 @@
-import { styled } from "@mui/material/styles"
-import Box from "@mui/material/Box"
-import Drawer from "@mui/material/Drawer"
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar"
-import Toolbar from "@mui/material/Toolbar"
-import Divider from "@mui/material/Divider"
-import IconButton from "@mui/material/IconButton"
-import TextField from "@mui/material/TextField"
-import TuningIcon from "../assets/tuning.svg"
-import CloseIcon from "../assets/close.svg"
-import "./HeaderAndDrawer.css"
-import { Link, useNavigate } from "react-router-dom"
-import React, { useState } from "react"
-import { List } from "@mui/material"
+import { styled } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import TextField from "@mui/material/TextField";
+import TuningIcon from "../assets/tuning.svg";
+import CloseIcon from "../assets/close.svg";
+import Login from "../assets/login.svg";
+import Logout from "../assets/logout.svg";
+
+import "./HeaderAndDrawer.css";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { List } from "@mui/material";
+import FilterAndSort from "./FilterAndSort";
+import { RootState } from "../../app/store";
+import { useDispatch, useSelector } from "react-redux";
+import { authUser } from "../Reducers/UserSlice";
 import { Avatar } from "@mui/material"
-import FilterAndSort from "./FilterAndSort"
+
 
 const drawerWidth = 320
 
@@ -47,10 +54,14 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }))
 
 export default function HeaderAndDrawer() {
-  const navigate = useNavigate()
-  const [searchValue, setSearchValue] = useState<string>("")
-  const [, setSelectedMovie] = useState<string | null>(null)
-  const [open, setOpen] = useState(false)
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const location = useLocation();
+
+  const [searchValue, setSearchValue] = useState<string>("");
+  const [, setSelectedMovie] = useState<string | null>(null);
+  const [open, setOpen] = useState(false);
+  const authUserState = useSelector((state: RootState) => state.user.authUser);
 
   const handleDrawerOpen = () => {
     setOpen(true)
@@ -76,11 +87,15 @@ export default function HeaderAndDrawer() {
     if (event.key === "Enter") {
       handleSearch(searchValue)
     }
-  }
+  };
 
-  const handleUserPage = () => {
-    navigate("/login")
-  }
+  const handleLogout = () => {
+    dispatch(authUser(false));
+  };
+
+  const handleLogIn = () => {
+    navigate("/login");
+  };
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -97,25 +112,24 @@ export default function HeaderAndDrawer() {
                 <h1 className='headerName'>Noflix</h1>
               </Link>
             </div>
-            <div className='searchHeader'>
-              <TextField
-                id='outlined-basic'
-                label='Search'
-                variant='outlined'
-                size='small'
-                fullWidth
-                sx={{
-                  maxWidth: "350px",
-                }}
-                onChange={handleSearchChange}
-                onKeyDown={handleKeyPress}
-              />
-              {/* Fix styling lol */}
+            {!location.pathname.includes("login") && (
+              <div className='searchHeader' style={{ maxWidth: "350px" }}>
+                <TextField
+                  id='outlined-basic'
+                  label='Search'
+                  variant='outlined'
+                  size='small'
+                  fullWidth
+                  onChange={handleSearchChange}
+                  onKeyDown={handleKeyPress}
+                />
+                {/* Fix styling lol */}
               <Avatar alt='Remy Sharp'>
-                <button onClick={handleUserPage}>U</button>
+                <button onClick={handleLogIn}>U</button>
               </Avatar>
             </div>
-            {location.pathname.includes("project2/search/") && (
+            )}
+            {location.pathname.includes("search") && (
               <IconButton
                 color='inherit'
                 aria-label='open drawer'
@@ -125,6 +139,31 @@ export default function HeaderAndDrawer() {
               >
                 <img src={TuningIcon} alt='Menu' className='hammiIconOpen' />
               </IconButton>
+            )}
+            {!location.pathname.includes("login") && (
+              <div>
+                {authUserState ? (
+                  <IconButton
+                    color="inherit"
+                    aria-label="Log out"
+                    edge="end"
+                    onClick={handleLogout}
+                    sx={{ ...(open && { display: "none" }) }}
+                  >
+                    <img src={Logout} alt="Logout" className="hammiIconOpen" />
+                  </IconButton>
+                ) : (
+                  <IconButton
+                    color="inherit"
+                    aria-label="Log in"
+                    edge="end"
+                    onClick={handleLogIn}
+                    sx={{ ...(open && { display: "none" }) }}
+                  >
+                    <img src={Login} alt="Login" className="hammiIconOpen" />
+                  </IconButton>
+                )}
+              </div>
             )}
           </div>
         </Toolbar>
