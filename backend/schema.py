@@ -38,16 +38,13 @@ class Movie(MongoengineObjectType):
 
 
 class MovieEdge(graphene.ObjectType):
-    cursor = graphene.String()
     node = graphene.Field(Movie)
-
-    def resolve_cursor(self, info):
-        return encode_cursor(self.node)
 
 
 class PageInfo(graphene.ObjectType):
     has_next_page = graphene.Boolean()
     has_previous_page = graphene.Boolean()
+    total_pages = graphene.Int()
 
 
 class MovieConnection(graphene.relay.Connection):
@@ -56,6 +53,7 @@ class MovieConnection(graphene.relay.Connection):
 
     edges = graphene.List(MovieEdge)
     page_info = graphene.Field(PageInfo)
+    total_pages = graphene.Int()
 
     def resolve_edges(self, info):
         edges = [MovieEdge(node=movie) for movie in self.iterable]
@@ -63,66 +61,17 @@ class MovieConnection(graphene.relay.Connection):
 
     def resolve_page_info(self, info):
         args = info.context["all_movies_args"]
-        first = args.get("first")
-        last = args.get("last")
-        before = args.get("before")
-        after = args.get("after")
-        sort = args.get("sort", None)
-
-        first = int(first) if first is not None else None
-        last = int(last) if last is not None else None
-
-        query = MovieModel.objects.all()
-
-        if sort is not None:
-            query = sort_query(query, sort)
-
-        has_next_page = has_next(query, first, last, before, after)
-        has_previous_page = has_previous(query, first, last, before, after)
+        has_next_page = args["has_next_page"]
+        has_previous_page = args["has_previous_page"]
 
         return PageInfo(
-            has_next_page=has_next_page, has_previous_page=has_previous_page
+            has_next_page=has_next_page,
+            has_previous_page=has_previous_page,
         )
-
-
-def find_cursor_index(query, cursor):
-    if not cursor:
-        return None
-    
-    cursor_data = decode_cursor(cursor)
-    cursor_id = cursor_data['id']
-    cursor_title = cursor_data['title']
-    cursor_release_date = cursor_data['release_date']
-
-    for index, item in enumerate(query):
-        if str(item._id) == cursor_id and item.title == cursor_title and str(item.release_date) == cursor_release_date:
-            return index
-
-    return None
-
-
-def has_next(query, first, last, before, after):
-    if first is not None:
-        if after:
-            after_index = find_cursor_index(query, after)
-            return after_index + first < query.count()
-        return first < query.count()
-    elif last is not None and before:
-        before_index = find_cursor_index(query, before)
-        return before_index - last > 0
-    return False
-
-
-def has_previous(query, first, last, before, after):
-    if first is not None and after:
-        after_index = find_cursor_index(query, after)
-        return after_index > 0
-    elif last is not None:
-        if before:
-            before_index = find_cursor_index(query, before)
-            return before_index > 0
-        return last < query.count()
-    return False
+    def resolve_total_pages(self, info):
+        args = info.context["all_movies_args"]
+        total_pages = args["total_pages"]
+        return total_pages
 
 
 class Rating(MongoengineObjectType):
@@ -244,49 +193,6 @@ def sort_query(query, sort):
         return query.order_by("_id")
 
 
-def get_sort_field_and_order(sort_query):
-    if sort_query is None:
-        return None, None
-    sort_field, sort_order = sort_query.rsplit("_")
-    return sort_field, sort_order
-
-
-def encode_cursor(movie):
-    cursor_data = {
-        "id": str(movie._id),
-        "title": movie.title,
-        "release_date": str(movie.release_date),
-    }
-    json_data = json.dumps(cursor_data)
-    return base64.b64encode(json_data.encode("utf-8")).decode("utf-8")
-
-
-def decode_cursor(cursor):
-    json_data = base64.b64decode(cursor).decode("utf-8")
-    return json.loads(json_data)
-
-
-def apply_cursor_to_query(query, cursor, sort_order, is_before=False):
-    cursor_data = decode_cursor(cursor)
-    id_condition = Q(_id__lt=ObjectId(cursor_data['id'])) if is_before else Q(_id__gt=ObjectId(cursor_data['id']))
-
-    if sort_order == "title_asc":
-        title_condition = Q(title__lt=cursor_data['title']) if is_before else Q(title__gt=cursor_data['title'])
-        return query.filter(title_condition | (Q(title=cursor_data['title']) & id_condition))
-    elif sort_order == "title_desc":
-        title_condition = Q(title__gt=cursor_data['title']) if is_before else Q(title__lt=cursor_data['title'])
-        return query.filter(title_condition | (Q(title=cursor_data['title']) & id_condition))
-    elif sort_order == "release_date_asc":
-        date_condition = Q(release_date__lt=cursor_data['release_date']) if is_before else Q(release_date__gt=cursor_data['release_date'])
-        return query.filter(date_condition | (Q(release_date=cursor_data['release_date']) & id_condition))
-    elif sort_order == "release_date_desc":
-        date_condition = Q(release_date__gt=cursor_data['release_date']) if is_before else Q(release_date__lt=cursor_data['release_date'])
-        return query.filter(date_condition | (Q(release_date=cursor_data['release_date']) & id_condition))
-    else:
-        # Default to sorting by _id
-        return query.filter(id_condition)
-
-
 class Query(graphene.ObjectType):
     node = Node.Field()
 
@@ -294,73 +200,50 @@ class Query(graphene.ObjectType):
 
     all_movies = graphene.relay.ConnectionField(
         MovieConnection,
+        page=graphene.Int(default_value=1),
+        per_page=graphene.Int(default_value=10),
         sort=graphene.String(),
-        first=graphene.Int(),
-        last=graphene.Int(),
-        title=graphene.String(),
-        release_date=graphene.String(),
-        after=graphene.String(),
-        before=graphene.String(),
         start_year=graphene.Int(),
         end_year=graphene.Int(),
     )
 
-    def resolve_all_movies(self, info, **args):
-        query = MovieModel.objects.all()
+    def resolve_all_movies(
+        self, info, page, per_page, sort=None, start_year=None, end_year=None
+    ):
+        # Calculate offset
+        offset = (page - 1) * per_page
 
-        info.context["all_movies_args"] = args
+        # Start with the base query
+        query = MovieModel.objects
 
-        sort = args.get("sort")
-        title = args.get("title")
-        first = args.get("first")
-        last = args.get("last")
-        before = args.get("before")
-        after = args.get("after")
-        start_year = args.get("start_year")
-        end_year = args.get("end_year")
-
-        if first is not None and last is not None:
-            raise Exception("Cannot use 'first' and 'last' together in the same query.")
-        if before is not None and after is not None:
-            raise Exception(
-                "Cannot use 'before' and 'after' together in the same query."
-            )
-
-        query = sort_query(query, sort)
-
-        if title is not None:
-            query = query.filter(title__icontains=title)
-
-        if start_year is not None and end_year is not None:
-            start_date = f"{start_year}-01-01"
-            end_date = f"{end_year}-12-31"
+        # Apply year-based filtering
+        if start_year and end_year:
             query = query.filter(
-                release_date__gte=start_date, release_date__lte=end_date
+                release_date__gte=f"{start_year}-01-01",
+                release_date__lte=f"{end_year}-12-31",
             )
 
-        if after:
-            query = apply_cursor_to_query(query, after, sort)
+        # Apply sorting
+        if sort:
+            query = sort_query(query, sort)
 
-        if before:
-            query = apply_cursor_to_query(query, before, sort, is_before=True)
+        # Fetch total count before applying limit and offset
+        total_count = query.count()
 
-        if first is not None:
-            query = query.limit(first)
-        elif last is not None:
-            # Reverse the sort order for 'last' items retrieval
-            if sort and 'desc' in sort:
-                sort = sort.replace('desc', 'asc')
-            elif sort and 'asc' in sort:
-                sort = sort.replace('asc', 'desc')
-            else:
-                # If no sort order is specified, default to descending '_id'
-                sort = '-_id'
+        # Apply limit and offset for pagination
+        query = query.skip(offset).limit(per_page)
 
-            query = query.order_by(sort).limit(last)
-            
-            # If we reversed the sort order to fetch the last items, we need to reverse the result set
-            if before:
-                query = list(query)[::-1]
+        # Determine hasNextPage and hasPreviousPage
+        has_next_page = offset + per_page < total_count
+        has_previous_page = page > 1
+        total_pages = (total_count + per_page - 1) // per_page
+
+        # Store the arguments in the context for later use
+        info.context["all_movies_args"] = {
+            "has_next_page": has_next_page,
+            "has_previous_page": has_previous_page,
+            "total_pages": total_pages,
+        }
 
         return query
 
