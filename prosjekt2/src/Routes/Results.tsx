@@ -83,10 +83,6 @@ export default function Results() {
     (state: RootState) => state.sort.filterByGenre,
   );
 
-  const genreState = useSelector(
-    (state: RootState) => state.sort.filterByGenre,
-  );
-
   const { loading, error, data } = useQuery(MOVIES_QUERY, {
     variables: {
       page: page,

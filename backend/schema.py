@@ -216,6 +216,7 @@ class Query(graphene.ObjectType):
         start_year=graphene.Int(),
         end_year=graphene.Int(),
         title=graphene.String(),
+        genre=graphene.String(),
     )
 
     def resolve_all_movies(
@@ -227,6 +228,7 @@ class Query(graphene.ObjectType):
         start_year=None,
         end_year=None,
         title=None,
+        genre=None,
     ):
         # Calculate offset
         offset = (page - 1) * per_page
@@ -237,6 +239,10 @@ class Query(graphene.ObjectType):
 
         if title:
             query = query.filter(title__icontains=title)
+        
+        # Apply genre-based filtering
+        if genre:
+            query = query.filter(genres__name=genre)
 
         # Apply year-based filtering
         if start_year and end_year:
