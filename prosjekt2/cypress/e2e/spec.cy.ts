@@ -1,5 +1,3 @@
-import { describe, it } from "node:test";
-
 describe("Test Search", () => {
   it("Visits Noflix", () => {
     cy.visit("/");
