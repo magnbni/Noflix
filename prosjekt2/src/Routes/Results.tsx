@@ -13,6 +13,7 @@ import doubleLeftArrow from "../assets/double-arrow-left.svg";
 import doubleRightArrow from "../assets/double-arrow-right.svg";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
+import PreviewMovies from "./PreviewMovies";
 
 const MOVIES_QUERY = gql`
   query allMovies(
@@ -71,6 +72,7 @@ export default function Results() {
   const { id } = useParams<string>();
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [dataIsEmpty, setDataIsEmpty] = useState(false);
 
   const sortOrderState = useSelector(
     (state: RootState) => state.sort.sortOrder,
@@ -101,13 +103,21 @@ export default function Results() {
   useEffect(() => {
     if (data) {
       setTotalPages(data.allMovies.totalPages);
+      if (data.allMovies.edges.length === 0) {
+        setDataIsEmpty(true);
+      } else {
+        setDataIsEmpty(false);
+      }
     }
   }, [data]);
 
   return (
     <div className="results">
       <HeaderAndDrawer />
-      <h2>Search results for: "{id}"</h2>
+      {dataIsEmpty && (
+        <h2>No movies found for "{id}". Maybe you'll like one of these?</h2>
+      )}
+      {!dataIsEmpty && <h2>Search results for: "{id}"</h2>}
       {
         // if loading, map an array of length 12 of undefined to the NestedModal component
         loading && (
@@ -131,55 +141,62 @@ export default function Results() {
         </div>
       )}
       <br />
-      <ButtonGroup
-        variant="contained"
-        aria-label="Elevation buttons"
-        className="buttonGroup"
-      >
-        <Button
-          disabled={data ? !data.allMovies.pageInfo.hasPreviousPage : true}
-          onClick={() => {
-            if (data.allMovies.pageInfo.hasPreviousPage) {
-              setPage(1);
-            }
-          }}
+      {dataIsEmpty && (
+        <div>
+          <PreviewMovies />
+        </div>
+      )}
+      {!dataIsEmpty && (
+        <ButtonGroup
+          variant="contained"
+          aria-label="Elevation buttons"
+          className="buttonGroup"
         >
-          <img src={doubleLeftArrow} className="loadIcon" />
-        </Button>
-        <Button
-          disabled={data ? !data.allMovies.pageInfo.hasPreviousPage : true}
-          onClick={() => {
-            if (data.allMovies.pageInfo.hasPreviousPage) {
-              setPage(page - 1);
-            }
-          }}
-        >
-          <img src={leftArrow} className="loadIcon" />
-        </Button>
-        <Button disabled className="pageCounterButton">
-          {page} of {totalPages}
-        </Button>
-        <Button
-          disabled={data ? !data.allMovies.pageInfo.hasNextPage : true}
-          onClick={() => {
-            if (data.allMovies.pageInfo.hasNextPage) {
-              setPage(page + 1);
-            }
-          }}
-        >
-          <img src={rightArrow} className="loadIcon" />
-        </Button>
-        <Button
-          disabled={data ? !data.allMovies.pageInfo.hasNextPage : true}
-          onClick={() => {
-            if (data.allMovies.pageInfo.hasNextPage) {
-              setPage(data.allMovies.totalPages);
-            }
-          }}
-        >
-          <img src={doubleRightArrow} className="loadIcon" />
-        </Button>
-      </ButtonGroup>
+          <Button
+            disabled={data ? !data.allMovies.pageInfo.hasPreviousPage : true}
+            onClick={() => {
+              if (data.allMovies.pageInfo.hasPreviousPage) {
+                setPage(1);
+              }
+            }}
+          >
+            <img src={doubleLeftArrow} className="loadIcon" />
+          </Button>
+          <Button
+            disabled={data ? !data.allMovies.pageInfo.hasPreviousPage : true}
+            onClick={() => {
+              if (data.allMovies.pageInfo.hasPreviousPage) {
+                setPage(page - 1);
+              }
+            }}
+          >
+            <img src={leftArrow} className="loadIcon" />
+          </Button>
+          <Button disabled className="pageCounterButton">
+            {page} of {totalPages}
+          </Button>
+          <Button
+            disabled={data ? !data.allMovies.pageInfo.hasNextPage : true}
+            onClick={() => {
+              if (data.allMovies.pageInfo.hasNextPage) {
+                setPage(page + 1);
+              }
+            }}
+          >
+            <img src={rightArrow} className="loadIcon" />
+          </Button>
+          <Button
+            disabled={data ? !data.allMovies.pageInfo.hasNextPage : true}
+            onClick={() => {
+              if (data.allMovies.pageInfo.hasNextPage) {
+                setPage(data.allMovies.totalPages);
+              }
+            }}
+          >
+            <img src={doubleRightArrow} className="loadIcon" />
+          </Button>
+        </ButtonGroup>
+      )}
       <br />
     </div>
   );
