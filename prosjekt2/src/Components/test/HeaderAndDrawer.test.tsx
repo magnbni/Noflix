@@ -1,13 +1,13 @@
 import { render } from "@testing-library/react";
 import { describe, expect, test } from "vitest";
-import LoginPage from "../LoginPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { store } from "../../../app/store";
 import { Provider } from "react-redux";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import HeaderAndDrawer from "../HeaderAndDrawer";
 
-describe("LoginPage", () => {
-  test("Snapshot test of LoginPage", () => {
+describe("HeaderAndDrawer", () => {
+  test("Snapshot test of HeaderAndDrawer", () => {
     const client = new ApolloClient({
       uri: "",
       cache: new InMemoryCache(),
@@ -17,7 +17,7 @@ describe("LoginPage", () => {
         <Provider store={store}>
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<LoginPage />}></Route>
+              <Route path="/" element={<HeaderAndDrawer />}></Route>
             </Routes>
           </BrowserRouter>
         </Provider>

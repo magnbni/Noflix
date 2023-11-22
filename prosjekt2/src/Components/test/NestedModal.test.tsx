@@ -1,25 +1,29 @@
 import { render } from "@testing-library/react";
 import { describe, expect, test } from "vitest";
-import LoginPage from "../LoginPage";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { store } from "../../../app/store";
 import { Provider } from "react-redux";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { MovieType } from "../../types";
+import NestedModal from "../NestedModal";
 
-describe("LoginPage", () => {
-  test("Snapshot test of LoginPage", () => {
+describe("NestedModal", () => {
+  test("Snapshot test of NestedModal", () => {
     const client = new ApolloClient({
       uri: "",
       cache: new InMemoryCache(),
     });
+    const movie: MovieType = {
+      Id: "MOCK",
+      title: "MOCK",
+      releaseDate: "MOCK",
+      overview: "MOCK",
+      voteAverage: 0,
+      posterPath: "MOCK",
+    };
     const page = render(
       <ApolloProvider client={client}>
         <Provider store={store}>
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<LoginPage />}></Route>
-            </Routes>
-          </BrowserRouter>
+          <NestedModal movie={movie}></NestedModal>
         </Provider>
       </ApolloProvider>
     );
