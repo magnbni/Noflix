@@ -9,6 +9,7 @@ export type UserEdge = {
 };
 
 export interface MovieType {
+  Id: string;
   title: string;
   releaseDate: string;
   overview: string;
@@ -28,4 +29,11 @@ export interface GenreEdge {
 export interface GenreType {
   name: string;
   id: string;
+}
+
+export interface RateProps {
+  initValue: number | null;
+  handleUserRating: (rating: number) => void;
+  movieId: string;
+  open: boolean;
 }
