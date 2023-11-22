@@ -7,7 +7,7 @@ describe('Test Search', () => {
 })
 
 describe('Test Home Button', () => {
-  it('return to Home', () => {
+  it('Return back to home page', () => {
     cy.visit('/search/lord%20of%20the%20rings')
     cy.get('.logoAndTitle')
     cy.url().should('include', '/')
