@@ -48,6 +48,14 @@ Testing is deficient as of version 3, but some end-to-end tests can be executed 
 npm run cypress:open
 ```
 
+We also use vitest, whose tests can be ran via the command:
+
+```bash
+npm run test
+```
+
+in the prosjekt2 folder.
+
 ## Roadmap
 
 We want to create the best app for your movie finding pleasure. To do this, we have developed a simple roadmap for the different versions of our application:
