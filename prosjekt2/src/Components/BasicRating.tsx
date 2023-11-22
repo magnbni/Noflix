@@ -5,7 +5,9 @@ import { RateProps } from "../types";
 import { useQuery, gql, useMutation } from "@apollo/client";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
-import { Button } from "@mui/material";
+import { IconButton } from "@mui/material";
+import trash from "../assets/trash.svg";
+import "./BasicRating.css";
 
 /* Returns a read only box of the public rating, so it cannot be changed by the user. */
 export function ReadOnlyRating(value: number | null) {
@@ -75,7 +77,7 @@ export function Rate(rateProps: RateProps) {
   }, [value, rateProps.open, refetch]);
 
   return (
-    <Box>
+    <div className="boxcontainer">
       {value ? (
         <Rating
           name="simple-controlled"
@@ -103,10 +105,17 @@ export function Rate(rateProps: RateProps) {
       )}
       <br />
       {value != null && value > 0 ? (
-        <Button onClick={handleRemove}>Remove rating</Button>
+        <IconButton
+          color="inherit"
+          aria-label="open drawer"
+          edge="end"
+          onClick={handleRemove}
+        >
+          <img src={trash} alt="Menu" className="trashIcon" />
+        </IconButton>
       ) : (
         <></>
       )}
-    </Box>
+    </div>
   );
 }

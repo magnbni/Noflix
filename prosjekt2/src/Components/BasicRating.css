@@ -1,0 +1,13 @@
+.trashIcon {
+  height: 1.25em;
+  will-change: filter;
+  transition: filter 300ms;
+  border: 3px solid transparent;
+  border-radius: 25%;
+  margin-top: -15px;
+}
+
+.boxcontainer {
+  display: flex;
+  flex-direction: row;
+}
