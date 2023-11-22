@@ -21,7 +21,7 @@ describe("PreviewMovies", () => {
             </Routes>
           </BrowserRouter>
         </Provider>
-      </ApolloProvider>
+      </ApolloProvider>,
     );
     expect(page).toMatchSnapshot();
   });

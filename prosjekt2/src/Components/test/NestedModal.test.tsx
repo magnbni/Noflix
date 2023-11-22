@@ -25,7 +25,7 @@ describe("NestedModal", () => {
         <Provider store={store}>
           <NestedModal movie={movie}></NestedModal>
         </Provider>
-      </ApolloProvider>
+      </ApolloProvider>,
     );
     expect(page).toMatchSnapshot();
   });

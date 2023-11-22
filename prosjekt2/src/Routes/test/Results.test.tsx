@@ -21,7 +21,7 @@ describe("Results", () => {
             </Routes>
           </BrowserRouter>
         </Provider>
-      </ApolloProvider>
+      </ApolloProvider>,
     );
     expect(page).toMatchSnapshot();
   });

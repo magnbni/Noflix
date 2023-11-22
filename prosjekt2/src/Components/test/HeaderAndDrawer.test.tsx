@@ -22,7 +22,7 @@ describe("HeaderAndDrawer", () => {
             </Routes>
           </BrowserRouter>
         </Provider>
-      </ApolloProvider>
+      </ApolloProvider>,
     );
     expect(page).toMatchSnapshot();
   });
@@ -42,7 +42,7 @@ describe("HeaderAndDrawer", () => {
             </Routes>
           </BrowserRouter>
         </Provider>
-      </ApolloProvider>
+      </ApolloProvider>,
     );
 
     const searchBox = getByLabelText("Search");

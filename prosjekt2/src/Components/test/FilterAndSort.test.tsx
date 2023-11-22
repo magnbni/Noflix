@@ -16,7 +16,7 @@ describe("FilterAndSort", () => {
         <Provider store={store}>
           <FilterAndSort />
         </Provider>
-      </ApolloProvider>
+      </ApolloProvider>,
     );
     expect(page).toMatchSnapshot();
   });

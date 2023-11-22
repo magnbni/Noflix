@@ -21,7 +21,7 @@ describe("LoginPage", () => {
             </Routes>
           </BrowserRouter>
         </Provider>
-      </ApolloProvider>
+      </ApolloProvider>,
     );
     expect(page).toMatchSnapshot();
   });
@@ -40,7 +40,7 @@ describe("LoginPage", () => {
             </Routes>
           </BrowserRouter>
         </Provider>
-      </ApolloProvider>
+      </ApolloProvider>,
     );
 
     const emailField = getByText("Email Address");
