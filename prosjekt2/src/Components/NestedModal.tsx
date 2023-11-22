@@ -7,7 +7,7 @@ import { Rate, ReadOnlyRating } from "./BasicRating";
 import { MovieType } from "../types";
 import CloseIcon from "../assets/close.svg";
 import { RateProps } from "../types";
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 
@@ -37,14 +37,6 @@ const USER_RATING_MUTATION = gql`
   }
 `;
 
-const GET_USER_RATING = gql`
-  query allUsers($userEmail: String!, $movieId: String!) {
-    userMovieRating(userEmail: $userEmail, movieId: $movieId) {
-      ratingValue
-    }
-  }
-`;
-
 /*
   This is the main modal used for showing the movies on the results page.
 */
@@ -53,36 +45,15 @@ const NestedModal: React.FC<NestedModalProps> = ({ movie }) => {
   const [userRatingMutation] = useMutation(USER_RATING_MUTATION);
   const userEmailState = useSelector((state: RootState) => state.user.email);
   const authUserState = useSelector((state: RootState) => state.user.authUser);
-  const [userData, setUserData] = React.useState(null);
-
-  // const { data } = useQuery(GET_USER_RATING, {
-  //   variables: {
-  //     userEmail: userEmailState,
-  //     movieId: movie?.Id,
-  //   },
-  // });
-
-  useQuery(GET_USER_RATING, {
-    variables: {
-      userEmail: userEmailState,
-      movieId: movie?.Id,
-    },
-    skip: !open, // Skip the query when 'open' is false
-    onCompleted: (data) => {
-      // Store the data in the state when the query is completed
-      setUserData(data);
-    },
-  });
 
   const handleOpen = () => {
     if (movie) {
       setOpen(true);
       setRateProps({
-        initValue:
-          userData?.userMovieRating == null
-            ? 0
-            : userData.userMovieRating.ratingValue,
+        initValue: 0,
         handleUserRating: handleUserRating,
+        movieId: movie.Id,
+        open: open,
       });
     }
   };
@@ -91,7 +62,6 @@ const NestedModal: React.FC<NestedModalProps> = ({ movie }) => {
   };
 
   const handleUserRating = async (rating: number | null) => {
-    console.log("called");
     try {
       const { data } = await userRatingMutation({
         variables: {
@@ -114,32 +84,11 @@ const NestedModal: React.FC<NestedModalProps> = ({ movie }) => {
   };
 
   const [rateProps, setRateProps] = React.useState<RateProps>({
-    initValue:
-      userData?.userMovieRating == null
-        ? 0
-        : userData.userMovieRating.ratingValue,
+    initValue: 0,
     handleUserRating: handleUserRating,
+    open: false,
+    movieId: "",
   });
-
-  // async function getUserRating(): Promise<number> {
-  //   const { data } = await   getUserRatingQuery();
-  //   if (data.userMovieRating.ratingValue) {
-  //     return data.userMovieRating.ratingValue;
-  //   } else {
-  //     return 0;
-  //   }
-  // }
-
-  // React.useEffect(() => {
-  //   if (movie) {
-  //     setRateProps({
-  //       initValue: movie.voteAverage.valueOf() / 2,
-  //       handleUserRating: (rate: number) => {
-  //         return rate;
-  //       },
-  //     });
-  //   }
-  // }, [movie]);
 
   return (
     <div>

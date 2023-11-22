@@ -22,6 +22,8 @@ export interface GenreType {
 }
 
 export interface RateProps {
-  initValue: number | null | Promise<number>;
+  initValue: number | null;
   handleUserRating: (rating: number) => void;
+  movieId: string;
+  open: boolean;
 }

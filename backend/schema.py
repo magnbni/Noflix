@@ -229,7 +229,6 @@ class Query(graphene.ObjectType):
         end_year=graphene.Int(),
         title=graphene.String(),
         genre=graphene.String(),
-        user_email=graphene.String()
     )
 
     # Should probably do this another way, I have an idea on how
@@ -272,7 +271,6 @@ class Query(graphene.ObjectType):
         end_year=None,
         title=None,
         genre=None,
-        user_email=None,
     ):
         # Calculate offset
         offset = (page - 1) * per_page
