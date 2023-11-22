@@ -14,7 +14,7 @@ import Logout from "../assets/logout.svg";
 import "./HeaderAndDrawer.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { ButtonGroup, List } from "@mui/material";
+import { Alert, ButtonGroup, List } from "@mui/material";
 import FilterAndSort from "./FilterAndSort";
 import { RootState } from "../../app/store";
 import { useDispatch, useSelector } from "react-redux";
@@ -61,6 +61,7 @@ export default function HeaderAndDrawer() {
   const [, setSelectedMovie] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const authUserState = useSelector((state: RootState) => state.user.authUser);
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -90,6 +91,10 @@ export default function HeaderAndDrawer() {
 
   const handleLogout = () => {
     dispatch(authUser(false));
+    setShowSuccessAlert(true);
+    // setTimeout(() => {
+    //   setShowSuccessAlert(false);
+    // }, 3000);
   };
 
   const handleLogIn = () => {
@@ -209,6 +214,24 @@ export default function HeaderAndDrawer() {
         </List>
         <Divider />
       </Drawer>
+
+      {showSuccessAlert && (
+        <div
+          style={{
+            position: "absolute",
+            bottom: 50,
+            left: 40,
+            right: 40,
+            zIndex: 9999,
+            border: "1px solid #000",
+            borderRadius: 4,
+          }}
+        >
+          <Alert severity="success" onClose={() => setShowSuccessAlert(false)}>
+            Logout successful!
+          </Alert>
+        </div>
+      )}
     </Box>
   );
 }
