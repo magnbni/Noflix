@@ -39,11 +39,7 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [valid, setValid] = useState(true);
-  const authUserState = useSelector((state: RootState) => state.user.authUser);
-
-  if (authUserState) {
-    console.log("Epicly logged in");
-  }
+  // const authUserState = useSelector((state: RootState) => state.user.authUser);
 
   const [authUserMutation] = useMutation(AUTH_USER_MUTATION);
   const [createUserMutation] = useMutation(CREATE_USER_MUTATION);

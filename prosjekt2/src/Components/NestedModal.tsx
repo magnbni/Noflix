@@ -6,6 +6,10 @@ import { grey } from "@mui/material/colors";
 import { Rate, ReadOnlyRating } from "./BasicRating";
 import { MovieType } from "../types";
 import CloseIcon from "../assets/close.svg";
+import { RateProps } from "../types";
+import { gql, useMutation } from "@apollo/client";
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
 
 const style = {
   position: "absolute" as const,
@@ -25,11 +29,23 @@ interface NestedModalProps {
   movie: MovieType | undefined;
 }
 
+const USER_RATING_MUTATION = gql`
+  mutation userRating($userEmail: String!, $ratings: [RatingInput]!) {
+    updateUserRatings(userEmail: $userEmail, ratings: $ratings) {
+      success
+    }
+  }
+`;
+
 /*
   This is the main modal used for showing the movies on the results page.
 */
 const NestedModal: React.FC<NestedModalProps> = ({ movie }) => {
   const [open, setOpen] = React.useState(false);
+  const [userRatingMutation] = useMutation(USER_RATING_MUTATION);
+  const userEmailState = useSelector((state: RootState) => state.user.email);
+  const authUserState = useSelector((state: RootState) => state.user.authUser);
+
   const handleOpen = () => {
     if (movie) {
       setOpen(true);
@@ -38,6 +54,45 @@ const NestedModal: React.FC<NestedModalProps> = ({ movie }) => {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleUserRating = async (rating: number | null) => {
+    console.log("called");
+    try {
+      const { data } = await userRatingMutation({
+        variables: {
+          userEmail: userEmailState,
+          ratings: [
+            {
+              movieId: movie?.Id,
+              ratingValue: rating,
+            },
+          ],
+        },
+      });
+
+      if (data.updateUserRatings.success) {
+        console.log("Is good");
+      }
+    } catch (error) {
+      console.error("Add user rating failed", error);
+    }
+  };
+
+  const [rateProps] = React.useState<RateProps>({
+    initValue: 3,
+    handleUserRating: handleUserRating,
+  });
+
+  // React.useEffect(() => {
+  //   if (movie) {
+  //     setRateProps({
+  //       initValue: movie.voteAverage.valueOf() / 2,
+  //       handleUserRating: (rate: number) => {
+  //         return rate;
+  //       },
+  //     });
+  //   }
+  // }, [movie]);
 
   return (
     <div>
@@ -116,8 +171,10 @@ const NestedModal: React.FC<NestedModalProps> = ({ movie }) => {
               </div>
               <p>{movie.overview}</p>
               <br />
-              <p style={{ marginBottom: "0px" }}>Set your rating:</p>
-              {Rate(movie.voteAverage.valueOf() / 2)}
+              {authUserState && (
+                <p style={{ marginBottom: "0px" }}>Set your rating:</p>
+              )}
+              {authUserState && rateProps != undefined && Rate(rateProps)}
             </div>
           )}
         </Box>

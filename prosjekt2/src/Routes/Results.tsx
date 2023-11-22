@@ -35,6 +35,7 @@ const MOVIES_QUERY = gql`
     ) {
       edges {
         node {
+          Id
           title
           releaseDate
           voteAverage
