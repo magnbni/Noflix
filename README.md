@@ -40,6 +40,14 @@ We also use the component library MaterialUI, consisting of many prebuilt yet cu
 
 We chose these technologies mostly because of the familiarity to the team developers, but also because of the ease of implementation.
 
+## Testing
+
+Testing is deficient as of version 3, but some end-to-end tests can be executed by running the command:
+
+```bash
+npm run cypress:open
+```
+
 ## Roadmap
 
 We want to create the best app for your movie finding pleasure. To do this, we have developed a simple roadmap for the different versions of our application:

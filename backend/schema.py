@@ -153,6 +153,29 @@ class RatingInput(graphene.InputObjectType):
     movie_id = graphene.String(required=True)
     rating_value = graphene.Int(required=True)
 
+class DeleteUserRatings(graphene.Mutation):
+    class Arguments:
+        user_email = graphene.String(required=True)
+        movie_id = graphene.String(required=True)
+
+    success = graphene.Boolean()
+
+    def mutate(self, info, user_email, movie_id):
+        try:
+            user = UserModel.objects.get(email=user_email)
+
+            if not user.ratings.filter(movie_id=movie_id):
+                raise Exception("Movie is not in ratings")
+            
+            user.ratings = [rating for rating in user.ratings if str(rating.movie_id) != movie_id]
+            user.save(validate=False)
+
+            success = True
+        except Exception as e:
+            # Print error if something goes wrong
+            print(f"Error deleting user rating: {e}")
+            success = False
+        return DeleteUserRatings(success=success)
 
 class UpdateUserRatings(graphene.Mutation):
     class Arguments:
@@ -323,6 +346,7 @@ class Mutation(graphene.ObjectType):
     auth_user = AuthenticateUser.Field()
     user_create = CreateUser.Field()
     update_user_ratings = UpdateUserRatings.Field()
+    delete_user_ratings = DeleteUserRatings.Field()
 
 
 # For debugging purposes

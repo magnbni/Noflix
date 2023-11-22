@@ -2,9 +2,10 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import { RateProps } from "../types";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery, gql, useMutation } from "@apollo/client";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
+import { Button } from "@mui/material";
 
 /* Returns a read only box of the public rating, so it cannot be changed by the user. */
 export function ReadOnlyRating(value: number | null) {
@@ -23,10 +24,19 @@ const GET_USER_RATING = gql`
   }
 `;
 
+const DELETE_USER_RATING = gql`
+  mutation deleteUserRatings($userEmail: String!, $movieId: String!) {
+    deleteUserRatings(userEmail: $userEmail, movieId: $movieId) {
+      success
+    }
+  }
+`;
+
 /* The rate component used by users. Is implemented within each Actioncard. */
 export function Rate(rateProps: RateProps) {
   const [value, setValue] = React.useState<number | null>(null);
   const userEmailState = useSelector((state: RootState) => state.user.email);
+  const [deleteRatingMutation] = useMutation(DELETE_USER_RATING);
 
   const { refetch } = useQuery(GET_USER_RATING, {
     variables: {
@@ -42,9 +52,27 @@ export function Rate(rateProps: RateProps) {
     },
   });
 
+  const handleRemove = async (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+    try {
+      const { data } = await deleteRatingMutation({
+        variables: {
+          userEmail: userEmailState,
+          movieId: rateProps.movieId,
+        },
+      });
+      if (data.deleteUserRatings.success) {
+        console.log("Rating successfully deleted.");
+        setValue(0);
+      }
+    } catch (error) {
+      console.error("Deleting rating failed", error);
+    }
+  };
+
   React.useEffect(() => {
     refetch();
-  }, [rateProps.open, refetch]);
+  }, [value, rateProps.open, refetch]);
 
   return (
     <Box>
@@ -72,6 +100,12 @@ export function Rate(rateProps: RateProps) {
             }}
           />
         </>
+      )}
+      <br />
+      {value != null && value > 0 ? (
+        <Button onClick={handleRemove}>Remove rating</Button>
+      ) : (
+        <></>
       )}
     </Box>
   );
