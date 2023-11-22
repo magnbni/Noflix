@@ -14,11 +14,12 @@ import Logout from "../assets/logout.svg";
 import "./HeaderAndDrawer.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { List } from "@mui/material";
+import { ButtonGroup, List } from "@mui/material";
 import FilterAndSort from "./FilterAndSort";
 import { RootState } from "../../app/store";
 import { useDispatch, useSelector } from "react-redux";
 import { authUser } from "../Reducers/UserSlice";
+import UserPageIcon from "../assets/user.svg";
 
 const drawerWidth = 320;
 
@@ -95,6 +96,10 @@ export default function HeaderAndDrawer() {
     navigate("/login");
   };
 
+  const handleUserPage = () => {
+    navigate("/user");
+  };
+
   return (
     <Box sx={{ display: "flex" }}>
       <AppBar position="fixed" open={open}>
@@ -107,19 +112,20 @@ export default function HeaderAndDrawer() {
             />
             <h1 className="headerName">Noflix</h1>
           </Link>
-          {!location.pathname.includes("login") && (
-            <div className="searchHeader" style={{ maxWidth: "350px" }}>
-              <TextField
-                id="outlined-basic"
-                label="Search"
-                variant="outlined"
-                size="small"
-                fullWidth
-                onChange={handleSearchChange}
-                onKeyDown={handleKeyPress}
-              />
-            </div>
-          )}
+          {!location.pathname.includes("login") &&
+            !location.pathname.includes("user") && (
+              <div className="searchHeader" style={{ maxWidth: "350px" }}>
+                <TextField
+                  id="outlined-basic"
+                  label="Search"
+                  variant="outlined"
+                  size="small"
+                  fullWidth
+                  onChange={handleSearchChange}
+                  onKeyDown={handleKeyPress}
+                />
+              </div>
+            )}
           <div className="buttonContainer">
             {location.pathname.includes("search") && (
               <IconButton
@@ -135,15 +141,34 @@ export default function HeaderAndDrawer() {
             {!location.pathname.includes("login") && (
               <div>
                 {authUserState ? (
-                  <IconButton
-                    color="inherit"
-                    aria-label="Log out"
-                    edge="end"
-                    onClick={handleLogout}
-                    sx={{ ...(open && { display: "none" }) }}
-                  >
-                    <img src={Logout} alt="Logout" className="hammiIconOpen" />
-                  </IconButton>
+                  <ButtonGroup>
+                    <IconButton
+                      color="inherit"
+                      aria-label="Log out"
+                      edge="end"
+                      onClick={handleLogout}
+                      sx={{ ...(open && { display: "none" }) }}
+                    >
+                      <img
+                        src={Logout}
+                        alt="Logout"
+                        className="hammiIconOpen"
+                      />
+                    </IconButton>
+                    <IconButton
+                      color="inherit"
+                      aria-label="User page"
+                      edge="end"
+                      onClick={handleUserPage}
+                      sx={{ ...(open && { display: "none" }) }}
+                    >
+                      <img
+                        src={UserPageIcon}
+                        alt="User page"
+                        className="hammiIconOpen"
+                      />
+                    </IconButton>
+                  </ButtonGroup>
                 ) : (
                   <IconButton
                     color="inherit"
