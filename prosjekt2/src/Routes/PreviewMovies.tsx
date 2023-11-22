@@ -27,6 +27,7 @@ const MOVIES_QUERY = gql`
     ) {
       edges {
         node {
+          Id
           title
           releaseDate
           voteAverage
@@ -128,7 +129,6 @@ export default function PreviewMovies() {
         : createArrayOfUndefined(20),
     },
   ];
-  console.log(categories[0].movies);
 
   return (
     <div className="previewMovies">

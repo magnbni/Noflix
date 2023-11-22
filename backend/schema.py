@@ -170,12 +170,20 @@ class UpdateUserRatings(graphene.Mutation):
             # Create Rating objects and add to user's ratings list
             for rating_input in ratings:
                 movie_id = rating_input["movie_id"]
-                # This will throw exception, so technically do not need the if-statement
-                if not MovieModel.objects.get(_id=ObjectId(movie_id)):
-                    success = False
                 rating_value = rating_input["rating_value"]
-                rating = RatingModel(movie_id=movie_id, rating_value=rating_value)
-                user.ratings.append(rating)
+
+                if not MovieModel.objects.filter(_id=ObjectId(movie_id)):
+                    return False
+
+                existing_rating = next((rating for rating in user.ratings if str(rating.movie_id) == movie_id), None)
+
+                if existing_rating:
+                    # movie_id already exists, update the rating value
+                    existing_rating.rating_value = rating_value
+                else:
+                    # movie_id does not exist, add the new rating
+                    rating = RatingModel(movie_id=movie_id, rating_value=rating_value)
+                    user.ratings.append(rating)
                 # UserModel.objects.get(email=user_email).update(push_all_ratings=rating)
             user.save(validate=False)
             success = True
@@ -222,6 +230,36 @@ class Query(graphene.ObjectType):
         title=graphene.String(),
         genre=graphene.String(),
     )
+
+    # Should probably do this another way, I have an idea on how
+    user_movie_rating = graphene.Field(
+        Rating, 
+        user_email=graphene.String(required=True), 
+        movie_id=graphene.String(required=True)
+    )
+
+    def resolve_user_movie_rating(
+        self,
+        info,
+        user_email,
+        movie_id
+    ):
+        try:
+            # Get the user by email
+            user = UserModel.objects.get(email=user_email)
+            
+            # Find the rating for the given movie_id
+            rating = next((rating for rating in user.ratings if str(rating.movie_id) == str(movie_id)), None)
+
+            if rating:
+                return rating
+            else:
+                # Handle the case where the rating is not found
+                raise Exception("Rating not found for the given user and movie")
+
+        except Exception as e:
+            print(f"Error fetching user movie rating: {e}")
+            return None
 
     def resolve_all_movies(
         self,
