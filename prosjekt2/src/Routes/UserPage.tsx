@@ -59,7 +59,7 @@ export default function UserPage() {
         )
       }
       {error && error.message}
-      {data && (
+      {data && data.allUsers.edges[0].node.ratedMovies.length > 0 && (
         <div className="row">
           {data.allUsers.edges[0].node.ratedMovies.map((movie: MovieType) => (
             <div className="card" key={`movie-${movie.title}`}>
@@ -67,6 +67,9 @@ export default function UserPage() {
             </div>
           ))}
         </div>
+      )}
+      {data && data.allUsers.edges[0].node.ratedMovies.length == 0 && (
+        <h3>You haven't rated any movies yet :(</h3>
       )}
     </div>
   );

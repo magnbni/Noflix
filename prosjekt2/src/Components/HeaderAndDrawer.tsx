@@ -98,7 +98,7 @@ export default function HeaderAndDrawer() {
 
   const handleUserPage = () => {
     navigate("/user");
-  }
+  };
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -112,19 +112,20 @@ export default function HeaderAndDrawer() {
             />
             <h1 className="headerName">Noflix</h1>
           </Link>
-          {!location.pathname.includes("login") && !location.pathname.includes("user") && (
-            <div className="searchHeader" style={{ maxWidth: "350px" }}>
-              <TextField
-                id="outlined-basic"
-                label="Search"
-                variant="outlined"
-                size="small"
-                fullWidth
-                onChange={handleSearchChange}
-                onKeyDown={handleKeyPress}
-              />
-            </div>
-          )}
+          {!location.pathname.includes("login") &&
+            !location.pathname.includes("user") && (
+              <div className="searchHeader" style={{ maxWidth: "350px" }}>
+                <TextField
+                  id="outlined-basic"
+                  label="Search"
+                  variant="outlined"
+                  size="small"
+                  fullWidth
+                  onChange={handleSearchChange}
+                  onKeyDown={handleKeyPress}
+                />
+              </div>
+            )}
           <div className="buttonContainer">
             {location.pathname.includes("search") && (
               <IconButton
