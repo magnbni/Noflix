@@ -25,4 +25,27 @@ describe("LoginPage", () => {
     );
     expect(page).toMatchSnapshot();
   });
+
+  test("Check that fields exist and are clickable", async () => {
+    const client = new ApolloClient({
+      uri: "",
+      cache: new InMemoryCache(),
+    });
+    const { getByText } = render(
+      <ApolloProvider client={client}>
+        <Provider store={store}>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<LoginPage />}></Route>
+            </Routes>
+          </BrowserRouter>
+        </Provider>
+      </ApolloProvider>
+    );
+
+    const emailField = getByText("Email Address");
+    const passwordField = getByText("Password");
+    expect(emailField).toBeTruthy();
+    expect(passwordField).toBeTruthy();
+  });
 });
