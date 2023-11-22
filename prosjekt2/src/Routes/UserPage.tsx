@@ -1,13 +1,9 @@
 import HeaderAndDrawer from "../Components/HeaderAndDrawer";
 import { gql, useQuery } from "@apollo/client";
 import NestedModal from "../Components/NestedModal";
-import { MovieEdge } from "../types";
-import { ButtonGroup, Button } from "@mui/material";
-import { useEffect, useState } from "react";
-import leftArrow from "../assets/arrow-left.svg";
-import rightArrow from "../assets/arrow-right.svg";
-import doubleLeftArrow from "../assets/double-arrow-left.svg";
-import doubleRightArrow from "../assets/double-arrow-right.svg";
+import { MovieType } from "../types";
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
 
 const RATED_MOVIES_QUERY = gql`
   query allUsers($email: String) {
@@ -19,6 +15,7 @@ const RATED_MOVIES_QUERY = gql`
             releaseDate
             posterPath
             overview
+            voteAverage
           }
         }
       }
@@ -27,21 +24,23 @@ const RATED_MOVIES_QUERY = gql`
 `;
 
 export default function UserPage() {
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const authUserState = useSelector((state: RootState) => state.user.authUser);
+  const email = useSelector((state: RootState) => state.user.email);
 
   const { loading, error, data } = useQuery(RATED_MOVIES_QUERY, {
     variables: {
-      email: "hei",
+      email: email,
     },
   });
-  console.log("user", data);
 
-  useEffect(() => {
-    if (data) {
-      setTotalPages(data.allMovies.totalPages);
-    }
-  }, [data]);
+  if (!authUserState && email === "") {
+    return (
+      <div className="results">
+        <HeaderAndDrawer />
+        <h2>Please log in to see your rated movies</h2>
+      </div>
+    );
+  }
 
   return (
     <div className="results">
@@ -62,64 +61,13 @@ export default function UserPage() {
       {error && error.message}
       {data && (
         <div className="row">
-          {data.allMovies.edges.map((edge: MovieEdge) => (
-            <div className="card" key={`movie-${edge.node.title}`}>
-              <NestedModal movie={edge.node}></NestedModal>
+          {data.allUsers.edges[0].node.ratedMovies.map((movie: MovieType) => (
+            <div className="card" key={`movie-${movie.title}`}>
+              <NestedModal movie={movie}></NestedModal>
             </div>
           ))}
         </div>
       )}
-      <br />
-      <ButtonGroup
-        variant="contained"
-        aria-label="Elevation buttons"
-        className="buttonGroup"
-      >
-        <Button
-          disabled={data ? !data.allMovies.pageInfo.hasPreviousPage : true}
-          onClick={() => {
-            if (data.allMovies.pageInfo.hasPreviousPage) {
-              setPage(1);
-            }
-          }}
-        >
-          <img src={doubleLeftArrow} className="loadIcon" />
-        </Button>
-        <Button
-          disabled={data ? !data.allMovies.pageInfo.hasPreviousPage : true}
-          onClick={() => {
-            if (data.allMovies.pageInfo.hasPreviousPage) {
-              setPage(page - 1);
-            }
-          }}
-        >
-          <img src={leftArrow} className="loadIcon" />
-        </Button>
-        <Button disabled className="pageCounterButton">
-          {page} of {totalPages}
-        </Button>
-        <Button
-          disabled={data ? !data.allMovies.pageInfo.hasNextPage : true}
-          onClick={() => {
-            if (data.allMovies.pageInfo.hasNextPage) {
-              setPage(page + 1);
-            }
-          }}
-        >
-          <img src={rightArrow} className="loadIcon" />
-        </Button>
-        <Button
-          disabled={data ? !data.allMovies.pageInfo.hasNextPage : true}
-          onClick={() => {
-            if (data.allMovies.pageInfo.hasNextPage) {
-              setPage(data.allMovies.totalPages);
-            }
-          }}
-        >
-          <img src={doubleRightArrow} className="loadIcon" />
-        </Button>
-      </ButtonGroup>
-      <br />
     </div>
   );
 }
