@@ -11,6 +11,7 @@ const RATED_MOVIES_QUERY = gql`
       edges {
         node {
           ratedMovies {
+            Id
             title
             releaseDate
             posterPath
