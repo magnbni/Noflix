@@ -1,5 +1,5 @@
 .results {
-  position: absolute;
+  /* position: absolute; */
   top: 0;
   left: 0;
   right: 0;
@@ -9,13 +9,13 @@
   justify-content: flex-start;
   align-items: flex-start;
   padding-top: 90px;
-  padding-left: 5%;
-  padding-right: 5%;
+  margin: auto;
 }
 
 .row {
   display: grid;
   gap: 10px;
+  margin: auto;
 }
 
 @media screen and (min-width: 1400px) {
@@ -42,20 +42,6 @@
   }
 }
 
-@media screen and (min-width: 1200px) {
-  .results {
-    padding-left: 10%;
-    padding-right: 10%;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .results {
-    padding-left: 5%;
-    padding-right: 5%;
-  }
-}
-
 .card {
   display: flex;
   flex: 1;
@@ -68,6 +54,7 @@
 
 .buttonGroup {
   opacity: 0.8;
+  margin: auto;
 }
 
 .nohits {
@@ -77,4 +64,9 @@
   position: absolute;
   top: 90px;
   left: 36px;
+}
+
+.pageCounterButton {
+  color: black !important;
+  background-color: #1976d2 !important;
 }
