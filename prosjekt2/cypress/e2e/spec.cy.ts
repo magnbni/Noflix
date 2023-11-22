@@ -5,3 +5,11 @@ describe('Test Search', () => {
     cy.url().should('include', '/search/lord%20of%20the%20rings')
   })
 })
+
+describe('Test Home Button', () => {
+  it('return to Home', () => {
+    cy.visit('/search/lord%20of%20the%20rings')
+    cy.get('.logoAndTitle')
+    cy.url().should('include', '/')
+  })
+})
