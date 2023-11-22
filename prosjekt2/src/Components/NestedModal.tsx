@@ -7,7 +7,7 @@ import { Rate, ReadOnlyRating } from "./BasicRating";
 import { MovieType } from "../types";
 import CloseIcon from "../assets/close.svg";
 import { RateProps } from "../types";
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 
@@ -37,6 +37,14 @@ const USER_RATING_MUTATION = gql`
   }
 `;
 
+const GET_USER_RATING = gql`
+  query allUsers($userEmail: String!, $movieId: String!) {
+    userMovieRating(userEmail: $userEmail, movieId: $movieId) {
+      ratingValue
+    }
+  }
+`;
+
 /*
   This is the main modal used for showing the movies on the results page.
 */
@@ -45,10 +53,37 @@ const NestedModal: React.FC<NestedModalProps> = ({ movie }) => {
   const [userRatingMutation] = useMutation(USER_RATING_MUTATION);
   const userEmailState = useSelector((state: RootState) => state.user.email);
   const authUserState = useSelector((state: RootState) => state.user.authUser);
+  const [userData, setUserData] = React.useState(null);
+
+  // const { data } = useQuery(GET_USER_RATING, {
+  //   variables: {
+  //     userEmail: userEmailState,
+  //     movieId: movie?.Id,
+  //   },
+  // });
+
+  useQuery(GET_USER_RATING, {
+    variables: {
+      userEmail: userEmailState,
+      movieId: movie?.Id,
+    },
+    skip: !open, // Skip the query when 'open' is false
+    onCompleted: (data) => {
+      // Store the data in the state when the query is completed
+      setUserData(data);
+    },
+  });
 
   const handleOpen = () => {
     if (movie) {
       setOpen(true);
+      setRateProps({
+        initValue:
+          userData?.userMovieRating == null
+            ? 0
+            : userData.userMovieRating.ratingValue,
+        handleUserRating: handleUserRating,
+      });
     }
   };
   const handleClose = () => {
@@ -78,10 +113,22 @@ const NestedModal: React.FC<NestedModalProps> = ({ movie }) => {
     }
   };
 
-  const [rateProps] = React.useState<RateProps>({
-    initValue: 3,
+  const [rateProps, setRateProps] = React.useState<RateProps>({
+    initValue:
+      userData?.userMovieRating == null
+        ? 0
+        : userData.userMovieRating.ratingValue,
     handleUserRating: handleUserRating,
   });
+
+  // async function getUserRating(): Promise<number> {
+  //   const { data } = await   getUserRatingQuery();
+  //   if (data.userMovieRating.ratingValue) {
+  //     return data.userMovieRating.ratingValue;
+  //   } else {
+  //     return 0;
+  //   }
+  // }
 
   // React.useEffect(() => {
   //   if (movie) {
@@ -174,7 +221,9 @@ const NestedModal: React.FC<NestedModalProps> = ({ movie }) => {
               {authUserState && (
                 <p style={{ marginBottom: "0px" }}>Set your rating:</p>
               )}
-              {authUserState && rateProps != undefined && Rate(rateProps)}
+              {authUserState && rateProps != undefined && (
+                <Rate {...rateProps} />
+              )}
             </div>
           )}
         </Box>

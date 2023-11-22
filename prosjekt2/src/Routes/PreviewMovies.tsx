@@ -129,7 +129,6 @@ export default function PreviewMovies() {
         : createArrayOfUndefined(20),
     },
   ];
-  console.log(categories[0].movies);
 
   return (
     <div className="previewMovies">
