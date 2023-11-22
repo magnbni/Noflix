@@ -45,8 +45,8 @@ We chose these technologies mostly because of the familiarity to the team develo
 Testing is deficient as of version 3, but some end-to-end tests can be executed by running the command:
 
 ```bash
-   npm run cypress:open
-   ```
+npm run cypress:open
+```
 
 ## Roadmap
 
