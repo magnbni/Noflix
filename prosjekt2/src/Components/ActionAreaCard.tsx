@@ -8,13 +8,19 @@ import { MovieType } from "../types";
 /*
   Custom action card used to present each individual movie.
 */
-export default function ActionAreaCard(movie: MovieType | undefined) {
-  const truncatedTitle = movie
+
+export interface ActionAreaCardProps {
+  movie: MovieType | undefined;
+}
+
+export default function ActionAreaCard({ movie }: ActionAreaCardProps) {
+  const truncatedTitle = movie && movie.title
     ? movie.title.length > 19
       ? movie.title.slice(0, 19) + "..."
       : movie.title
     : "";
-  const date = movie ? (
+
+  const date = movie && movie.releaseDate?(
     movie.releaseDate.length >= 9 ? (
       new Date(movie.releaseDate).toLocaleDateString("en-GB")
     ) : (
@@ -31,6 +37,7 @@ export default function ActionAreaCard(movie: MovieType | undefined) {
         <br />
         {movie && (
           <div
+            data-testid="movie-poster"
             style={{
               margin: "auto",
               width: "240px",
@@ -48,6 +55,7 @@ export default function ActionAreaCard(movie: MovieType | undefined) {
         )}
         {!movie && (
           <Skeleton
+            data-testid="skeleton-loader"
             variant="rectangular"
             width={240}
             height={350}

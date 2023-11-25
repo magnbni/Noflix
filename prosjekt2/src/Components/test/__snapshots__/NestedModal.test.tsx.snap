@@ -17,6 +17,7 @@ exports[`NestedModal > Snapshot test of NestedModal 1`] = `
             >
               <br />
               <div
+                data-testid="movie-poster"
                 style="margin: auto; width: 240px; height: 350px; background-size: cover; background-position: center; background-image: url(https://image.tmdb.org/t/p/original//MOCK); border-radius: 4px; border: 2px solid #000000;"
               />
               <div
@@ -157,6 +158,7 @@ exports[`NestedModal > Snapshot test of NestedModal 1`] = `
           >
             <br />
             <div
+              data-testid="movie-poster"
               style="margin: auto; width: 240px; height: 350px; background-size: cover; background-position: center; background-image: url(https://image.tmdb.org/t/p/original//MOCK); border-radius: 4px; border: 2px solid #000000;"
             />
             <div

@@ -92,7 +92,7 @@ const NestedModal: React.FC<NestedModalProps> = ({ movie }) => {
 
   return (
     <div>
-      <div onClick={handleOpen}>{ActionAreaCard(movie)}</div>
+      <div onClick={handleOpen}>{ActionAreaCard({movie: movie})}</div>
       <Modal
         open={open}
         onClose={handleClose}
