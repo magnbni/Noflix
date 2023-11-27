@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { gql, useMutation } from "@apollo/client";
 import { authUser, email } from "../Reducers/UserSlice";
 import { useDispatch } from "react-redux";
+import validator from "validator";
 //import { RootState } from "../../app/store";
 
 // Most code from https://github.com/mui/material-ui/blob/v5.14.17/docs/data/material/getting-started/templates/sign-in/SignIn.tsx
@@ -39,6 +40,8 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [valid, setValid] = useState(true);
+  const [validEmail, setEmailValid] = useState(true);
+  const [validPassword, setValidPassword] = useState(true);
   // const authUserState = useSelector((state: RootState) => state.user.authUser);
 
   const [authUserMutation] = useMutation(AUTH_USER_MUTATION);
@@ -61,7 +64,19 @@ export default function LoginPage() {
     setPassword(formData.get("password") as string);
 
     if (emailString != undefined && passwordString != undefined) {
+      // Check if email is an actual email
+      if (!validator.isEmail(emailString)) {
+        setEmailValid(false);
+        throw new Error("Email not valid");
+      }
+      if (passwordString.length < 8) {
+        setValidPassword(false);
+        throw new Error("Password too short");
+      }
       try {
+        setEmailValid(true);
+        setValidPassword(true);
+        setValid(true);
         const { data } = await authUserMutation({
           variables: { email: emailString, password: passwordString },
         });
@@ -69,8 +84,8 @@ export default function LoginPage() {
         if (data.authUser.success && emailString != null) {
           dispatch(authUser(true));
           dispatch(email(emailString));
-          navigate("/");
           setValid(true);
+          navigate("/");
         } else {
           setValid(false);
         }
@@ -125,6 +140,7 @@ export default function LoginPage() {
           Sign in
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          {!validEmail && <p>Please enter a valid email.</p>}
           <TextField
             margin="normal"
             required
@@ -136,6 +152,7 @@ export default function LoginPage() {
             onChange={handleEmailChange}
             autoFocus
           />
+          {!validPassword && <p>Password is too short</p>}
           <TextField
             margin="normal"
             required
