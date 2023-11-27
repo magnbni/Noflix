@@ -192,7 +192,6 @@ export default function Results() {
               }
             }}
             aria-label="right arrow"
-
           >
             <img src={rightArrow} className="loadIcon" alt="right arrow" />
           </Button>
@@ -205,7 +204,6 @@ export default function Results() {
               }
             }}
             aria-label="double right arrow"
-
           >
             <img
               src={doubleRightArrow}
