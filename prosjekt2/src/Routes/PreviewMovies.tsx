@@ -140,7 +140,7 @@ export default function PreviewMovies() {
               {category.movies.map((movie, index) => (
                 <div
                   className="card"
-                  key={`movie-${movie ? movie.title : index}`}
+                  key={`movie-${movie ? movie.Id : index}`}
                 >
                   <NestedModal movie={movie} />
                 </div>

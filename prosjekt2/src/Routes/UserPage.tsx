@@ -63,7 +63,7 @@ export default function UserPage() {
       {data && data.allUsers.edges[0].node.ratedMovies.length > 0 && (
         <div className="row">
           {data.allUsers.edges[0].node.ratedMovies.map((movie: MovieType) => (
-            <div className="card" key={`movie-${movie.title}`}>
+            <div className="card" key={`movie-${movie.Id}`}>
               <NestedModal movie={movie}></NestedModal>
             </div>
           ))}

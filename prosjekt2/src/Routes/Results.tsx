@@ -134,7 +134,7 @@ export default function Results() {
       {data && (
         <div className="row">
           {data.allMovies.edges.map((edge: MovieEdge) => (
-            <div className="card" key={`movie-${edge.node.title}`}>
+            <div className="card" key={`movie-${edge.node.Id}`}>
               <NestedModal movie={edge.node}></NestedModal>
             </div>
           ))}
