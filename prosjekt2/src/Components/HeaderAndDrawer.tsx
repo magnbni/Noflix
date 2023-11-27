@@ -114,6 +114,7 @@ export default function HeaderAndDrawer() {
               src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Film_reel.svg"
               style={{ height: 45 }}
               className="icon"
+              alt="Noflix logo"
             />
             <h1 className="headerName">Noflix</h1>
           </Link>
