@@ -13,7 +13,16 @@ To begin using our application, you must:
    python app.py
    ```
 
-2. Navigate to the folder 'prosjekt2/frontend' and in a new terminal run the following commands:
+   If you are struggeling, you might have to create a virtual environment. This can be done by running the following commands:
+
+   ```bash
+   python -m venv venv
+   ./venv/Scripts/activate
+   ```
+
+   and then run the commands above.
+
+2. Navigate to the folder 'prosjekt2/prosjekt2' and in a new terminal run the following commands:
 
    ```bash
    npm install
@@ -22,7 +31,7 @@ To begin using our application, you must:
 
 ## What is Noflix?
 
-Noflix is your new favourite webpage for browsing movies. We have a database consisting of over **1 million** movies.
+Noflix is your new favourite webpage for browsing movies. We have a database consisting of over **20 000** movies.
 This means that you are sure to find a movie that you are interested in, and can watch it on your streaming service of choice. Like other popular movie-databases, its main features include:
 
 - Searching for specific titles
