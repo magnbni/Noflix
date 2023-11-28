@@ -49,6 +49,10 @@ We also use the component library MaterialUI, consisting of many prebuilt yet cu
 
 We chose these technologies mostly because of the familiarity to the team developers, but also because of the ease of implementation.
 
+## Accessibility
+
+It's important to us that our application is accessible to everyone. We have therefore implemented a few features to make it easier for people with disabilities to use our application. We have carefully selected colours which make it easy for everyone to see all buttons and components. We have also made sure that the application is responsive, so that it can be used on all devices. We have also made sure that the application is easy to navigate using only the keyboard. We have also made sure that the application is screen reader friendly, and that all images, buttons and similar have alt-text or aria labels.
+
 ## Testing
 
 Testing is deficient as of version 3, but some end-to-end tests can be executed by running the command:
