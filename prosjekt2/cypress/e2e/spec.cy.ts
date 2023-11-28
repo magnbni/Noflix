@@ -18,18 +18,26 @@ describe("Test Sorting", () => {
   it("Sort After Search", () => {
     cy.visit("/");
     cy.get(".searchHeader").type("test{enter}");
+    //Open sort menu
     cy.get('[aria-label="open drawer"] > .hammiIconOpen').click();
+    //Sort by title
     cy.get('.MuiFormGroup-root > :nth-child(2) > .MuiTypography-root').click();
     cy.get(':nth-child(1) > :nth-child(1) > :nth-child(1) > .MuiPaper-root > .MuiButtonBase-root > .MuiCardContent-root > .MuiTypography-h5').contains("A Colbert");
+    //Flip switch
     cy.get('[style="padding: 10px;"] > :nth-child(2) > .MuiFormControlLabel-root > .MuiTypography-root').click();
     cy.get(':nth-child(1) > :nth-child(1) > :nth-child(1) > .MuiPaper-root > .MuiButtonBase-root > .MuiCardContent-root > .MuiTypography-h5').contains("ZZ Top");
+    //Sort by year
     cy.get('.MuiFormGroup-root > :nth-child(3) > .MuiTypography-root').click();
     cy.get(':nth-child(1) > :nth-child(1) > :nth-child(1) > .MuiPaper-root > .MuiButtonBase-root > .MuiCardContent-root > .MuiTypography-h5').contains("The Rat");
+    //Flip switch
     cy.get('[style="padding: 10px;"] > :nth-child(2) > .MuiFormControlLabel-root > .MuiTypography-root').click();
     cy.get(':nth-child(1) > :nth-child(1) > :nth-child(1) > .MuiPaper-root > .MuiButtonBase-root > .MuiCardContent-root > .MuiTypography-h5').contains("Test Pilot");
+    //Sort by rating
     cy.get(':nth-child(4) > .MuiTypography-root').click();
     cy.get(':nth-child(1) > :nth-child(1) > :nth-child(1) > .MuiPaper-root > .MuiButtonBase-root > .MuiCardContent-root > .MuiTypography-h5').contains("Neil Diamond");
+    //Flip switch
     cy.get('[style="padding: 10px;"] > :nth-child(2) > .MuiFormControlLabel-root > .MuiTypography-root').click();
     cy.get(':nth-child(1) > :nth-child(1) > :nth-child(1) > .MuiPaper-root > .MuiButtonBase-root > .MuiCardContent-root > .MuiTypography-h5').contains("Eurythmics");
   });
 });
+
