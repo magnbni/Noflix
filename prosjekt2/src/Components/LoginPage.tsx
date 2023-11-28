@@ -60,7 +60,7 @@ export default function LoginPage() {
   // Function to display alerts
   const showAlert = (
     message: string,
-    severity: "success" | "error" | "info" | "warning"
+    severity: "success" | "error" | "info" | "warning",
   ) => {
     setShowSuccessAlert(true);
     setShowAlertMessage(message);
