@@ -9,10 +9,11 @@ import Container from "@mui/material/Container";
 import HeaderAndDrawer from "./HeaderAndDrawer";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { gql, useMutation } from "@apollo/client";
+import { ApolloError, gql, useMutation } from "@apollo/client";
 import { authUser, email } from "../Reducers/UserSlice";
 import { useDispatch } from "react-redux";
 import validator from "validator";
+import { Alert } from "@mui/material";
 //import { RootState } from "../../app/store";
 
 // Most code from https://github.com/mui/material-ui/blob/v5.14.17/docs/data/material/getting-started/templates/sign-in/SignIn.tsx
@@ -36,19 +37,40 @@ const CREATE_USER_MUTATION = gql`
   }
 `;
 
+/*
+React component for handling user authentication and login.
+ */
 export default function LoginPage() {
+  // Hooks for navigation, state management, and form input
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [valid, setValid] = useState(true);
-  const [validEmail, setEmailValid] = useState(true);
   const [validPassword, setValidPassword] = useState(true);
-  // const authUserState = useSelector((state: RootState) => state.user.authUser);
-
+  const [showSuccessAlert, setShowSuccessAlert] = useState<boolean>(false);
+  const [showAlertMessage, setShowAlertMessage] = useState<string>("");
+  const [severity, setSeverity] = useState<
+    "success" | "error" | "info" | "warning"
+  >("success");
+  // GraphQL mutations and form state
   const [authUserMutation] = useMutation(AUTH_USER_MUTATION);
   const [createUserMutation] = useMutation(CREATE_USER_MUTATION);
   const [emailString, setEmail] = useState<string>("");
   const [passwordString, setPassword] = useState<string>("");
+  const [signup, setSignup] = useState<boolean>(false);
 
+  // Function to display alerts
+  const showAlert = (
+    message: string,
+    severity: "success" | "error" | "info" | "warning"
+  ) => {
+    setShowSuccessAlert(true);
+    setShowAlertMessage(message);
+    setSeverity(severity);
+    setTimeout(() => {
+      setShowSuccessAlert(false);
+    }, 3000);
+  };
+
+  // Event handlers for form input changes
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
   };
@@ -57,7 +79,9 @@ export default function LoginPage() {
     setPassword(event.target.value);
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  // Function to handle user sign-in
+  const handleSignIn = async (event: React.FormEvent<HTMLFormElement>) => {
+    console.log("signin");
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     setEmail(formData.get("email") as string);
@@ -66,54 +90,74 @@ export default function LoginPage() {
     if (emailString != undefined && passwordString != undefined) {
       // Check if email is an actual email
       if (!validator.isEmail(emailString)) {
-        setEmailValid(false);
-        throw new Error("Email not valid");
+        showAlert("Email not valid", "error");
+        setSignup(false);
+        return;
       }
+      // Check if password is long enough
       if (passwordString.length < 8) {
         setValidPassword(false);
-        throw new Error("Password too short");
+        showAlert("Password to short", "error");
+        setSignup(false);
+        return;
       }
       try {
-        setEmailValid(true);
         setValidPassword(true);
-        setValid(true);
+        // Checks if user exists and if password is correct
         const { data } = await authUserMutation({
           variables: { email: emailString, password: passwordString },
         });
-
+        //logs in user if password is correct and user exists
         if (data.authUser.success && emailString != null) {
           dispatch(authUser(true));
           dispatch(email(emailString));
-          setValid(true);
+          showAlert("Successfully logged in", "success");
           navigate("/");
         } else {
-          setValid(false);
+          // Password is wrong
+          // If user is trying to sign up, but email is valid, user is informed.
+          signup
+            ? showAlert("User already exists, but wrong password.", "error")
+            : showAlert("Wrong password", "error");
         }
+        setSignup(false);
       } catch (error) {
-        setValid(false);
+        // Other issues have occured
         console.error("Auth failed", error);
       }
     }
   };
 
-  const handleSignIn = async () => {
+  // Function to handle user sign-up
+  const handleSignUp = async () => {
+    setSignup(true);
     try {
+      // Tries to create a new user with the given email and password
       const { data } = await createUserMutation({
         variables: { email: emailString, password: passwordString },
       });
-
+      // If valid, user is created and logged in
       if (
         data.userCreate.userModel.email &&
         data.userCreate.userModel.password
       ) {
-        setValid(true);
         dispatch(authUser(true));
         dispatch(email(emailString));
         navigate("/");
+      } else {
+        showAlert("Unable to create user.", "error");
       }
     } catch (error) {
-      setValid(false);
-      console.error("UserCreate failed", error);
+      if (
+        // Tried to sign up with already existing email and correct password. Logs in user.
+        error instanceof ApolloError &&
+        error.message.includes("E11000 duplicate key error")
+      ) {
+        showAlert("User already exists. Successfully logged in", "success");
+      } else {
+        showAlert("Unable to create user. Try again.", "error");
+        console.error("UserCreate failed", error);
+      }
     }
   };
 
@@ -139,8 +183,7 @@ export default function LoginPage() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          {!validEmail && <p>Please enter a valid email.</p>}
+        <Box component="form" onSubmit={handleSignIn} noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             required
@@ -164,10 +207,6 @@ export default function LoginPage() {
             onChange={handlePasswordChange}
             autoComplete="current-password"
           />
-          {/* <FormControlLabel
-            control={<Checkbox value='remember' color='primary' />}
-            label='Remember me'
-          /> */}
           <Button
             type="submit"
             fullWidth
@@ -176,16 +215,37 @@ export default function LoginPage() {
           >
             Sign In
           </Button>
-          {!valid && (
-            <>
-              <h3>Something went wrong. Try again.</h3>
-              <h3>
-                Not already a user?{/*Kill yourself.*/}{" "}
-                <button onClick={handleSignIn}>SIGN IN</button>
-              </h3>{" "}
-            </>
-          )}
+          <></>
+          <p>Not already a user?</p>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            onClick={handleSignUp}
+          >
+            Sign Up
+          </Button>
         </Box>
+        {showSuccessAlert && (
+          <div
+            style={{
+              position: "absolute",
+              bottom: 50,
+              left: 40,
+              right: 40,
+              zIndex: 9999,
+              border: "1px solid #000",
+              borderRadius: 4,
+            }}
+          >
+            <Alert
+              severity={severity}
+              onClose={() => setShowSuccessAlert(false)}
+            >
+              {showAlertMessage}
+            </Alert>
+          </div>
+        )}
       </Box>
     </Container>
   );
