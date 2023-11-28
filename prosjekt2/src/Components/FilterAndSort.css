@@ -1,9 +1,24 @@
 .slider {
-  margin-left: 20px;
-  margin-right: 20px;
+  margin-left: 10px;
   color: gray;
+  width: 20px;
+}
+
+.range-year-section{
+  padding-top: 10px;
+  width: 80%;
 }
 
 .switch {
-  margin-left: 200px;
+  padding-left: 10px;
+}
+
+.filter-and-sort-container{
+  padding-top: 5px;
+  margin-left: 15px;
+}
+
+.genre-section{
+  width: 85%;
+  padding-top: 20px;
 }

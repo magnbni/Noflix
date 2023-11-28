@@ -1,5 +1,3 @@
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControl from "@mui/material/FormControl";
@@ -71,13 +69,13 @@ const GENRES_QUERY = gql`
 export default function FilterAndSort() {
   const dispatch = useDispatch();
   const sortOrderState = useSelector(
-    (state: RootState) => state.sort.sortOrder,
+    (state: RootState) => state.sort.sortOrder
   );
   const filterYearState = useSelector(
-    (state: RootState) => state.sort.filterYear,
+    (state: RootState) => state.sort.filterYear
   );
   const genreState = useSelector(
-    (state: RootState) => state.sort.filterByGenre,
+    (state: RootState) => state.sort.filterByGenre
   );
   const marks = createMarks();
 
@@ -109,25 +107,43 @@ export default function FilterAndSort() {
             aria-labelledby="demo-radio-buttons-group-label"
             name="radio-buttons-group"
             defaultValue="Default"
+            aria-label="Sort by"
           >
             <FormControlLabel
               value="Default"
-              control={<Radio onChange={() => updateSortBy("")} />}
+              control={
+                <Radio onChange={() => updateSortBy("")} aria-label="default" />
+              }
               label="Default"
             />
             <FormControlLabel
               value="Title"
-              control={<Radio onChange={() => updateSortBy("title")} />}
+              control={
+                <Radio
+                  onChange={() => updateSortBy("title")}
+                  aria-label="title"
+                />
+              }
               label="Title"
             />
             <FormControlLabel
               value="Year"
-              control={<Radio onChange={() => updateSortBy("release_date")} />}
+              control={
+                <Radio
+                  onChange={() => updateSortBy("release_date")}
+                  aria-label="release date"
+                />
+              }
               label="Year"
             />
             <FormControlLabel
               value="Rating"
-              control={<Radio onChange={() => updateSortBy("rating")} />}
+              control={
+                <Radio
+                  onChange={() => updateSortBy("rating")}
+                  aria-label="rating"
+                />
+              }
               label="Rating"
             />
           </RadioGroup>
@@ -135,15 +151,20 @@ export default function FilterAndSort() {
       </div>
 
       <div className="ascending-descending-section">
-        <p style={{ paddingRight: "-10px" }}>Descending</p>
+        <label htmlFor="Switch">Descending</label>
         <FormControlLabel
-          control={<Switch onChange={updateSortOrder} color="default" />}
+          control={
+            <Switch onChange={updateSortOrder} color="default" id="Switch" />
+          }
           label={"Ascending"}
           className="switch"
+          id="SortOrder"
         />
       </div>
 
       <div className="range-year-section">
+        <FormLabel id="release-year-range-label">Release year</FormLabel>
+
         <Slider
           getAriaLabel={() => "Release year range"}
           value={[filterYearState[0], filterYearState[1]]}
@@ -155,6 +176,7 @@ export default function FilterAndSort() {
           step={1}
           max={marks[marks.length - 1].value}
           className="slider"
+          aria-label="Release year range"
         />
       </div>
 
@@ -165,6 +187,8 @@ export default function FilterAndSort() {
             label="Genre"
             onChange={(event) => updateGenre(event.target.value as string)}
             value={genreState}
+            id="genre"
+            name="genre"
           >
             <MenuItem value={"All"}>All</MenuItem>
             {!loading &&
