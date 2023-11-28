@@ -14,7 +14,7 @@ import Logout from "../assets/logout.svg";
 import "./HeaderAndDrawer.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { Alert, ButtonGroup, List } from "@mui/material";
+import { Alert, ButtonGroup } from "@mui/material";
 import FilterAndSort from "./FilterAndSort";
 import { RootState } from "../../app/store";
 import { useDispatch, useSelector } from "react-redux";
@@ -114,6 +114,7 @@ export default function HeaderAndDrawer() {
               src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Film_reel.svg"
               style={{ height: 45 }}
               className="icon"
+              alt="Noflix logo"
             />
             <h1 className="headerName">Noflix</h1>
           </Link>
@@ -209,9 +210,7 @@ export default function HeaderAndDrawer() {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <List>
-          <FilterAndSort />
-        </List>
+        <FilterAndSort />
         <Divider />
       </Drawer>
 

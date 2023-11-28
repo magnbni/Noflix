@@ -1,5 +1,3 @@
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControl from "@mui/material/FormControl";
@@ -101,51 +99,72 @@ export default function FilterAndSort() {
   const { loading, error, data } = useQuery(GENRES_QUERY);
 
   return (
-    <List className="list">
-      <div style={{ padding: "10px" }}>
-        <ListItem key="sortby" disablePadding>
-          <FormControl>
-            <FormLabel id="demo-radio-buttons-group-label">Sort by</FormLabel>
-            <RadioGroup
-              aria-labelledby="demo-radio-buttons-group-label"
-              name="radio-buttons-group"
-              defaultValue="Default"
-            >
-              <FormControlLabel
-                value="Default"
-                control={<Radio onChange={() => updateSortBy("")} />}
-                label="Default"
-              />
-              <FormControlLabel
-                value="Title"
-                control={<Radio onChange={() => updateSortBy("title")} />}
-                label="Title"
-              />
-              <FormControlLabel
-                value="Year"
-                control={
-                  <Radio onChange={() => updateSortBy("release_date")} />
-                }
-                label="Year"
-              />
-              <FormControlLabel
-                value="Rating"
-                control={<Radio onChange={() => updateSortBy("rating")} />}
-                label="Rating"
-              />
-            </RadioGroup>
-          </FormControl>
-        </ListItem>
-        <ListItem key="sortAsc" disablePadding>
-          <p style={{ paddingRight: "10px" }}>Descending</p>
-          <FormControlLabel
-            control={<Switch onChange={updateSortOrder} color="default" />}
-            label={"Ascending"}
-            className="switch"
-          />
-        </ListItem>
+    <div className="filter-and-sort-container">
+      <div className="filter-section">
+        <FormControl>
+          <FormLabel id="demo-radio-buttons-group-label">Sort by</FormLabel>
+          <RadioGroup
+            aria-labelledby="demo-radio-buttons-group-label"
+            name="radio-buttons-group"
+            defaultValue="Default"
+            aria-label="Sort by"
+          >
+            <FormControlLabel
+              value="Default"
+              control={
+                <Radio onChange={() => updateSortBy("")} aria-label="default" />
+              }
+              label="Default"
+            />
+            <FormControlLabel
+              value="Title"
+              control={
+                <Radio
+                  onChange={() => updateSortBy("title")}
+                  aria-label="title"
+                />
+              }
+              label="Title"
+            />
+            <FormControlLabel
+              value="Year"
+              control={
+                <Radio
+                  onChange={() => updateSortBy("release_date")}
+                  aria-label="release date"
+                />
+              }
+              label="Year"
+            />
+            <FormControlLabel
+              value="Rating"
+              control={
+                <Radio
+                  onChange={() => updateSortBy("rating")}
+                  aria-label="rating"
+                />
+              }
+              label="Rating"
+            />
+          </RadioGroup>
+        </FormControl>
       </div>
-      <ListItem key="rangeyear">
+
+      <div className="ascending-descending-section">
+        <label htmlFor="Switch">Descending</label>
+        <FormControlLabel
+          control={
+            <Switch onChange={updateSortOrder} color="default" id="Switch" />
+          }
+          label={"Ascending"}
+          className="switch"
+          id="SortOrder"
+        />
+      </div>
+
+      <div className="range-year-section">
+        <FormLabel id="release-year-range-label">Release year</FormLabel>
+
         <Slider
           getAriaLabel={() => "Release year range"}
           value={[filterYearState[0], filterYearState[1]]}
@@ -157,15 +176,19 @@ export default function FilterAndSort() {
           step={1}
           max={marks[marks.length - 1].value}
           className="slider"
+          get-aria-label="Release year range"
         />
-      </ListItem>
-      <ListItem key="genre">
+      </div>
+
+      <div className="genre-section">
         <FormControl fullWidth>
           <InputLabel>Genre</InputLabel>
           <Select
             label="Genre"
             onChange={(event) => updateGenre(event.target.value as string)}
             value={genreState}
+            id="genre"
+            name="genre"
           >
             <MenuItem value={"All"}>All</MenuItem>
             {!loading &&
@@ -178,7 +201,7 @@ export default function FilterAndSort() {
               ))}
           </Select>
         </FormControl>
-      </ListItem>
-    </List>
+      </div>
+    </div>
   );
 }
