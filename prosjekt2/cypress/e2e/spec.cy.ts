@@ -18,6 +18,29 @@ describe("Test Basics", () => {
   });
 });
 
+describe("Test Login", () => {
+  it("User Login", () => {
+    cy.visit("/login");
+    //Test user credentials
+    cy.get('#email').type("asdf@gmail.com");
+    cy.get('#password').type("asdf1234");
+    //Login button
+    cy.get('.MuiBox-root > .MuiButtonBase-root').click();
+    //Sent back to home page
+    cy.url().should("include", "/");
+    //Visit user page
+    cy.get('[aria-label="User page"] > .hammiIconOpen').click();
+    cy.url().should("include", "/user");
+    //Check if the last rated movie is correct
+    cy.get(':nth-child(1) > :nth-child(1) > :nth-child(1) > .MuiPaper-root > .MuiButtonBase-root > .MuiCardContent-root > .MuiTypography-h5').contains("Night Train");
+    //Log out
+    cy.get('[aria-label="Log out"] > .hammiIconOpen').click();
+    //Check that user is logged out by checking if user page button exists
+    cy.url().should("include", "/");
+    cy.get('[aria-label="User page"] > .hammiIconOpen').should("not.exist");
+  });
+
+});
 describe("Test Sorting", () => {
   it("Sort After Search", () => {
     cy.visit("/");
