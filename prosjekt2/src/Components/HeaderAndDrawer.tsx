@@ -92,9 +92,9 @@ export default function HeaderAndDrawer() {
   const handleLogout = () => {
     dispatch(authUser(false));
     setShowSuccessAlert(true);
-    // setTimeout(() => {
-    //   setShowSuccessAlert(false);
-    // }, 3000);
+    setTimeout(() => {
+      setShowSuccessAlert(false);
+    }, 3000);
   };
 
   const handleLogIn = () => {
