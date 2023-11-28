@@ -134,6 +134,7 @@ export default function LoginPage() {
             width={30}
             className="logo"
             src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Film_reel.svg"
+            alt="Noflix logo"
           />
         </Avatar>
         <Typography component="h1" variant="h5">

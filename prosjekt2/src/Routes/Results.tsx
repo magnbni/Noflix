@@ -134,7 +134,7 @@ export default function Results() {
       {data && (
         <div className="row">
           {data.allMovies.edges.map((edge: MovieEdge) => (
-            <div className="card" key={`movie-${edge.node.title}`}>
+            <div className="card" key={`movie-${edge.node.Id}`}>
               <NestedModal movie={edge.node}></NestedModal>
             </div>
           ))}
@@ -160,8 +160,13 @@ export default function Results() {
                 window.scrollTo(0, 0);
               }
             }}
+            aria-label="double left arrow"
           >
-            <img src={doubleLeftArrow} className="loadIcon" />
+            <img
+              src={doubleLeftArrow}
+              className="loadIcon"
+              alt="double left arrow"
+            />
           </Button>
           <Button
             disabled={data ? !data.allMovies.pageInfo.hasPreviousPage : true}
@@ -171,8 +176,9 @@ export default function Results() {
                 window.scrollTo(0, 0);
               }
             }}
+            aria-label="left arrow"
           >
-            <img src={leftArrow} className="loadIcon" />
+            <img src={leftArrow} className="loadIcon" alt="left arrow" />
           </Button>
           <Button disabled className="pageCounterButton">
             {page} of {totalPages}
@@ -185,8 +191,9 @@ export default function Results() {
                 window.scrollTo(0, 0);
               }
             }}
+            aria-label="right arrow"
           >
-            <img src={rightArrow} className="loadIcon" />
+            <img src={rightArrow} className="loadIcon" alt="right arrow" />
           </Button>
           <Button
             disabled={data ? !data.allMovies.pageInfo.hasNextPage : true}
@@ -196,8 +203,13 @@ export default function Results() {
                 window.scrollTo(0, 0);
               }
             }}
+            aria-label="double right arrow"
           >
-            <img src={doubleRightArrow} className="loadIcon" />
+            <img
+              src={doubleRightArrow}
+              className="loadIcon"
+              alt="Double right arrow"
+            />
           </Button>
         </ButtonGroup>
       )}
