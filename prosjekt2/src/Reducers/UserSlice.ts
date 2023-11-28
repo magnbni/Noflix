@@ -1,15 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+// Defining the structure of the user state
 export interface UserState {
   authUser: boolean;
   email: string;
 }
 
+// Initial state for the user slice
 const initialState: UserState = {
   authUser: false,
   email: "",
 };
 
+// Creating a Redux slice for user-related state with initial state and reducers
 export const userSlice = createSlice({
   name: "userSlice",
   initialState,

@@ -4,11 +4,13 @@ import { userSlice } from "../src/Reducers/UserSlice";
 
 const localStorageState = window.localStorage;
 
+// Configuring the Redux store with the sorting and user slices
 export const store = configureStore({
   reducer: {
     sort: sortSlice.reducer,
     user: userSlice.reducer,
   },
+  // Preloading initial state from local storage
   preloadedState: {
     user: {
       authUser: localStorageState.getItem("authUser")
@@ -21,6 +23,7 @@ export const store = configureStore({
   },
 });
 
+// Subscribing to store changes to update local storage
 store.subscribe(() => {
   localStorageState.setItem(
     "authUser",
