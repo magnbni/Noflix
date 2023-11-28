@@ -138,10 +138,7 @@ export default function PreviewMovies() {
           <div className="movies-container">
             <div className="scrollable-container">
               {category.movies.map((movie, index) => (
-                <div
-                  className="card"
-                  key={`movie-${movie ? movie.Id : index}`}
-                >
+                <div className="card" key={`movie-${movie ? movie.Id : index}`}>
                   <NestedModal movie={movie} />
                 </div>
               ))}
