@@ -176,7 +176,7 @@ export default function FilterAndSort() {
           step={1}
           max={marks[marks.length - 1].value}
           className="slider"
-          aria-label="Release year range"
+          get-aria-label="Release year range"
         />
       </div>
 
