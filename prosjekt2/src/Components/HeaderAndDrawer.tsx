@@ -61,6 +61,7 @@ export default function HeaderAndDrawer() {
   const [, setSelectedMovie] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const authUserState = useSelector((state: RootState) => state.user.authUser);
+  const [validsearch, setvalidsearch] = useState(true);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
   const handleDrawerOpen = () => {
@@ -76,10 +77,23 @@ export default function HeaderAndDrawer() {
   };
 
   const handleSearch = (selectedOption: string | null) => {
-    if (searchValue !== "") {
+    const invalidChars = ["/", "\\", "#", "?"];
+    let validsearchLocal = true;
+
+    invalidChars.forEach((char) => {
+      if (searchValue.includes(char)) {
+        setSearchValue("");
+        setvalidsearch(false);
+        validsearchLocal = false;
+        setTimeout(() => {
+          setvalidsearch(true);
+        }, 3000);
+      }
+    });
+
+    if (validsearchLocal && searchValue !== "" && searchValue !== " ") {
       setSelectedMovie(selectedOption);
       navigate(`/search/${searchValue}`);
-      window.location.reload();
     }
   };
 
@@ -228,6 +242,24 @@ export default function HeaderAndDrawer() {
         >
           <Alert severity="success" onClose={() => setShowSuccessAlert(false)}>
             Logout successful!
+          </Alert>
+        </div>
+      )}
+
+      {!validsearch && (
+        <div
+          style={{
+            position: "absolute",
+            bottom: 50,
+            left: 40,
+            right: 40,
+            zIndex: 9999,
+            border: "1px solid #000",
+            borderRadius: 4,
+          }}
+        >
+          <Alert severity="error" onClose={() => setvalidsearch(false)}>
+            Invalid search value. Try again
           </Alert>
         </div>
       )}
