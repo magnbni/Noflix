@@ -110,9 +110,11 @@ const NestedModal: React.FC<NestedModalProps> = ({ movie }) => {
             borderRadius: "10px",
           }}
           style={{ backgroundColor: "lightgrey" }}
+          data-testid="modal"
         >
           <img
             src={CloseIcon}
+            data-testid="close"
             alt="close"
             onClick={handleClose}
             style={{

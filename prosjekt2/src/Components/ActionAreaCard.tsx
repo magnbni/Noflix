@@ -32,7 +32,7 @@ export default function ActionAreaCard({ movie }: ActionAreaCardProps) {
 
   return (
     // Material-UI Card component with custom styles
-    <Card sx={{ width: 300, heigth: 350 }}>
+    <Card sx={{ width: 300, heigth: 350 }} data-testid="ActionAreaCard">
       <CardActionArea>
         <br />
         {movie && (

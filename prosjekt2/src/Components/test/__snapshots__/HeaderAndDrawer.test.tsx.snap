@@ -76,6 +76,7 @@ exports[`HeaderAndDrawer > Snapshot test of HeaderAndDrawer 1`] = `
                 <button
                   aria-label="Log in"
                   class="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit MuiIconButton-edgeEnd MuiIconButton-sizeMedium css-1ei1svh-MuiButtonBase-root-MuiIconButton-root"
+                  data-testid="loginButton"
                   tabindex="0"
                   type="button"
                 >
@@ -352,6 +353,7 @@ exports[`HeaderAndDrawer > Snapshot test of HeaderAndDrawer 1`] = `
                     </p>
                     <label
                       class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd switch css-j204z7-MuiFormControlLabel-root"
+                      data-testid="sortorder"
                     >
                       <span
                         class="MuiSwitch-root MuiSwitch-sizeMedium css-julti5-MuiSwitch-root"
@@ -387,6 +389,7 @@ exports[`HeaderAndDrawer > Snapshot test of HeaderAndDrawer 1`] = `
                 >
                   <span
                     class="MuiSlider-root MuiSlider-marked MuiSlider-colorPrimary MuiSlider-sizeMedium slider css-1aznpnh-MuiSlider-root"
+                    data-testid="rangeyear"
                   >
                     <span
                       class="MuiSlider-rail css-14pt78w-MuiSlider-rail"
@@ -546,6 +549,7 @@ exports[`HeaderAndDrawer > Snapshot test of HeaderAndDrawer 1`] = `
                     </label>
                     <div
                       class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-formControl  css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root"
+                      data-testid="genre"
                     >
                       <div
                         aria-expanded="false"
@@ -675,6 +679,7 @@ exports[`HeaderAndDrawer > Snapshot test of HeaderAndDrawer 1`] = `
               <button
                 aria-label="Log in"
                 class="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit MuiIconButton-edgeEnd MuiIconButton-sizeMedium css-1ei1svh-MuiButtonBase-root-MuiIconButton-root"
+                data-testid="loginButton"
                 tabindex="0"
                 type="button"
               >
@@ -951,6 +956,7 @@ exports[`HeaderAndDrawer > Snapshot test of HeaderAndDrawer 1`] = `
                   </p>
                   <label
                     class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd switch css-j204z7-MuiFormControlLabel-root"
+                    data-testid="sortorder"
                   >
                     <span
                       class="MuiSwitch-root MuiSwitch-sizeMedium css-julti5-MuiSwitch-root"
@@ -986,6 +992,7 @@ exports[`HeaderAndDrawer > Snapshot test of HeaderAndDrawer 1`] = `
               >
                 <span
                   class="MuiSlider-root MuiSlider-marked MuiSlider-colorPrimary MuiSlider-sizeMedium slider css-1aznpnh-MuiSlider-root"
+                  data-testid="rangeyear"
                 >
                   <span
                     class="MuiSlider-rail css-14pt78w-MuiSlider-rail"
@@ -1145,6 +1152,7 @@ exports[`HeaderAndDrawer > Snapshot test of HeaderAndDrawer 1`] = `
                   </label>
                   <div
                     class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-formControl  css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root"
+                    data-testid="genre"
                   >
                     <div
                       aria-expanded="false"

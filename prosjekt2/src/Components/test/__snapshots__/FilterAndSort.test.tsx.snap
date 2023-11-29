@@ -234,6 +234,7 @@ exports[`FilterAndSort > Snapshot test of FilterAndSort 1`] = `
             </p>
             <label
               class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd switch css-j204z7-MuiFormControlLabel-root"
+              data-testid="sortorder"
             >
               <span
                 class="MuiSwitch-root MuiSwitch-sizeMedium css-julti5-MuiSwitch-root"
@@ -269,6 +270,7 @@ exports[`FilterAndSort > Snapshot test of FilterAndSort 1`] = `
         >
           <span
             class="MuiSlider-root MuiSlider-marked MuiSlider-colorPrimary MuiSlider-sizeMedium slider css-1aznpnh-MuiSlider-root"
+            data-testid="rangeyear"
           >
             <span
               class="MuiSlider-rail css-14pt78w-MuiSlider-rail"
@@ -428,6 +430,7 @@ exports[`FilterAndSort > Snapshot test of FilterAndSort 1`] = `
             </label>
             <div
               class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-formControl  css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root"
+              data-testid="genre"
             >
               <div
                 aria-expanded="false"
@@ -708,6 +711,7 @@ exports[`FilterAndSort > Snapshot test of FilterAndSort 1`] = `
           </p>
           <label
             class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd switch css-j204z7-MuiFormControlLabel-root"
+            data-testid="sortorder"
           >
             <span
               class="MuiSwitch-root MuiSwitch-sizeMedium css-julti5-MuiSwitch-root"
@@ -743,6 +747,7 @@ exports[`FilterAndSort > Snapshot test of FilterAndSort 1`] = `
       >
         <span
           class="MuiSlider-root MuiSlider-marked MuiSlider-colorPrimary MuiSlider-sizeMedium slider css-1aznpnh-MuiSlider-root"
+          data-testid="rangeyear"
         >
           <span
             class="MuiSlider-rail css-14pt78w-MuiSlider-rail"
@@ -902,6 +907,7 @@ exports[`FilterAndSort > Snapshot test of FilterAndSort 1`] = `
           </label>
           <div
             class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-formControl  css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root"
+            data-testid="genre"
           >
             <div
               aria-expanded="false"

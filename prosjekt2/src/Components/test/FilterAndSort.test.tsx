@@ -1,23 +1,80 @@
-import { render } from "@testing-library/react";
+import { fireEvent } from "@testing-library/react";
 import { describe, expect, test } from "vitest";
-import FilterAndSort from "../FilterAndSort";
-import { store } from "../../../app/store";
-import { Provider } from "react-redux";
-import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import FilterAndSort, { GENRES_QUERY } from "../FilterAndSort";
+import "@testing-library/jest-dom";
+import { createMockStore, renderWithProviders } from "./utils";
+
+const initialState = {
+  sort: {
+    sortBy: "",
+    sortOrder: "asc",
+    filterYear: [1900, 2025],
+    filterByGenre: "",
+  },
+  user: {
+    authUser: false,
+    email: "",
+  },
+};
+
+let mockStore = createMockStore(initialState);
+
+// Mock data for your GraphQL query
+const mocks = [
+  {
+    request: {
+      query: GENRES_QUERY,
+    },
+    result: {
+      data: {
+        allGenres: {
+          edges: [
+            {
+              node: {
+                name: "Action",
+                id: "1",
+              },
+            },
+            {
+              node: {
+                name: "Adventure",
+                id: "2",
+              },
+            },
+            {
+              node: {
+                name: "Animation",
+                id: "3",
+              },
+            },
+          ],
+        },
+      },
+    },
+  },
+];
 
 describe("FilterAndSort", () => {
+  beforeAll(() => {
+    mockStore = createMockStore(initialState);
+  });
+
   test("Snapshot test of FilterAndSort", () => {
-    const client = new ApolloClient({
-      uri: "",
-      cache: new InMemoryCache(),
-    });
-    const page = render(
-      <ApolloProvider client={client}>
-        <Provider store={store}>
-          <FilterAndSort />
-        </Provider>
-      </ApolloProvider>,
-    );
+    const page = renderWithProviders(<FilterAndSort />, mockStore, mocks);
     expect(page).toMatchSnapshot();
+  });
+
+  it("renders correctly", () => {
+    renderWithProviders(<FilterAndSort />, mockStore, mocks);
+  });
+
+  it("toggles sort order when the switch is clicked", () => {
+    const { getByTestId } = renderWithProviders(<FilterAndSort />, mockStore, mocks);
+
+    const sortOrderSwitch = getByTestId("sortorder");
+    fireEvent.click(sortOrderSwitch);
+
+    const state = mockStore.getState();
+    expect(state.sort.sortOrder).toEqual("desc");
   });
 });

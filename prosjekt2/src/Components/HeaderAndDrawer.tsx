@@ -149,6 +149,7 @@ export default function HeaderAndDrawer() {
                   <ButtonGroup>
                     <IconButton
                       color="inherit"
+                      data-testid="logoutButton"
                       aria-label="Log out"
                       edge="end"
                       onClick={handleLogout}
@@ -177,6 +178,7 @@ export default function HeaderAndDrawer() {
                 ) : (
                   <IconButton
                     color="inherit"
+                    data-testid="loginButton"
                     aria-label="Log in"
                     edge="end"
                     onClick={handleLogIn}

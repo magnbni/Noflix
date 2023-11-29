@@ -55,7 +55,7 @@ function createMarks() {
   return marks;
 }
 
-const GENRES_QUERY = gql`
+export const GENRES_QUERY = gql`
   query allGenres {
     allGenres {
       edges {
@@ -141,6 +141,7 @@ export default function FilterAndSort() {
           <FormControlLabel
             control={<Switch onChange={updateSortOrder} color="default" />}
             label={"Ascending"}
+            data-testid="sortorder"
             className="switch"
           />
         </ListItem>
@@ -148,6 +149,7 @@ export default function FilterAndSort() {
       <ListItem key="rangeyear">
         <Slider
           getAriaLabel={() => "Release year range"}
+          data-testid="rangeyear"
           value={[filterYearState[0], filterYearState[1]]}
           onChange={updateFilterByYear}
           valueLabelDisplay="auto"
@@ -164,6 +166,7 @@ export default function FilterAndSort() {
           <InputLabel>Genre</InputLabel>
           <Select
             label="Genre"
+            data-testid="genre"
             onChange={(event) => updateGenre(event.target.value as string)}
             value={genreState}
           >
