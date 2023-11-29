@@ -77,7 +77,7 @@ export default function HeaderAndDrawer() {
   };
 
   const handleSearch = (selectedOption: string | null) => {
-    const invalidChars = [" ", "/", "\\", "#", "?"];
+    const invalidChars = ["/", "\\", "#", "?"];
     let validsearchLocal = true;
 
     invalidChars.forEach((char) => {
@@ -91,7 +91,7 @@ export default function HeaderAndDrawer() {
       }
     });
 
-    if (validsearchLocal && searchValue !== "") {
+    if (validsearchLocal && searchValue !== "" && searchValue !== " ") {
       setSelectedMovie(selectedOption);
       navigate(`/search/${searchValue}`);
     }
