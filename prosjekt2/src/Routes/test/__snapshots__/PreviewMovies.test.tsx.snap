@@ -11,11 +11,11 @@ exports[`PreviewMovies > Snapshot test of PreviewMovies 1`] = `
         <div
           class="container"
         >
-          <h3
+          <h2
             class="movies-container-header"
           >
             Horror movies
-          </h3>
+          </h2>
           <div
             class="movies-container"
           >
@@ -2968,11 +2968,11 @@ exports[`PreviewMovies > Snapshot test of PreviewMovies 1`] = `
         <div
           class="container"
         >
-          <h3
+          <h2
             class="movies-container-header"
           >
             Christmas movies
-          </h3>
+          </h2>
           <div
             class="movies-container"
           >
@@ -5925,11 +5925,11 @@ exports[`PreviewMovies > Snapshot test of PreviewMovies 1`] = `
         <div
           class="container"
         >
-          <h3
+          <h2
             class="movies-container-header"
           >
             Newest movies
-          </h3>
+          </h2>
           <div
             class="movies-container"
           >
@@ -8882,11 +8882,11 @@ exports[`PreviewMovies > Snapshot test of PreviewMovies 1`] = `
         <div
           class="container"
         >
-          <h3
+          <h2
             class="movies-container-header"
           >
             Romance movies
-          </h3>
+          </h2>
           <div
             class="movies-container"
           >
@@ -11839,11 +11839,11 @@ exports[`PreviewMovies > Snapshot test of PreviewMovies 1`] = `
         <div
           class="container"
         >
-          <h3
+          <h2
             class="movies-container-header"
           >
             Action movies
-          </h3>
+          </h2>
           <div
             class="movies-container"
           >
@@ -14803,11 +14803,11 @@ exports[`PreviewMovies > Snapshot test of PreviewMovies 1`] = `
       <div
         class="container"
       >
-        <h3
+        <h2
           class="movies-container-header"
         >
           Horror movies
-        </h3>
+        </h2>
         <div
           class="movies-container"
         >
@@ -17760,11 +17760,11 @@ exports[`PreviewMovies > Snapshot test of PreviewMovies 1`] = `
       <div
         class="container"
       >
-        <h3
+        <h2
           class="movies-container-header"
         >
           Christmas movies
-        </h3>
+        </h2>
         <div
           class="movies-container"
         >
@@ -20717,11 +20717,11 @@ exports[`PreviewMovies > Snapshot test of PreviewMovies 1`] = `
       <div
         class="container"
       >
-        <h3
+        <h2
           class="movies-container-header"
         >
           Newest movies
-        </h3>
+        </h2>
         <div
           class="movies-container"
         >
@@ -23674,11 +23674,11 @@ exports[`PreviewMovies > Snapshot test of PreviewMovies 1`] = `
       <div
         class="container"
       >
-        <h3
+        <h2
           class="movies-container-header"
         >
           Romance movies
-        </h3>
+        </h2>
         <div
           class="movies-container"
         >
@@ -26631,11 +26631,11 @@ exports[`PreviewMovies > Snapshot test of PreviewMovies 1`] = `
       <div
         class="container"
       >
-        <h3
+        <h2
           class="movies-container-header"
         >
           Action movies
-        </h3>
+        </h2>
         <div
           class="movies-container"
         >

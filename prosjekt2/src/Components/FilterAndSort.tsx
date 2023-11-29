@@ -156,8 +156,8 @@ export default function FilterAndSort() {
           control={
             <Switch onChange={updateSortOrder} color="default" id="Switch" />
           }
-          label={"Ascending"}
           data-testid="sortorder"
+          label={"Ascending"}
           className="switch"
           id="SortOrder"
         />
@@ -168,7 +168,6 @@ export default function FilterAndSort() {
 
         <Slider
           getAriaLabel={() => "Release year range"}
-          data-testid="rangeyear"
           value={[filterYearState[0], filterYearState[1]]}
           onChange={updateFilterByYear}
           valueLabelDisplay="auto"
@@ -187,7 +186,6 @@ export default function FilterAndSort() {
           <InputLabel>Genre</InputLabel>
           <Select
             label="Genre"
-            data-testid="genre"
             onChange={(event) => updateGenre(event.target.value as string)}
             value={genreState}
             id="genre"
