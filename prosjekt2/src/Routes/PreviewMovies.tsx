@@ -138,11 +138,19 @@ export default function PreviewMovies() {
           <h2 className="movies-container-header">{category.title}</h2>
           <div className="movies-container">
             <div className="scrollable-container">
-              {category.movies.map((movie, index) => (
-                <div className="card" key={`movie-${movie ? movie.Id : index}`}>
-                  <NestedModal movie={movie} />
-                </div>
-              ))}
+              {category.movies.map((movie, index) => {
+                if (movie.Id == undefined) {
+                  return <></>;
+                }
+                return (
+                  <div
+                    className="card"
+                    key={`movie-${movie ? movie.Id : index}`}
+                  >
+                    <NestedModal movie={movie} />
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
