@@ -61,6 +61,10 @@ Testing is deficient as of version 3, but some end-to-end tests can be executed 
 npm run cypress:open
 ```
 
+in the prosjekt2 folder.
+
+If the user then chooses to do the tests using Chrome, it is important to change the URL from https to http before opening "specs.cy.ts". If this is not done it will cause the site to reload infinitely becuase of an update to Chrome that sets the URL to https by default.
+
 We also use vitest, whose tests can be ran via the command:
 
 ```bash
