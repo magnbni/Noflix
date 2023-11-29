@@ -14,10 +14,18 @@ To begin using our application, you must:
    ```
 
    If you are struggeling, you might have to create a virtual environment. This can be done by running the following commands:
+   For windows:
 
    ```bash
    python -m venv venv
    ./venv/Scripts/activate
+   ```
+
+   and for Linux and mac:
+
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
    ```
 
    and then run the commands above.
