@@ -25,7 +25,7 @@ describe("Test Login", () => {
     cy.get("#email").type("asdf@gmail.com");
     cy.get("#password").type("asdf1234");
     //Login button
-    cy.get(".MuiBox-root > .MuiButtonBase-root").click();
+    cy.get(".css-nxzcop").click();
     //Sent back to home page
     cy.url().should("include", "/");
     //Visit user page
@@ -55,9 +55,7 @@ describe("Test Sorting", () => {
       ":nth-child(1) > :nth-child(1) > :nth-child(1) > .MuiPaper-root > .MuiButtonBase-root > .MuiCardContent-root > .MuiTypography-h5",
     ).contains("A Colbert");
     //Flip switch
-    cy.get(
-      '[style="padding: 10px;"] > :nth-child(2) > .MuiFormControlLabel-root > .MuiTypography-root',
-    ).click();
+    cy.get("#SortOrder > .MuiTypography-root").click();
     cy.get(
       ":nth-child(1) > :nth-child(1) > :nth-child(1) > .MuiPaper-root > .MuiButtonBase-root > .MuiCardContent-root > .MuiTypography-h5",
     ).contains("ZZ Top");
@@ -67,9 +65,7 @@ describe("Test Sorting", () => {
       ":nth-child(1) > :nth-child(1) > :nth-child(1) > .MuiPaper-root > .MuiButtonBase-root > .MuiCardContent-root > .MuiTypography-h5",
     ).contains("The Rat");
     //Flip switch
-    cy.get(
-      '[style="padding: 10px;"] > :nth-child(2) > .MuiFormControlLabel-root > .MuiTypography-root',
-    ).click();
+    cy.get("#SortOrder > .MuiTypography-root").click();
     cy.get(
       ":nth-child(1) > :nth-child(1) > :nth-child(1) > .MuiPaper-root > .MuiButtonBase-root > .MuiCardContent-root > .MuiTypography-h5",
     ).contains("Test Pilot");
@@ -79,9 +75,7 @@ describe("Test Sorting", () => {
       ":nth-child(1) > :nth-child(1) > :nth-child(1) > .MuiPaper-root > .MuiButtonBase-root > .MuiCardContent-root > .MuiTypography-h5",
     ).contains("Neil Diamond");
     //Flip switch
-    cy.get(
-      '[style="padding: 10px;"] > :nth-child(2) > .MuiFormControlLabel-root > .MuiTypography-root',
-    ).click();
+    cy.get("#SortOrder > .MuiTypography-root").click();
     cy.get(
       ":nth-child(1) > :nth-child(1) > :nth-child(1) > .MuiPaper-root > .MuiButtonBase-root > .MuiCardContent-root > .MuiTypography-h5",
     ).contains("Eurythmics");
@@ -143,7 +137,7 @@ describe("Test Filtration", () => {
     cy.get('[data-value="Documentary"]').click();
     cy.get(
       ":nth-child(1) > :nth-child(1) > :nth-child(1) > .MuiPaper-root > .MuiButtonBase-root > .MuiCardContent-root > .MuiTypography-h5",
-    ).contains("Panoramic View of");
+    ).contains("10 Questions");
     //Select fantasy
     cy.get(".MuiSelect-select").click();
     cy.get('[data-value="Fantasy"]').click();
@@ -161,7 +155,7 @@ describe("Test Filtration", () => {
     cy.get('[data-value="TV Movie"]').click();
     cy.get(
       ":nth-child(1) > :nth-child(1) > :nth-child(1) > .MuiPaper-root > .MuiButtonBase-root > .MuiCardContent-root > .MuiTypography-h5",
-    ).contains("The Alphabet");
+    ).contains("the Night");
     //Select war
     cy.get(".MuiSelect-select").click();
     cy.get('[data-value="War"]').click();
