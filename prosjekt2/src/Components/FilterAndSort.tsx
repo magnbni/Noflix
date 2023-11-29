@@ -56,8 +56,7 @@ function createMarks() {
   return marks;
 }
 
-// GraphQL query to fetch all genres
-const GENRES_QUERY = gql`
+export const GENRES_QUERY = gql`
   query allGenres {
     allGenres {
       edges {
@@ -167,6 +166,7 @@ export default function FilterAndSort() {
           control={
             <Switch onChange={updateSortOrder} color="default" id="Switch" />
           }
+          data-testid="sortorder"
           label={"Ascending"}
           className="switch"
           id="SortOrder"

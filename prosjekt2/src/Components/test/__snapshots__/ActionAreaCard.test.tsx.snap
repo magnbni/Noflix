@@ -7,6 +7,7 @@ exports[`ActionAreaCard > Snapshot test of page 1`] = `
     <div>
       <div
         class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-196akmx-MuiPaper-root-MuiCard-root"
+        data-testid="ActionAreaCard"
       >
         <button
           class="MuiButtonBase-root MuiCardActionArea-root css-1oitmrd-MuiButtonBase-root-MuiCardActionArea-root"
@@ -15,7 +16,8 @@ exports[`ActionAreaCard > Snapshot test of page 1`] = `
         >
           <br />
           <div
-            style="margin: auto; width: 240px; height: 350px; background-size: cover; background-position: center; background-image: url(https://image.tmdb.org/t/p/original//MOCK); border-radius: 4px; border: 2px solid #000000;"
+            data-testid="movie-poster"
+            style="margin: auto; width: 240px; height: 350px; background-size: cover; background-position: center; background-image: url(https://image.tmdb.org/t/p/original///example.jpg); border-radius: 4px; border: 2px solid #000000;"
           />
           <div
             class="MuiCardContent-root css-46bh2p-MuiCardContent-root"
@@ -23,12 +25,12 @@ exports[`ActionAreaCard > Snapshot test of page 1`] = `
             <div
               class="MuiTypography-root MuiTypography-h5 MuiTypography-gutterBottom css-h93ljk-MuiTypography-root"
             >
-              MOCK
+              Example Movie Title
             </div>
             <p
               class="MuiTypography-root MuiTypography-body2 css-r40f8v-MuiTypography-root"
             >
-              <br />
+              01/01/2023
             </p>
           </div>
           <div
@@ -38,74 +40,74 @@ exports[`ActionAreaCard > Snapshot test of page 1`] = `
               class="MuiBox-root css-0"
             >
               <span
-                aria-label="null Stars"
+                aria-label="4 Stars"
                 class="MuiRating-root MuiRating-sizeMedium Mui-readOnly MuiRating-readOnly css-ryrseu-MuiRating-root"
                 role="img"
               >
                 <span>
                   <span
-                    class="MuiRating-icon MuiRating-iconEmpty css-1c99szj-MuiRating-icon"
+                    class="MuiRating-icon MuiRating-iconFilled css-7qmtgc-MuiRating-icon"
                   >
                     <svg
                       aria-hidden="true"
                       class="MuiSvgIcon-root MuiSvgIcon-fontSizeInherit css-1vooibu-MuiSvgIcon-root"
-                      data-testid="StarBorderIcon"
+                      data-testid="StarIcon"
                       focusable="false"
                       viewBox="0 0 24 24"
                     >
                       <path
-                        d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"
+                        d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
                       />
                     </svg>
                   </span>
                 </span>
                 <span>
                   <span
-                    class="MuiRating-icon MuiRating-iconEmpty css-1c99szj-MuiRating-icon"
+                    class="MuiRating-icon MuiRating-iconFilled css-7qmtgc-MuiRating-icon"
                   >
                     <svg
                       aria-hidden="true"
                       class="MuiSvgIcon-root MuiSvgIcon-fontSizeInherit css-1vooibu-MuiSvgIcon-root"
-                      data-testid="StarBorderIcon"
+                      data-testid="StarIcon"
                       focusable="false"
                       viewBox="0 0 24 24"
                     >
                       <path
-                        d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"
+                        d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
                       />
                     </svg>
                   </span>
                 </span>
                 <span>
                   <span
-                    class="MuiRating-icon MuiRating-iconEmpty css-1c99szj-MuiRating-icon"
+                    class="MuiRating-icon MuiRating-iconFilled css-7qmtgc-MuiRating-icon"
                   >
                     <svg
                       aria-hidden="true"
                       class="MuiSvgIcon-root MuiSvgIcon-fontSizeInherit css-1vooibu-MuiSvgIcon-root"
-                      data-testid="StarBorderIcon"
+                      data-testid="StarIcon"
                       focusable="false"
                       viewBox="0 0 24 24"
                     >
                       <path
-                        d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"
+                        d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
                       />
                     </svg>
                   </span>
                 </span>
                 <span>
                   <span
-                    class="MuiRating-icon MuiRating-iconEmpty css-1c99szj-MuiRating-icon"
+                    class="MuiRating-icon MuiRating-iconFilled css-7qmtgc-MuiRating-icon"
                   >
                     <svg
                       aria-hidden="true"
                       class="MuiSvgIcon-root MuiSvgIcon-fontSizeInherit css-1vooibu-MuiSvgIcon-root"
-                      data-testid="StarBorderIcon"
+                      data-testid="StarIcon"
                       focusable="false"
                       viewBox="0 0 24 24"
                     >
                       <path
-                        d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"
+                        d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
                       />
                     </svg>
                   </span>
@@ -143,6 +145,7 @@ exports[`ActionAreaCard > Snapshot test of page 1`] = `
   "container": <div>
     <div
       class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-196akmx-MuiPaper-root-MuiCard-root"
+      data-testid="ActionAreaCard"
     >
       <button
         class="MuiButtonBase-root MuiCardActionArea-root css-1oitmrd-MuiButtonBase-root-MuiCardActionArea-root"
@@ -151,7 +154,8 @@ exports[`ActionAreaCard > Snapshot test of page 1`] = `
       >
         <br />
         <div
-          style="margin: auto; width: 240px; height: 350px; background-size: cover; background-position: center; background-image: url(https://image.tmdb.org/t/p/original//MOCK); border-radius: 4px; border: 2px solid #000000;"
+          data-testid="movie-poster"
+          style="margin: auto; width: 240px; height: 350px; background-size: cover; background-position: center; background-image: url(https://image.tmdb.org/t/p/original///example.jpg); border-radius: 4px; border: 2px solid #000000;"
         />
         <div
           class="MuiCardContent-root css-46bh2p-MuiCardContent-root"
@@ -159,12 +163,12 @@ exports[`ActionAreaCard > Snapshot test of page 1`] = `
           <div
             class="MuiTypography-root MuiTypography-h5 MuiTypography-gutterBottom css-h93ljk-MuiTypography-root"
           >
-            MOCK
+            Example Movie Title
           </div>
           <p
             class="MuiTypography-root MuiTypography-body2 css-r40f8v-MuiTypography-root"
           >
-            <br />
+            01/01/2023
           </p>
         </div>
         <div
@@ -174,74 +178,74 @@ exports[`ActionAreaCard > Snapshot test of page 1`] = `
             class="MuiBox-root css-0"
           >
             <span
-              aria-label="null Stars"
+              aria-label="4 Stars"
               class="MuiRating-root MuiRating-sizeMedium Mui-readOnly MuiRating-readOnly css-ryrseu-MuiRating-root"
               role="img"
             >
               <span>
                 <span
-                  class="MuiRating-icon MuiRating-iconEmpty css-1c99szj-MuiRating-icon"
+                  class="MuiRating-icon MuiRating-iconFilled css-7qmtgc-MuiRating-icon"
                 >
                   <svg
                     aria-hidden="true"
                     class="MuiSvgIcon-root MuiSvgIcon-fontSizeInherit css-1vooibu-MuiSvgIcon-root"
-                    data-testid="StarBorderIcon"
+                    data-testid="StarIcon"
                     focusable="false"
                     viewBox="0 0 24 24"
                   >
                     <path
-                      d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"
+                      d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
                     />
                   </svg>
                 </span>
               </span>
               <span>
                 <span
-                  class="MuiRating-icon MuiRating-iconEmpty css-1c99szj-MuiRating-icon"
+                  class="MuiRating-icon MuiRating-iconFilled css-7qmtgc-MuiRating-icon"
                 >
                   <svg
                     aria-hidden="true"
                     class="MuiSvgIcon-root MuiSvgIcon-fontSizeInherit css-1vooibu-MuiSvgIcon-root"
-                    data-testid="StarBorderIcon"
+                    data-testid="StarIcon"
                     focusable="false"
                     viewBox="0 0 24 24"
                   >
                     <path
-                      d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"
+                      d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
                     />
                   </svg>
                 </span>
               </span>
               <span>
                 <span
-                  class="MuiRating-icon MuiRating-iconEmpty css-1c99szj-MuiRating-icon"
+                  class="MuiRating-icon MuiRating-iconFilled css-7qmtgc-MuiRating-icon"
                 >
                   <svg
                     aria-hidden="true"
                     class="MuiSvgIcon-root MuiSvgIcon-fontSizeInherit css-1vooibu-MuiSvgIcon-root"
-                    data-testid="StarBorderIcon"
+                    data-testid="StarIcon"
                     focusable="false"
                     viewBox="0 0 24 24"
                   >
                     <path
-                      d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"
+                      d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
                     />
                   </svg>
                 </span>
               </span>
               <span>
                 <span
-                  class="MuiRating-icon MuiRating-iconEmpty css-1c99szj-MuiRating-icon"
+                  class="MuiRating-icon MuiRating-iconFilled css-7qmtgc-MuiRating-icon"
                 >
                   <svg
                     aria-hidden="true"
                     class="MuiSvgIcon-root MuiSvgIcon-fontSizeInherit css-1vooibu-MuiSvgIcon-root"
-                    data-testid="StarBorderIcon"
+                    data-testid="StarIcon"
                     focusable="false"
                     viewBox="0 0 24 24"
                   >
                     <path
-                      d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"
+                      d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
                     />
                   </svg>
                 </span>

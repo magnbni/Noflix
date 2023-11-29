@@ -2,6 +2,7 @@ import { gql, useQuery } from "@apollo/client";
 import NestedModal from "../Components/NestedModal";
 import { MovieEdge, MovieType } from "../types";
 import "./PreviewMovies.css";
+import { ActionAreaCardProps } from "../Components/ActionAreaCard";
 
 // Interface defining the structure of a category
 interface category {
@@ -97,9 +98,9 @@ export default function PreviewMovies() {
 
   // Function to create an array of undefined values
   const createArrayOfUndefined = (length: number) => {
-    const array: undefined[] = [];
+    const array: ActionAreaCardProps[] = [];
     for (let i = 0; i < length; i++) {
-      array.push(undefined);
+      array.push({ movie: undefined });
     }
     return array;
   };
