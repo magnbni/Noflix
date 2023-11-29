@@ -15,7 +15,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import PreviewMovies from "./PreviewMovies";
 
-// GraphQL query to fetch movies with different parameters
 const MOVIES_QUERY = gql`
   query allMovies(
     $page: Int
@@ -54,7 +53,6 @@ const MOVIES_QUERY = gql`
   }
 `;
 
-// Helper function to get the sort value based on sort option and order direction
 const getSortValue = (sortOption: string, orderDirection: string) => {
   const sortBy = sortOption.toLowerCase();
   const sortOrder = orderDirection.toLowerCase();
@@ -71,27 +69,25 @@ const getSortValue = (sortOption: string, orderDirection: string) => {
   This is the Results component that displays search results in a grid like fashion.
 */
 export default function Results() {
-  // Extracting route parameters
   const { id } = useParams<string>();
-
-  // State variables for pagination
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [dataIsEmpty, setDataIsEmpty] = useState(false);
 
-  // Retrieving sort and filter states from Redux
   const sortOrderState = useSelector(
     (state: RootState) => state.sort.sortOrder,
   );
+
   const sortByState = useSelector((state: RootState) => state.sort.sortBy);
+
   const filterYearState = useSelector(
     (state: RootState) => state.sort.filterYear,
   );
+
   const genreState = useSelector(
     (state: RootState) => state.sort.filterByGenre,
   );
 
-  // GraphQL query to fetch movies based on search criteria
   const { loading, error, data } = useQuery(MOVIES_QUERY, {
     variables: {
       page: page,
@@ -104,7 +100,6 @@ export default function Results() {
     },
   });
 
-  // Updating state variables when data changes
   useEffect(() => {
     if (data) {
       setTotalPages(data.allMovies.totalPages);
@@ -118,27 +113,24 @@ export default function Results() {
 
   return (
     <div className="results">
-      {/* Header and Drawer component */}
       <HeaderAndDrawer />
-      {/* Conditional rendering based on whether data is empty */}
       {dataIsEmpty && (
         <h2>No movies found for "{id}". Maybe you'll like one of these?</h2>
       )}
       {!dataIsEmpty && <h2>Search results for: "{id}"</h2>}
-      {/* Loading state: rendering placeholders */}
-      {loading && (
-        <div className="row">
-          {[...Array(12)].map((_, i) => (
-            <div className="card" key={`movie-${i}`}>
-              <NestedModal movie={undefined}></NestedModal>
-            </div>
-          ))}
-        </div>
-      )}
-      {/* Error handling */}
+      {
+        // if loading, map an array of length 12 of undefined to the NestedModal component
+        loading && (
+          <div className="row">
+            {[...Array(12)].map((_, i) => (
+              <div className="card" key={`movie-${i}`}>
+                <NestedModal movie={undefined}></NestedModal>
+              </div>
+            ))}
+          </div>
+        )
+      }
       {error && error.message}
-
-      {/* Displaying fetched movie data */}
       {data && (
         <div className="row">
           {data.allMovies.edges.map((edge: MovieEdge) => (
@@ -149,15 +141,11 @@ export default function Results() {
         </div>
       )}
       <br />
-
-      {/* Rendering PreviewMovies component if data is empty */}
       {dataIsEmpty && (
         <div>
           <PreviewMovies />
         </div>
       )}
-
-      {/* Pagination buttons */}
       {!dataIsEmpty && (
         <ButtonGroup
           variant="contained"

@@ -6,11 +6,8 @@ import LoginPage from "./Components/LoginPage";
 import UserPage from "./Routes/UserPage";
 
 /* 
-  Currently four paths are present: 
-  1. the Root page where a preview of movies is shown,
-  2. the login page where you can log in,
-  3. the results page, showing the results of a search,
-  4. the user page where you can see your rated movies.
+  Currently two paths are present: The results page, showing the results of a search,
+  and the Root page where you search for movies.
 */
 function App() {
   return (

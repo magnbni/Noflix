@@ -22,12 +22,10 @@ import {
 import { gql, useQuery } from "@apollo/client";
 import { GenreEdge } from "../types";
 
-// Function to display slider value as text
 function valuetext(value: number) {
   return `${value}`;
 }
 
-// Function to create slider marks for release years
 function createMarks() {
   const lowerBound: number = 1900;
   const upperBound: number = 2025;
@@ -36,7 +34,6 @@ function createMarks() {
     value: lowerBound,
     label: lowerBound.toString(),
   });
-  // Adding marks for every 50 years within the range
   for (
     let i = lowerBound - (lowerBound % 50);
     i <= upperBound - (upperBound % 50);
@@ -69,9 +66,7 @@ export const GENRES_QUERY = gql`
   }
 `;
 
-// Main component for filtering and sorting
 export default function FilterAndSort() {
-  // Redux state values
   const dispatch = useDispatch();
   const sortOrderState = useSelector(
     (state: RootState) => state.sort.sortOrder,
@@ -84,28 +79,23 @@ export default function FilterAndSort() {
   );
   const marks = createMarks();
 
-  // Function to toggle between ascending and descending sort order
   const updateSortOrder = () => {
     dispatch(sortOrder(sortOrderState == "asc" ? "desc" : "asc"));
   };
 
-  // Function to update sorting criteria
   const updateSortBy = (navn: "" | "title" | "release_date" | "rating") => {
     dispatch(sortBy(navn));
   };
 
-  // Function to update filtering by release year
   const updateFilterByYear = (_event: Event, newRange: number | number[]) => {
     const newRangeArray: number[] = newRange as number[];
     dispatch(filterYear([newRangeArray[0], newRangeArray[1]]));
   };
 
-  // Function to update filtering by genre
   const updateGenre = (newGenre: string) => {
     dispatch(filterByGenre(newGenre));
   };
 
-  // GraphQL hook to fetch genres
   const { loading, error, data } = useQuery(GENRES_QUERY);
 
   return (
