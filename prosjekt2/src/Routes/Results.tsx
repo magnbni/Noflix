@@ -81,14 +81,14 @@ export default function Results() {
 
   // Retrieving sort and filter states from Redux
   const sortOrderState = useSelector(
-    (state: RootState) => state.sort.sortOrder
+    (state: RootState) => state.sort.sortOrder,
   );
   const sortByState = useSelector((state: RootState) => state.sort.sortBy);
   const filterYearState = useSelector(
-    (state: RootState) => state.sort.filterYear
+    (state: RootState) => state.sort.filterYear,
   );
   const genreState = useSelector(
-    (state: RootState) => state.sort.filterByGenre
+    (state: RootState) => state.sort.filterByGenre,
   );
 
   // GraphQL query to fetch movies based on search criteria
