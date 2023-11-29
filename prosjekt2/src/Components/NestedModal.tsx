@@ -63,7 +63,7 @@ const NestedModal: React.FC<NestedModalProps> = ({ movie }) => {
 
   const handleUserRating = async (rating: number | null) => {
     try {
-      const { data } = await userRatingMutation({
+      await userRatingMutation({
         variables: {
           userEmail: userEmailState,
           ratings: [
@@ -74,10 +74,6 @@ const NestedModal: React.FC<NestedModalProps> = ({ movie }) => {
           ],
         },
       });
-
-      if (data.updateUserRatings.success) {
-        console.log("Is good");
-      }
     } catch (error) {
       console.error("Add user rating failed", error);
     }

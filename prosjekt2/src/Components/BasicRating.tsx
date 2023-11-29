@@ -64,7 +64,6 @@ export function Rate(rateProps: RateProps) {
         },
       });
       if (data.deleteUserRatings.success) {
-        console.log("Rating successfully deleted.");
         setValue(0);
       }
     } catch (error) {
