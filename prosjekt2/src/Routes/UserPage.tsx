@@ -4,6 +4,7 @@ import NestedModal from "../Components/NestedModal";
 import { MovieType } from "../types";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
+import { useEffect } from "react";
 
 const RATED_MOVIES_QUERY = gql`
   query allUsers($email: String) {
@@ -28,11 +29,15 @@ export default function UserPage() {
   const authUserState = useSelector((state: RootState) => state.user.authUser);
   const email = useSelector((state: RootState) => state.user.email);
 
-  const { loading, error, data } = useQuery(RATED_MOVIES_QUERY, {
+  const { loading, error, data, refetch } = useQuery(RATED_MOVIES_QUERY, {
     variables: {
       email: email,
     },
   });
+
+  useEffect(() => {
+    refetch({ email });
+  }, [email, refetch]);
 
   if (!authUserState && email === "") {
     return (
@@ -63,7 +68,7 @@ export default function UserPage() {
       {data && data.allUsers.edges[0].node.ratedMovies.length > 0 && (
         <div className="row">
           {data.allUsers.edges[0].node.ratedMovies.map((movie: MovieType) => (
-            <div className="card" key={`movie-${movie.title}`}>
+            <div className="card" key={`movie-${movie.Id}`}>
               <NestedModal movie={movie}></NestedModal>
             </div>
           ))}

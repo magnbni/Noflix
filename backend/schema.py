@@ -12,14 +12,13 @@ from models import Director as DirectorModel
 from models import Genre as GenreModel
 from mongoengine import Q
 
-
-# Need to define the embeddeddocuments so graphene recognizes them
 class Genre(MongoengineObjectType):
     class Meta:
         name = "Genre"
         description = "A genre"
         model = GenreModel
         interfaces = (Node,)
+
 
 class Director(MongoengineObjectType):
     class Meta:
@@ -85,14 +84,6 @@ class Rating(MongoengineObjectType):
         interfaces = (Node,)
 
 
-class Rating(MongoengineObjectType):
-    class Meta:
-        name = "Rating"
-        description = "List of ratings for a user"
-        model = RatingModel
-        interfaces = (Node,)
-
-
 class User(MongoengineObjectType):
     class Meta:
         name = "User"
@@ -104,13 +95,21 @@ class User(MongoengineObjectType):
 
     rated_movies = graphene.List(Movie)
 
+    # Resolver for the rated movies of a given user.
     def resolve_rated_movies(self, info):
         movie_ids = [ObjectId(rating.movie_id) for rating in self.ratings]
 
         return MovieModel.objects.filter(_id__in=movie_ids)
 
 
+"""
+Mutation used to check if a User exists.
 
+If the email exists, it checks if the encrypted password
+given matches the encrypted password for the given email.
+
+returns: success
+"""
 class AuthenticateUser(graphene.Mutation):
     class Arguments:
         email = graphene.String(required=True)
@@ -133,7 +132,17 @@ class AuthenticateUser(graphene.Mutation):
 
         return AuthenticateUser(success=success)
 
+"""
+Mutation used to create a new User. It takes in two values:
 
+email: String
+password: String
+
+The password is hashed using the bcrypt encoder so as to not
+store the password in plaintext in the database.
+
+returns: The user
+"""
 class CreateUser(graphene.Mutation):
     class Arguments:
         email = graphene.String()
@@ -153,6 +162,14 @@ class RatingInput(graphene.InputObjectType):
     movie_id = graphene.String(required=True)
     rating_value = graphene.Int(required=True)
 
+"""
+Mutation used to delete the User ratings. 
+
+It takes in a movieId: String to delete from the
+User given by the userEmail.
+
+returns: success
+"""
 class DeleteUserRatings(graphene.Mutation):
     class Arguments:
         user_email = graphene.String(required=True)
@@ -177,6 +194,17 @@ class DeleteUserRatings(graphene.Mutation):
             success = False
         return DeleteUserRatings(success=success)
 
+"""
+Mutation used to update the User ratings. 
+
+It takes in a list of
+
+{ movieId: String, rating: Int }
+
+pairs, as well as a User email.
+
+returns: success
+"""
 class UpdateUserRatings(graphene.Mutation):
     class Arguments:
         user_email = graphene.String(required=True)
@@ -217,7 +245,9 @@ class UpdateUserRatings(graphene.Mutation):
 
         return UpdateUserRatings(success=success)
 
-
+"""
+Helper function used for sorting in the all_movies query.
+"""
 def sort_query(query, sort):
     if sort == "title_asc":
         return query.order_by("title", "_id")
@@ -235,7 +265,9 @@ def sort_query(query, sort):
         # Default sort by _id
         return query.order_by("_id")
 
-
+"""
+Query object used for all queries.
+"""
 class Query(graphene.ObjectType):
     node = Node.Field()
 
@@ -340,7 +372,9 @@ class Query(graphene.ObjectType):
 
         return query
 
-
+"""
+All mutations
+"""
 class Mutation(graphene.ObjectType):
     node = Node.Field()
     auth_user = AuthenticateUser.Field()
