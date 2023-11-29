@@ -38,7 +38,7 @@ This means that you are sure to find a movie that you are interested in, and can
 - Browsing of the given results
 - Filtering the search result based on genres and year of release. Note that the filtration is done on the entire dataset, not just what has been loaded to the client.
 - Sorting the search result based on title, release date, and rating
-- Pagination of the search result to ensure that the client  is not overloaded with data
+- Pagination of the search result to ensure that the client is not overloaded with data
 - Clicking on a movie to get more information about it, such as an overview of the movie and a possibility to rate it
 - Redux, local state
 
