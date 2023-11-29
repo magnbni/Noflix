@@ -4,11 +4,13 @@ import { MovieEdge, MovieType } from "../types";
 import "./PreviewMovies.css";
 import { ActionAreaCardProps } from "../Components/ActionAreaCard";
 
+// Interface defining the structure of a category
 interface category {
   title: string;
   movies: MovieType[];
 }
 
+// GraphQL query to fetch movies with different parameters
 const MOVIES_QUERY = gql`
   query allMovies(
     $perPage: Int
@@ -44,10 +46,13 @@ const MOVIES_QUERY = gql`
   }
 `;
 
+// Main component for previewing movies
 export default function PreviewMovies() {
+  // Sorting options
   const sortbyTitle = "title_desc";
   const sortbyDate = "release_date_desc";
 
+  // Fetching movies for different categories using GraphQL queries
   const { error: error_christ, data: data_christ } = useQuery(MOVIES_QUERY, {
     variables: {
       per_page: 20,
@@ -84,12 +89,14 @@ export default function PreviewMovies() {
     },
   });
 
+  // Handling errors for each category
   if (errorHorror) return `Error! ${errorHorror.message}`;
   if (error_christ) return `Error! ${error_christ.message}`;
   if (errorAction) return `Error! ${errorAction.message}`;
   if (errorNewest) return `Error! ${errorNewest.message}`;
   if (errorRomance) return `Error! ${errorRomance.message}`;
 
+  // Function to create an array of undefined values
   const createArrayOfUndefined = (length: number) => {
     const array: ActionAreaCardProps[] = [];
     for (let i = 0; i < length; i++) {
@@ -98,6 +105,7 @@ export default function PreviewMovies() {
     return array;
   };
 
+  // Categories array containing titles and corresponding movies
   const categories: category[] = [
     {
       title: "Horror movies",
@@ -131,6 +139,7 @@ export default function PreviewMovies() {
     },
   ];
 
+  // Rendering each category with its movies
   return (
     <div className="previewMovies">
       {categories.map((category) => (
@@ -138,19 +147,14 @@ export default function PreviewMovies() {
           <h2 className="movies-container-header">{category.title}</h2>
           <div className="movies-container">
             <div className="scrollable-container">
-              {category.movies.map((movie, index) => {
-                if (movie.Id == undefined) {
-                  return <></>;
-                }
-                return (
-                  <div
-                    className="card"
-                    key={`movie-${movie ? movie.Id : index}`}
-                  >
-                    <NestedModal movie={movie} />
-                  </div>
-                );
-              })}
+              {category.movies.map((movie, index) => (
+                <div
+                  className="card"
+                  key={`movie-${movie.Id ? movie.Id : index}`}
+                >
+                  <NestedModal movie={movie} />
+                </div>
+              ))}
             </div>
           </div>
         </div>

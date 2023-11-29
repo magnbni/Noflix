@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { authUser } from "../Reducers/UserSlice";
 import UserPageIcon from "../assets/user.svg";
 
+// Styled components using Material-UI styling
 const drawerWidth = 320;
 
 interface AppBarProps extends MuiAppBarProps {
@@ -52,7 +53,15 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-start",
 }));
 
+/*
+HeaderAndDrawer Component represents the header
+and drawer of the Noflix application. 
+It includes a navigation bar, search functionality,
+user authentication controls, and a right-side drawer
+for additional options like filtering and sorting.
+*/
 export default function HeaderAndDrawer() {
+  // State and variable declarations
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
@@ -64,6 +73,7 @@ export default function HeaderAndDrawer() {
   const [validsearch, setvalidsearch] = useState(true);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
+  // Event handlers
   const handleDrawerOpen = () => {
     setOpen(true);
   };
