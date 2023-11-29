@@ -14,25 +14,27 @@ export interface ActionAreaCardProps {
 }
 
 export default function ActionAreaCard({ movie }: ActionAreaCardProps) {
-  const truncatedTitle = movie && movie.title
-    ? movie.title.length > 19
-      ? movie.title.slice(0, 19) + "..."
-      : movie.title
-    : "";
+  const truncatedTitle =
+    movie && movie.title
+      ? movie.title.length > 19
+        ? movie.title.slice(0, 19) + "..."
+        : movie.title
+      : "";
 
-  const date = movie && movie.releaseDate?(
-    movie.releaseDate.length >= 9 ? (
-      new Date(movie.releaseDate).toLocaleDateString("en-GB")
+  const date =
+    movie && movie.releaseDate ? (
+      movie.releaseDate.length >= 9 ? (
+        new Date(movie.releaseDate).toLocaleDateString("en-GB")
+      ) : (
+        <br />
+      )
     ) : (
-      <br />
-    )
-  ) : (
-    ""
-  );
+      ""
+    );
 
   return (
     // Material-UI Card component with custom styles
-    <Card sx={{ width: 300, heigth: 350 }}>
+    <Card sx={{ width: 300, heigth: 350 }} data-testid="ActionAreaCard">
       <CardActionArea>
         <br />
         {movie && (

@@ -9,6 +9,7 @@ exports[`NestedModal > Snapshot test of NestedModal 1`] = `
         <div>
           <div
             class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-196akmx-MuiPaper-root-MuiCard-root"
+            data-testid="ActionAreaCard"
           >
             <button
               class="MuiButtonBase-root MuiCardActionArea-root css-1oitmrd-MuiButtonBase-root-MuiCardActionArea-root"
@@ -150,6 +151,7 @@ exports[`NestedModal > Snapshot test of NestedModal 1`] = `
       <div>
         <div
           class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-196akmx-MuiPaper-root-MuiCard-root"
+          data-testid="ActionAreaCard"
         >
           <button
             class="MuiButtonBase-root MuiCardActionArea-root css-1oitmrd-MuiButtonBase-root-MuiCardActionArea-root"
