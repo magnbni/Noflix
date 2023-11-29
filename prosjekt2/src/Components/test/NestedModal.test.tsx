@@ -2,10 +2,10 @@ import { fireEvent } from "@testing-library/react";
 import { describe, expect, test } from "vitest";
 import { MovieType } from "../../types";
 import NestedModal from "../NestedModal";
-import { createMockStore, renderWithProviders } from "./utils";
+import { AppState, createMockStore, renderWithProviders } from "./utils";
 import { MockedResponse } from "@apollo/client/testing";
 
-const initialState = {
+const initialState: AppState = {
   sort: {
     sortBy: "",
     sortOrder: "asc",
@@ -18,8 +18,7 @@ const initialState = {
   },
 };
 
-const mocks: MockedResponse<Record<string, any>, Record<string, any>>[] = [
-];
+const mocks: MockedResponse[] = [];
 
 const mockStore = createMockStore(initialState);
 
@@ -33,14 +32,16 @@ describe("NestedModal", () => {
       voteAverage: 0,
       posterPath: "MOCK",
     };
-    
+
     const page = renderWithProviders(
-          <NestedModal movie={movie}></NestedModal>, mockStore, mocks
+      <NestedModal movie={movie}></NestedModal>,
+      mockStore,
+      mocks,
     );
     expect(page).toMatchSnapshot();
   });
 
-  it('opens and closes the modal on click', async () => {
+  it("opens and closes the modal on click", async () => {
     const movie = {
       Id: "1",
       title: "MOCK",
@@ -51,32 +52,36 @@ describe("NestedModal", () => {
     };
 
     const { getByTestId } = renderWithProviders(
-      <NestedModal movie={movie}></NestedModal>, mockStore, mocks
+      <NestedModal movie={movie}></NestedModal>,
+      mockStore,
+      mocks,
     );
 
-    fireEvent.click(getByTestId('ActionAreaCard'));
-    expect(getByTestId('modal')).toBeTruthy();
+    fireEvent.click(getByTestId("ActionAreaCard"));
+    expect(getByTestId("modal")).toBeTruthy();
 
-    fireEvent.click(getByTestId('close'));
-    expect(() => getByTestId('modal')).toThrowError();
+    fireEvent.click(getByTestId("close"));
+    expect(() => getByTestId("modal")).toThrowError();
   });
 
-  it('displays movie information correctly', () => {
+  it("displays movie information correctly", () => {
     const movie = {
-      Id: '1',
-      title: 'Test Movie',
-      posterPath: '/testpath.jpg',
-      releaseDate: '2022-01-01',
+      Id: "1",
+      title: "Test Movie",
+      posterPath: "/testpath.jpg",
+      releaseDate: "2022-01-01",
       voteAverage: 8,
-      overview: 'Test overview',
+      overview: "Test overview",
     };
-  
+
     const { getByTestId, getByText } = renderWithProviders(
-      <NestedModal movie={movie}></NestedModal>, mockStore, mocks
+      <NestedModal movie={movie}></NestedModal>,
+      mockStore,
+      mocks,
     );
-  
-    fireEvent.click(getByTestId('ActionAreaCard'));
-  
+
+    fireEvent.click(getByTestId("ActionAreaCard"));
+
     expect(getByText(movie.releaseDate)).toBeTruthy();
     expect(getByText(movie.overview)).toBeTruthy();
   });

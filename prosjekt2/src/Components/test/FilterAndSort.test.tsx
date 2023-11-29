@@ -2,9 +2,9 @@ import { fireEvent } from "@testing-library/react";
 import { describe, expect, test } from "vitest";
 import FilterAndSort, { GENRES_QUERY } from "../FilterAndSort";
 import "@testing-library/jest-dom";
-import { createMockStore, renderWithProviders } from "./utils";
+import { AppState, createMockStore, renderWithProviders } from "./utils";
 
-const initialState = {
+const initialState: AppState = {
   sort: {
     sortBy: "",
     sortOrder: "asc",
@@ -69,7 +69,11 @@ describe("FilterAndSort", () => {
   });
 
   it("toggles sort order when the switch is clicked", () => {
-    const { getByTestId } = renderWithProviders(<FilterAndSort />, mockStore, mocks);
+    const { getByTestId } = renderWithProviders(
+      <FilterAndSort />,
+      mockStore,
+      mocks,
+    );
 
     const sortOrderSwitch = getByTestId("sortorder");
     fireEvent.click(sortOrderSwitch);

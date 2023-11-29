@@ -1,19 +1,24 @@
 import { fireEvent, render, waitFor } from "@testing-library/react";
 import { describe, expect, test } from "vitest";
-import { Rate, ReadOnlyRating, GET_USER_RATING, DELETE_USER_RATING } from "../BasicRating";
+import {
+  Rate,
+  ReadOnlyRating,
+  GET_USER_RATING,
+  DELETE_USER_RATING,
+} from "../BasicRating";
 import { Provider } from "react-redux";
 import { store } from "../../../app/store";
 import { MockedProvider } from "@apollo/client/testing";
-import '@testing-library/jest-dom';
+import "@testing-library/jest-dom";
 
 const rateProps = {
   initValue: 0,
-  movieId: '123',
+  movieId: "123",
   handleUserRating: vi.fn(),
   open: true,
 };
 
-const userEmailState = '';
+const userEmailState = "";
 
 const mocks = [
   {
@@ -50,27 +55,27 @@ describe("BasicRating Snapshot", () => {
     const page = render(ReadOnlyRating(0));
     expect(page).toMatchSnapshot();
   });
-  
-  it('renders correctly', () => {
+
+  it("renders correctly", () => {
     const { getByTestId } = render(
       <Provider store={store}>
         <MockedProvider mocks={mocks} addTypename={false}>
           <Rate {...rateProps} />
         </MockedProvider>
-      </Provider>
+      </Provider>,
     );
 
     const rating = getByTestId("simple-controlled");
     expect(rating).toBeInTheDocument();
   });
 
-  it('Updates rating on click', async () => {
+  it("Updates rating on click", async () => {
     const { getByTestId } = render(
       <Provider store={store}>
         <MockedProvider mocks={mocks} addTypename={false}>
           <Rate {...rateProps} />
         </MockedProvider>
-      </Provider>
+      </Provider>,
     );
 
     const rating = getByTestId("simple-controlled");
@@ -88,13 +93,13 @@ describe("BasicRating Snapshot", () => {
     }
   });
 
-  it ('Deletes rating on click', async () => {
+  it("Deletes rating on click", async () => {
     const { getByTestId, queryByTestId } = render(
       <Provider store={store}>
         <MockedProvider mocks={mocks} addTypename={false}>
           <Rate {...rateProps} />
         </MockedProvider>
-      </Provider>
+      </Provider>,
     );
 
     const rating = getByTestId("simple-controlled");
@@ -112,10 +117,10 @@ describe("BasicRating Snapshot", () => {
     }
 
     const deleteButton = queryByTestId("delete");
-    
+
     if (deleteButton) {
       fireEvent.click(deleteButton);
-  
+
       await waitFor(() => {
         expect(rating).toHaveValue(0);
       });

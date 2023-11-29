@@ -1,11 +1,11 @@
-import { fireEvent, render } from "@testing-library/react";
 import { describe, expect, test } from "vitest";
-import LoginPage, { AUTH_USER_MUTATION, CREATE_USER_MUTATION } from "../LoginPage";
-import { createMockStore, renderWithProviders } from "./utils";
+import LoginPage, {
+  AUTH_USER_MUTATION,
+  CREATE_USER_MUTATION,
+} from "../LoginPage";
+import { AppState, createMockStore, renderWithProviders } from "./utils";
 
-// Your existing code here
-
-const initialState = {
+const initialState: AppState = {
   sort: {
     sortBy: "",
     sortOrder: "asc",
@@ -53,7 +53,10 @@ const mockStore = createMockStore(initialState);
 const mockNavigate = vi.fn();
 
 vi.mock("react-router-dom", async () => {
-  const actual = await vi.importActual<typeof import("react-router-dom")>("react-router-dom");
+  const actual =
+    await vi.importActual<typeof import("react-router-dom")>(
+      "react-router-dom",
+    );
   return {
     ...actual,
     useNavigate: vi.fn(),
@@ -61,18 +64,17 @@ vi.mock("react-router-dom", async () => {
 });
 
 describe("LoginPage", () => {
-
   beforeEach(() => {
     mockNavigate.mockClear();
   });
 
   test("Snapshot test of LoginPage", () => {
-    const page = renderWithProviders(<LoginPage/>, mockStore, mocks);
+    const page = renderWithProviders(<LoginPage />, mockStore, mocks);
     expect(page).toMatchSnapshot();
   });
 
   test("Check that fields exist and are clickable", async () => {
-    const { getByText } = renderWithProviders(<LoginPage/>, mockStore, mocks);
+    const { getByText } = renderWithProviders(<LoginPage />, mockStore, mocks);
 
     const emailField = getByText("Email Address");
     const passwordField = getByText("Password");
