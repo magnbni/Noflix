@@ -102,4 +102,16 @@ The third and final version aims to complete the product. In addition to a fully
 - Unit, mock and other tests based on the vitest testing library
 - Deployment to a server
 
+## Our Design Choices
+
+### Sustainable design
+
+Because of the current focus on energy usage in current developmentental environment, we have made some conscious decisions to help with sustainability. Some of these choices include:
+
+- Few requests to our database: Since GraphQL provides useful functionality for only fetching the minimal amount of data needed, we have focused on creating specific queries that only fetch the needed data. Our pagination is also quite limited, with only 12 results per page, meaning the only time we fetch more than that at a time is on the homepage or on the user ratings page.
+- As for the User homepage, we consider it a valuable tradeoff. Considering the presentation of a selection of movies may make a user browse the homepage instead of searching, it can reduce the number of requests made as a whole.
+- Caching: Apollo client can store queries in the cache, meaning we do not have to refetch any already made queries. This makes for example the homepage an even more viable solution for reducing requests.
+
+Still, we could have made some improvements regarding the design. We don't currently have a dark mode, and while our use of a simple colorscheme does help reduce energy usage, we have not implemented a dark mode. This would reduce energy usage even further, as darker colors produce less light, and therefore consume less energy.
+
 For any further inquires about the application, please contact us <button onclick="window.location.href='https://www.youtube.com/watch?v=dQw4w9WgXcQ&pp=ygULcmljayBhc3RsZXk%3D'">here</button>
