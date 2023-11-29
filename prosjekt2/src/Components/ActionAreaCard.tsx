@@ -46,10 +46,11 @@ export default function ActionAreaCard({ movie }: ActionAreaCardProps) {
               height: "350px",
               backgroundSize: "cover",
               backgroundPosition: "center",
-              backgroundImage: movie.posterPath ?
-                "url(https://image.tmdb.org/t/p/original//" +
-                movie.posterPath +
-                ")" : "none",
+              backgroundImage: movie.posterPath
+                ? "url(https://image.tmdb.org/t/p/original//" +
+                  movie.posterPath +
+                  ")"
+                : "none",
               borderRadius: "4px",
               border: "2px solid #000000",
             }}
