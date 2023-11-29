@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+// Defining the structure of the state for sorting
 export interface SortState {
   sortBy: "" | "title" | "release_date" | "rating";
   sortOrder: "asc" | "desc";
@@ -7,6 +8,7 @@ export interface SortState {
   filterByGenre: string;
 }
 
+// Initial state for the sorting slice
 const initialState: SortState = {
   sortBy: "",
   sortOrder: "asc",
@@ -14,9 +16,11 @@ const initialState: SortState = {
   filterByGenre: "",
 };
 
+// Creating a Redux slice for sorting with initial state and reducers
 export const sortSlice = createSlice({
   name: "sortSlice",
   initialState,
+  // Reducer for updating the sorting and filtering criteria
   reducers: {
     sortBy: (
       state,
