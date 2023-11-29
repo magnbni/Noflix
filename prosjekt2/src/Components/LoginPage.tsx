@@ -18,7 +18,7 @@ import { Alert } from "@mui/material";
 
 // Most code from https://github.com/mui/material-ui/blob/v5.14.17/docs/data/material/getting-started/templates/sign-in/SignIn.tsx
 
-const AUTH_USER_MUTATION = gql`
+export const AUTH_USER_MUTATION = gql`
   mutation authUser($email: String!, $password: String!) {
     authUser(email: $email, password: $password) {
       success
@@ -26,7 +26,7 @@ const AUTH_USER_MUTATION = gql`
   }
 `;
 
-const CREATE_USER_MUTATION = gql`
+export const CREATE_USER_MUTATION = gql`
   mutation userCreate($email: String!, $password: String!) {
     userCreate(email: $email, password: $password) {
       userModel {
@@ -187,6 +187,7 @@ export default function LoginPage() {
         <Box component="form" onSubmit={handleSignIn} noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
+            data-testid="email"
             required
             fullWidth
             id="email"
@@ -199,6 +200,7 @@ export default function LoginPage() {
           {!validPassword && <p>Password is too short</p>}
           <TextField
             margin="normal"
+            data-testid="password"
             required
             fullWidth
             name="password"
@@ -210,6 +212,7 @@ export default function LoginPage() {
           />
           <Button
             type="submit"
+            data-testid="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}

@@ -9,6 +9,7 @@ exports[`NestedModal > Snapshot test of NestedModal 1`] = `
         <div>
           <div
             class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-196akmx-MuiPaper-root-MuiCard-root"
+            data-testid="ActionAreaCard"
           >
             <button
               class="MuiButtonBase-root MuiCardActionArea-root css-1oitmrd-MuiButtonBase-root-MuiCardActionArea-root"
@@ -17,6 +18,7 @@ exports[`NestedModal > Snapshot test of NestedModal 1`] = `
             >
               <br />
               <div
+                data-testid="movie-poster"
                 style="margin: auto; width: 240px; height: 350px; background-size: cover; background-position: center; background-image: url(https://image.tmdb.org/t/p/original//MOCK); border-radius: 4px; border: 2px solid #000000;"
               />
               <div
@@ -149,6 +151,7 @@ exports[`NestedModal > Snapshot test of NestedModal 1`] = `
       <div>
         <div
           class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-196akmx-MuiPaper-root-MuiCard-root"
+          data-testid="ActionAreaCard"
         >
           <button
             class="MuiButtonBase-root MuiCardActionArea-root css-1oitmrd-MuiButtonBase-root-MuiCardActionArea-root"
@@ -157,6 +160,7 @@ exports[`NestedModal > Snapshot test of NestedModal 1`] = `
           >
             <br />
             <div
+              data-testid="movie-poster"
               style="margin: auto; width: 240px; height: 350px; background-size: cover; background-position: center; background-image: url(https://image.tmdb.org/t/p/original//MOCK); border-radius: 4px; border: 2px solid #000000;"
             />
             <div

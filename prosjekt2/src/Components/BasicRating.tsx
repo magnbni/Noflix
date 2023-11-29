@@ -18,7 +18,7 @@ export function ReadOnlyRating(value: number | null) {
   );
 }
 
-const GET_USER_RATING = gql`
+export const GET_USER_RATING = gql`
   query allUsers($userEmail: String!, $movieId: String!) {
     userMovieRating(userEmail: $userEmail, movieId: $movieId) {
       ratingValue
@@ -26,7 +26,7 @@ const GET_USER_RATING = gql`
   }
 `;
 
-const DELETE_USER_RATING = gql`
+export const DELETE_USER_RATING = gql`
   mutation deleteUserRatings($userEmail: String!, $movieId: String!) {
     deleteUserRatings(userEmail: $userEmail, movieId: $movieId) {
       success
@@ -79,6 +79,7 @@ export function Rate(rateProps: RateProps) {
     <div className="boxcontainer">
       {value ? (
         <Rating
+          data-testid="simple-controlled"
           name="simple-controlled"
           value={value != null ? value : 0}
           onChange={(_event, newValue) => {
@@ -91,6 +92,7 @@ export function Rate(rateProps: RateProps) {
       ) : (
         <>
           <Rating
+            data-testid="simple-controlled"
             name="simple-controlled"
             value={0}
             onChange={(_event, newValue) => {
@@ -105,6 +107,7 @@ export function Rate(rateProps: RateProps) {
       <br />
       {value != null && value > 0 ? (
         <IconButton
+          data-testid="delete"
           color="inherit"
           aria-label="open drawer"
           edge="end"
